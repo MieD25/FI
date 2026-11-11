@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Medienzugriffsverfahren – interaktive Lerneinheit</title>
+<style>
+:root{
+  --bg:#f6f4ef; --paper:#fffdf8; --ink:#1d2433; --muted:#5d6577; --line:#ddd7cb;
+  --accent:#0f766e; --accent-soft:#d6efec; --warn:#b42318; --warn-soft:#fde4e1;
+  --ok:#15803d; --ok-soft:#dcf3e3; --amber:#b45309; --amber-soft:#fdf0d9;
+  --A:#2563eb; --B:#c2410c; --C:#7c3aed; --D:#0f766e; --E:#be185d;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--accent)}
+header.hero{padding:48px 24px 32px;max-width:1100px;margin:0 auto}
+.hero .kicker{font:600 13px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.hero h1{font-size:clamp(30px,5vw,48px);line-height:1.1;margin:.3em 0 .3em;letter-spacing:-.02em}
+.hero p{max-width:720px;color:var(--muted);font-size:18px;margin:0}
+nav.toc{position:sticky;top:0;z-index:10;background:rgba(246,244,239,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+nav.toc ul{list-style:none;margin:0 auto;padding:10px 24px;display:flex;gap:6px;flex-wrap:wrap;max-width:1100px}
+nav.toc a{display:block;padding:6px 12px;border-radius:999px;text-decoration:none;color:var(--ink);font-size:14px;border:1px solid var(--line);background:var(--paper)}
+nav.toc a:hover{border-color:var(--accent);color:var(--accent)}
+nav.toc a b{font-family:var(--mono);color:var(--accent);margin-right:4px}
+main{max-width:1100px;margin:0 auto;padding:0 24px 80px}
+section{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:28px clamp(18px,3vw,36px);margin:28px 0;scroll-margin-top:70px}
+section > .q{display:flex;gap:14px;align-items:flex-start}
+.q .badge{flex:0 0 auto;width:40px;height:40px;border-radius:12px;background:var(--accent);color:#fff;display:grid;place-items:center;font:700 20px var(--mono)}
+.q h2{margin:0;font-size:24px;line-height:1.25;letter-spacing:-.01em}
+.q .sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+h3{font-size:18px;margin:26px 0 8px}
+p{margin:.6em 0}
+.lead{font-size:17px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff}
+.lab{border:1px solid var(--line);border-radius:14px;background:#fbfaf6;padding:18px;margin:18px 0}
+.lab-title{font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.lab-title::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:8px 0 14px}
+button{font:inherit;font-size:14px;padding:8px 14px;border-radius:10px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
+button.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+button.ghost:hover{border-color:var(--ink)}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.on{background:var(--accent);border-color:var(--accent)}
+select,input[type=range]{font:inherit;font-size:14px}
+select{padding:7px 10px;border-radius:10px;border:1px solid var(--line);background:#fff}
+label.inline{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.note{border-left:4px solid var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:0 10px 10px 0;margin:14px 0}
+.note.warn{border-color:var(--amber);background:var(--amber-soft)}
+.key{border:2px solid var(--ink);border-radius:12px;padding:14px 18px;margin:18px 0;background:#fff}
+.key b:first-child{font:700 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px;color:var(--accent)}
+details.answer{border:1px dashed var(--accent);border-radius:12px;padding:12px 16px;margin-top:20px;background:#fff}
+details.answer summary{cursor:pointer;font-weight:600;color:var(--accent)}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+code,.mono{font-family:var(--mono);font-size:.92em}
+.small{font-size:13px;color:var(--muted)}
+
+/* Flow steps */
+.flow{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 16px;counter-reset:f}
+.flow div{flex:1 1 120px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:13px;line-height:1.3;transition:.25s;position:relative}
+.flow div.active{background:var(--ink);color:#fff;border-color:var(--ink);transform:translateY(-2px)}
+.flow div.dice{border-style:dashed;border-color:var(--amber)}
+.flow div.dice.active{background:var(--amber);border-color:var(--amber)}
+
+/* CSMA/CD stations */
+.stations{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.st{border:2px solid var(--line);border-radius:12px;padding:12px;background:#fff;transition:.25s}
+.st h4{margin:0 0 6px;display:flex;justify-content:space-between;align-items:center}
+.st .die{width:64px;height:64px;border-radius:14px;border:2px solid currentColor;display:grid;place-items:center;font:700 28px var(--mono);margin:8px auto;background:#fff}
+.st.rolling .die{animation:shake .12s infinite}
+@keyframes shake{0%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}100%{transform:rotate(-8deg)}}
+.st .meta{font-size:12px;color:var(--muted);text-align:center;font-family:var(--mono)}
+.st .status{text-align:center;font-size:13px;font-weight:600;margin-top:6px;min-height:20px}
+.st.win{border-color:var(--ok);background:var(--ok-soft)}
+.st.coll{border-color:var(--warn);background:var(--warn-soft)}
+.st.done{opacity:.55}
+.slots{display:flex;gap:3px;margin:14px 0 4px;flex-wrap:wrap}
+.slot{width:34px;min-height:44px;border:1px solid var(--line);border-radius:6px;background:#fff;font:11px var(--mono);text-align:center;padding-top:2px;position:relative}
+.slot .chips{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:2px}
+.chip{width:22px;height:14px;border-radius:4px;color:#fff;font:700 10px/14px var(--mono)}
+.log{font:13px/1.5 var(--mono);background:#1d2433;color:#e6e9ef;border-radius:10px;padding:10px 12px;max-height:180px;overflow:auto;margin-top:10px}
+.log .c{color:#fca5a5}.log .s{color:#86efac}.log .d{color:#fcd34d}
+
+/* bars */
+.bars{display:flex;align-items:flex-end;gap:10px;height:150px;padding:10px 4px 0;border-bottom:1px solid var(--ink)}
+.bar{flex:1;background:var(--amber);border-radius:6px 6px 0 0;position:relative;min-height:2px;transition:height .4s}
+.bar span{position:absolute;top:-20px;left:0;right:0;text-align:center;font:12px var(--mono)}
+.barlabels{display:flex;gap:10px;padding:4px 4px 0}
+.barlabels div{flex:1;text-align:center;font:12px var(--mono);color:var(--muted)}
+
+/* CSMA/CA timeline */
+.tl{overflow-x:auto;padding-bottom:6px}
+.tl table{border-collapse:separate;border-spacing:2px;width:auto}
+.tl td{border:none;padding:0;width:26px;height:26px;text-align:center;font:11px/26px var(--mono);border-radius:4px}
+.tl td.name{width:auto;padding-right:8px;font-weight:700;text-align:right;background:none}
+.c-busy{background:#9aa3b2;color:#fff}
+.c-difs{background:#e5e7eb;color:#555}
+.c-bo{background:var(--amber-soft);color:var(--amber);font-weight:700}
+.c-frz{background:repeating-linear-gradient(45deg,#f1f1f1,#f1f1f1 4px,#e2e2e2 4px,#e2e2e2 8px);color:#888}
+.c-data{color:#fff;font-weight:700}
+.c-sifs{background:#eef2ff;color:#666}
+.c-ack{background:var(--ok);color:#fff;font-weight:700}
+.c-col{background:var(--warn);color:#fff;font-weight:700}
+.c-idle{background:#fafafa}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:16px;height:14px;border-radius:3px;display:inline-block}
+
+/* signal strength */
+.sig{display:grid;grid-template-columns:150px 1fr 90px;gap:8px;align-items:center;font-size:14px;margin:6px 0}
+.sig .track{height:18px;background:#eee;border-radius:9px;overflow:hidden}
+.sig .fill{height:100%;border-radius:9px;transition:width .3s}
+
+/* topology */
+svg.topo{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:12px;touch-action:none;user-select:none}
+.topo .node{cursor:grab}
+.topo .node:active{cursor:grabbing}
+.steptext{min-height:72px;padding:12px 14px;border-radius:10px;background:#fff;border:1px solid var(--line);margin-top:10px}
+.steptext b{color:var(--accent)}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.fact{font:12px var(--mono);padding:4px 8px;border-radius:6px;background:#eef0f4}
+.fact.bad{background:var(--warn-soft);color:var(--warn)}
+.fact.good{background:var(--ok-soft);color:var(--ok)}
+
+/* sequence diagram */
+svg.seq{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:12px}
+
+/* token */
+.tokenwrap{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start}
+@media(max-width:820px){.tokenwrap{grid-template-columns:1fr}}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0}
+.metric{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.metric .v{font:700 24px var(--mono)}
+.metric .l{font-size:12px;color:var(--muted)}
+.qbars{display:flex;gap:8px;align-items:flex-end;height:130px;border-bottom:1px solid var(--ink);padding-top:16px}
+.qbars .qb{flex:1;border-radius:5px 5px 0 0;position:relative;min-height:2px;transition:height .15s}
+.qbars .qb span{position:absolute;top:-17px;left:0;right:0;text-align:center;font:11px var(--mono)}
+
+/* scenario cards */
+.scen{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.sc{border:1px solid var(--line);border-radius:12px;background:#fff;padding:14px;display:flex;flex-direction:column;gap:8px}
+.sc .t{font-weight:600}
+.sc .btns{display:flex;gap:6px}
+.sc .btns button{flex:1;padding:6px}
+.sc .fb{font-size:14px;display:none;padding:8px 10px;border-radius:8px}
+.sc.right .fb{display:block;background:var(--ok-soft)}
+.sc.wrong .fb{display:block;background:var(--warn-soft)}
+.score{font:600 14px var(--mono);color:var(--accent)}
+
+/* quiz */
+.quiz .qq{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0;background:#fff}
+.quiz .qq p{font-weight:600;margin:0 0 8px}
+.quiz .opt{display:block;width:100%;text-align:left;margin:5px 0;background:#fff;color:var(--ink);border:1px solid var(--line)}
+.quiz .opt:hover{border-color:var(--ink)}
+.quiz .opt.r{background:var(--ok-soft);border-color:var(--ok)}
+.quiz .opt.w{background:var(--warn-soft);border-color:var(--warn)}
+.quiz .ex{display:none;font-size:14px;color:var(--muted);margin-top:6px}
+.quiz .qq.answered .ex{display:block}
+footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);font-size:13px}
+.tax{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+@media(max-width:700px){.tax{grid-template-columns:1fr}}
+.tax .card h4{margin:0 0 4px}
+.tax ul{margin:6px 0 0;padding-left:18px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="kicker">Rechnernetze · Sicherungsschicht · MAC</div>
+  <h1>Medienzugriffsverfahren<br>zum Ausprobieren</h1>
+  <p>Wer darf wann senden, wenn sich mehrere Stationen ein Medium teilen? Sechs Leitfragen – jede mit einer kleinen Simulation, einer Erklärung und einer kompakten Musterantwort.</p>
+</header>
+
+<nav class="toc"><ul>
+  <li><a href="#intro"><b>0</b>Einordnung</a></li>
+  <li><a href="#a"><b>a</b>Würfeln bei CSMA/CD</a></li>
+  <li><a href="#b"><b>b</b>Warum CA statt CD?</a></li>
+  <li><a href="#c"><b>c</b>CSMA/CA &amp; RTS/CTS</a></li>
+  <li><a href="#d"><b>d</b>Hidden &amp; Exposed</a></li>
+  <li><a href="#e"><b>e</b>Token Passing</a></li>
+  <li><a href="#f"><b>f</b>Ohne MAC?</a></li>
+  <li><a href="#quiz"><b>✓</b>Quiz</a></li>
+</ul></nav>
+
+<main>
+
+<!-- ============ 0 ============ -->
+<section id="intro">
+  <div class="q"><div class="badge">0</div><div><h2>Worum geht es?</h2><p class="sub">Das Grundproblem: ein Medium, mehrere Sender</p></div></div>
+  <p class="lead">Teilen sich mehrere Stationen ein Übertragungsmedium (ein Kabel mit Hub, einen Funkkanal), überlagern sich Signale, wenn zwei gleichzeitig senden – es kommt zur <b>Kollision</b>, beide Rahmen sind verloren. Ein <b>Medienzugriffsverfahren</b> (MAC, Media Access Control) regelt, wer wann senden darf.</p>
+  <div class="tax">
+    <div class="card"><h4>Konkurrierend (zufällig)</h4>
+      <span class="small">Jeder darf es versuchen – Konflikte werden erkannt oder vermieden.</span>
+      <ul><li>ALOHA / Slotted ALOHA</li><li><b>CSMA/CD</b> – klassisches Ethernet (Bus, Hub)</li><li><b>CSMA/CA</b> – WLAN, optional mit <b>RTS/CTS</b></li></ul>
+      <p class="small">Stark bei geringer Last, schwächer bei hoher Last (Kollisionen).</p></div>
+    <div class="card"><h4>Kontrolliert (deterministisch)</h4>
+      <span class="small">Senderecht wird ausdrücklich vergeben – keine Kollisionen.</span>
+      <ul><li><b>Token Passing</b> (Token Ring, Token Bus, FDDI)</li><li>Polling (Master fragt Slaves ab)</li><li>Feste Zeitschlitze (TDMA)</li></ul>
+      <p class="small">Stark bei hoher, gleichmäßiger Last, Wartezeit auch bei leerem Medium.</p></div>
+  </div>
+</section>
+
+<!-- ============ a ============ -->
+<section id="a">
+  <div class="q"><div class="badge">a</div><div><h2>An welcher Stelle von CSMA/CD „würfeln“ die Teilnehmer, wer zuerst senden darf?</h2><p class="sub">Binary Exponential Backoff</p></div></div>
+
+  <p>CSMA/CD heißt <i>Carrier Sense Multiple Access with Collision Detection</i>. Der Ablauf:</p>
+  <div class="flow" id="cdflow">
+    <div data-s="0">① Medium abhören<br><span class="small">Carrier Sense</span></div>
+    <div data-s="1">② Frei → senden<br><span class="small">und dabei weiter mithören</span></div>
+    <div data-s="2">③ Kollision erkannt<br><span class="small">Collision Detection</span></div>
+    <div data-s="3">④ Jam-Signal<br><span class="small">alle sollen es merken</span></div>
+    <div data-s="4" class="dice">⑤ Backoff: würfeln 🎲<br><span class="small">zufällige Wartezeit</span></div>
+    <div data-s="5">⑥ Neuer Versuch<br><span class="small">zurück zu ①</span></div>
+  </div>
+
+  <p>Das Würfeln passiert in <b>Schritt ⑤ – nach einer erkannten Kollision</b>. Jede beteiligte Station wählt zufällig eine Zahl <code>k</code> aus <code>0 … 2<sup>n</sup>−1</code> (n = Anzahl bisheriger Kollisionen dieses Rahmens, maximal 10) und wartet <code>k</code> Slotzeiten (bei 10 Mbit/s: 512 Bitzeiten = 51,2 µs). Wer die <b>kleinste Zahl</b> würfelt, beginnt zuerst – die anderen hören dann ein belegtes Medium und warten. Würfeln zwei dieselbe kleinste Zahl, kollidieren sie erneut, und das „Würfelbrett“ wird doppelt so groß.</p>
+
+  <div class="lab">
+    <div class="lab-title">Simulation: Backoff-Würfeln</div>
+    <div class="controls">
+      <label class="inline">Stationen
+        <select id="cdN"><option>2</option><option selected>3</option><option>4</option></select></label>
+      <button id="cdStart">Alle senden gleichzeitig</button>
+      <button id="cdNext" class="ghost" disabled>Nächste Runde</button>
+      <button id="cdAuto" class="ghost" disabled>Bis alle fertig</button>
+      <button id="cdReset" class="ghost">Zurücksetzen</button>
+    </div>
+    <div class="stations" id="cdStations"></div>
+    <div class="small" style="margin-top:12px">Slot-Zeitachse dieser Runde (Wer würfelt welchen Slot?)</div>
+    <div class="slots" id="cdSlots"></div>
+    <div class="log" id="cdLog"><span class="small" style="color:#aab">Starte die Simulation …</span></div>
+    <p class="small">Vereinfachtes Modell: Stationen, die einen größeren Slot gewürfelt haben, hören das Medium belegt und versuchen es danach direkt erneut (1-persistent) – sind es mehrere, kollidieren sie wieder.</p>
+  </div>
+
+  <div class="lab">
+    <div class="lab-title">Warum wird das Würfelbrett verdoppelt?</div>
+    <p style="margin-top:0">Wahrscheinlichkeit, dass nach der <i>n</i>-ten Kollision <b>wieder</b> eine Kollision entsteht (die kleinste gewürfelte Zahl ist nicht eindeutig) – per Monte-Carlo mit 20 000 Durchläufen:</p>
+    <div class="controls"><label class="inline">Stationen im Konflikt <select id="pN"><option>2</option><option selected>3</option><option>5</option><option>10</option></select></label></div>
+    <div class="bars" id="pBars"></div>
+    <div class="barlabels" id="pLabels"></div>
+    <p class="small">Mit jeder Kollision verdoppelt sich die Fenstergröße, die Wiederholungs-Kollisionswahrscheinlichkeit sinkt rasch. Der Preis: längere Wartezeiten. Die Methode passt sich so selbst an die Zahl der Konkurrenten an.</p>
+  </div>
+
+  <details class="answer"><summary>Musterantwort (a)</summary>
+    <p>Gewürfelt wird beim <b>Backoff nach einer Kollision</b>: Hat eine Station eine Kollision erkannt und das Jam-Signal gesendet, wählt sie zufällig eine Wartezeit von <code>k · Slotzeit</code> mit <code>k ∈ {0, …, 2<sup>min(n,10)</sup>−1}</code> (Binary Exponential Backoff). Wer die kleinste Zahl „würfelt“, sendet zuerst; die anderen erkennen das belegte Medium und warten. Bei Gleichstand gibt es eine erneute Kollision und das Intervall verdoppelt sich. Nach 16 erfolglosen Versuchen wird der Rahmen verworfen.</p>
+  </details>
+</section>
+
+<!-- ============ b ============ -->
+<section id="b">
+  <div class="q"><div class="badge">b</div><div><h2>Warum nutzt WLAN CSMA/CA statt CSMA/CD?</h2><p class="sub">Kollisionen lassen sich im Funk nicht zuverlässig erkennen – also vermeidet man sie</p></div></div>
+
+  <div class="grid2">
+    <div class="card"><h4 style="margin-top:0">Grund 1: Senden und Hören gleichzeitig geht kaum</h4>
+      <p>Eine Funkstation ist in der Regel <b>halbduplex</b>. Selbst mit zweiter Antenne würde das eigene Sendesignal das schwache Fremdsignal um viele Größenordnungen überdecken – die Station „hört sich nur selbst schreien“.</p></div>
+    <div class="card"><h4 style="margin-top:0">Grund 2: Kollisionen passieren beim Empfänger</h4>
+      <p>Im Funk kann es beim <b>Empfänger</b> krachen, ohne dass der Sender etwas davon mitbekommt – z. B. wenn sich zwei Sender gegenseitig gar nicht hören (<a href="#d">Hidden Station</a>). Was der Sender am eigenen Ort misst, sagt wenig über den Empfänger aus.</p></div>
+  </div>
+
+  <div class="lab">
+    <div class="lab-title">Mini-Experiment: eigenes vs. fremdes Signal</div>
+    <div class="controls"><label class="inline">Abstand zur anderen Station <input type="range" id="dist" min="2" max="100" value="20"> <span id="distV" class="mono">20 m</span></label></div>
+    <div class="sig"><span>Eigenes Signal (an der eigenen Antenne)</span><div class="track"><div class="fill" id="sigOwn" style="background:var(--B)"></div></div><span class="mono" id="sigOwnV"></span></div>
+    <div class="sig"><span>Signal der anderen Station</span><div class="track"><div class="fill" id="sigOther" style="background:var(--A)"></div></div><span class="mono" id="sigOtherV"></span></div>
+    <p class="small" id="sigTxt"></p>
+    <p class="small">Grobe Modellrechnung (Freiraumdämpfung bei 2,4 GHz, 20 dBm Sendeleistung, ca. 30 dB Entkopplung zwischen Sende- und Empfangspfad angenommen). Die Werte sind Größenordnungen zur Veranschaulichung, keine Messwerte.</p>
+  </div>
+
+  <h3>So läuft CSMA/CA (802.11 DCF) ab</h3>
+  <ol>
+    <li>Medium abhören. Ist es für die Dauer eines <b>DIFS</b> frei, beginnt der Wettbewerb.</li>
+    <li>Jede Station zieht einen <b>zufälligen Backoff-Zähler</b> aus dem Contention Window <code>[0, CW]</code> und zählt pro freiem Slot herunter.</li>
+    <li>Wird das Medium belegt, wird der Zähler <b>eingefroren</b> (nicht neu gewürfelt) – wer schon lange wartet, kommt beim nächsten Mal früher dran.</li>
+    <li>Bei 0 wird gesendet. Der Empfänger bestätigt nach einem kurzen <b>SIFS</b> mit einem <b>ACK</b>.</li>
+    <li>Kein ACK? Dann galt der Rahmen als kollidiert/verloren → CW verdoppeln, neu würfeln.</li>
+  </ol>
+  <p class="small">Typische Werte (OFDM, z. B. 802.11a/n/ac im 5-GHz-Band): Slot 9 µs, SIFS 16 µs, DIFS 34 µs, CW<sub>min</sub> 15, CW<sub>max</sub> 1023. In der Simulation sind die Werte zur besseren Übersicht kleiner (CW<sub>min</sub> = 7).</p>
+
+  <div class="lab">
+    <div class="lab-title">Simulation: CSMA/CA-Zeitachse</div>
+    <div class="controls">
+      <label class="inline">Stationen <select id="caN"><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
+      <button id="caRun">Neu würfeln &amp; abspielen</button>
+      <button id="caStep" class="ghost">Einzelschritt</button>
+    </div>
+    <div class="tl"><table id="caTable"></table></div>
+    <div class="legend">
+      <span><i class="c-busy"></i>Medium belegt (fremde Übertragung)</span>
+      <span><i class="c-difs"></i>DIFS</span>
+      <span><i class="c-bo"></i>Backoff zählt runter</span>
+      <span><i class="c-frz"></i>Zähler eingefroren</span>
+      <span><i style="background:var(--A)"></i>Daten</span>
+      <span><i class="c-sifs"></i>SIFS</span>
+      <span><i class="c-ack"></i>ACK</span>
+      <span><i class="c-col"></i>Kollision</span>
+    </div>
+    <p class="small" id="caInfo"></p>
+  </div>
+
+  <table>
+    <tr><th></th><th>CSMA/CD (Ethernet)</th><th>CSMA/CA (WLAN)</th></tr>
+    <tr><td><b>Idee</b></td><td>Kollision <i>erkennen</i> und abbrechen</td><td>Kollision <i>vermeiden</i></td></tr>
+    <tr><td><b>Zufall</b></td><td>Erst <i>nach</i> einer Kollision (Backoff)</td><td>Schon <i>vor</i> jedem Senden nach belegtem Medium</td></tr>
+    <tr><td><b>Erfolgsnachweis</b></td><td>Keine Kollision während des Sendens</td><td>Positives ACK vom Empfänger</td></tr>
+    <tr><td><b>Voraussetzung</b></td><td>Alle hören alle, Senden + Mithören möglich</td><td>Funktioniert auch, wenn nicht alle sich hören</td></tr>
+  </table>
+
+  <details class="answer"><summary>Musterantwort (b)</summary>
+    <p>Im Funk kann eine Station während des Sendens praktisch nicht gleichzeitig zuhören (halbduplex, das eigene Signal überdeckt fremde Signale um Größenordnungen). Außerdem entstehen Kollisionen am Ort des <b>Empfängers</b>, den der Sender nicht „sieht“ (z. B. Hidden Station). Collision Detection ist daher nicht zuverlässig möglich. WLAN versucht Kollisionen stattdessen zu <b>vermeiden</b> (Collision Avoidance): Warten (DIFS), zufälliger Backoff schon vor dem Senden, Einfrieren des Zählers bei belegtem Medium und Bestätigung jedes Rahmens per ACK.</p>
+  </details>
+</section>
+
+<!-- ============ c ============ -->
+<section id="c">
+  <div class="q"><div class="badge">c</div><div><h2>Warum wird WLAN sowohl als Beispiel für CSMA/CA als auch für RTS/CTS genannt?</h2><p class="sub">Grundverfahren und optionale Erweiterung im selben Standard</p></div></div>
+
+  <p class="lead">Weil beides in IEEE 802.11 steckt – auf zwei Ebenen: <b>CSMA/CA ist das Grundverfahren</b> (Distributed Coordination Function, DCF), <b>RTS/CTS ist eine optionale Erweiterung</b>, die auf CSMA/CA aufsetzt. Auch RTS und CTS selbst werden per CSMA/CA gesendet.</p>
+
+  <div class="grid2">
+    <div class="card"><h4 style="margin-top:0">CSMA/CA = physisches Carrier Sensing</h4>
+      <p>Die Station misst, ob auf dem Kanal Energie bzw. ein Signal ist. Problem: Sie hört nur, was in <i>ihrer</i> Reichweite passiert.</p></div>
+    <div class="card"><h4 style="margin-top:0">RTS/CTS = virtuelles Carrier Sensing</h4>
+      <p>Kurze Steuerrahmen enthalten eine <b>Dauerangabe</b>. Wer RTS oder CTS mithört, setzt seinen <b>NAV</b> (Network Allocation Vector) und betrachtet das Medium so lange als belegt – auch wenn er selbst nichts misst.</p></div>
+  </div>
+
+  <div class="lab">
+    <div class="lab-title">Ablauf mit RTS/CTS – Schritt für Schritt</div>
+    <div class="controls"><button id="seqPrev" class="ghost">◀ Zurück</button><button id="seqNext">Weiter ▶</button><span class="small" id="seqCount"></span></div>
+    <svg class="seq" id="seq" viewBox="0 0 760 360"></svg>
+    <div class="steptext" id="seqText"></div>
+  </div>
+
+  <div class="note"><b>Wann wird RTS/CTS eingesetzt?</b> Es kostet zusätzliche Rahmen und Zeit. Deshalb ist es in 802.11 typischerweise über eine <b>RTS-Schwelle</b> gesteuert: nur Rahmen ab einer bestimmten Größe werden mit RTS/CTS angekündigt (bei kurzen Rahmen ist eine Kollision billiger als der Overhead). Häufig ist die Schwelle so hoch eingestellt, dass RTS/CTS praktisch aus ist. Zusätzlich wird CTS-to-self als Schutzmechanismus genutzt, wenn ältere und neuere WLAN-Geräte gemischt im Netz sind.</div>
+
+  <details class="answer"><summary>Musterantwort (c)</summary>
+    <p>WLAN (IEEE 802.11) verwendet als Basis CSMA/CA (DCF). RTS/CTS ist keine Alternative dazu, sondern eine <b>optionale Ergänzung</b> innerhalb desselben Standards: Vor dem eigentlichen Datenrahmen reserviert der Sender das Medium per RTS, der Empfänger bestätigt per CTS. Beide Rahmen enthalten die Belegungsdauer; alle Mithörer setzen ihren NAV (virtuelles Carrier Sensing). Damit wird vor allem das Hidden-Station-Problem entschärft, das reines CSMA/CA nicht lösen kann. Deshalb ist WLAN Beispiel für beides.</p>
+  </details>
+</section>
+
+<!-- ============ d ============ -->
+<section id="d">
+  <div class="q"><div class="badge">d</div><div><h2>Was hat es mit Hidden Station und Exposed Station auf sich?</h2><p class="sub">Zwei Folgen davon, dass im Funk nicht jeder jeden hört</p></div></div>
+
+  <div class="grid2">
+    <div class="card"><h4 style="margin-top:0">Hidden Station (versteckte Station)</h4>
+      <p>A und C hören sich <b>nicht</b>, erreichen aber beide B. A sendet an B. C misst ein freies Medium und sendet ebenfalls → <b>Kollision bei B</b>. Carrier Sense versagt, weil der Sender den Konflikt nicht wahrnimmt.<br><b>Folge:</b> mehr Kollisionen, weniger Durchsatz.</p></div>
+    <div class="card"><h4 style="margin-top:0">Exposed Station (ausgelieferte Station)</h4>
+      <p>B sendet an A. C hört B und hält das Medium für belegt – will aber an D senden, der B gar nicht hört. Die Sendung hätte A nicht gestört. C <b>wartet unnötig</b>.<br><b>Folge:</b> verschenkte Kapazität, keine Kollision.</p></div>
+  </div>
+
+  <div class="lab">
+    <div class="lab-title">Simulation: Funkreichweiten – Stationen sind verschiebbar</div>
+    <div class="controls">
+      <button class="ghost scen-btn" data-sc="hidden">Hidden Station</button>
+      <button class="ghost scen-btn" data-sc="hiddenRTS">Hidden + RTS/CTS</button>
+      <button class="ghost scen-btn" data-sc="exposed">Exposed Station</button>
+      <button class="ghost scen-btn" data-sc="exposedRTS">Exposed + RTS/CTS</button>
+      <span style="flex:1"></span>
+      <button id="topoPrev" class="ghost">◀</button><button id="topoNext">Weiter ▶</button>
+    </div>
+    <svg class="topo" id="topo" viewBox="0 0 760 400"></svg>
+    <div class="steptext" id="topoText"></div>
+    <div class="facts" id="topoFacts"></div>
+    <p class="small">Ziehe die Stationen mit der Maus/dem Finger. Die Kreise zeigen die Funkreichweite. Die Erklärtexte beziehen sich auf die Ausgangsaufstellung; die grauen Kästchen darunter werden live berechnet.</p>
+  </div>
+
+  <div class="note warn"><b>Löst RTS/CTS das Exposed-Station-Problem?</b> Nur in der Theorie (Idee aus MACA): Wer ein RTS hört, aber kein CTS, ist nur „exposed“ und könnte senden. Praktisch klappt das nicht: C würde mit ihrer Sendung das ACK stören, das B von A empfangen muss, und das CTS von D könnte C wegen B's Sendung nicht sauber empfangen. In 802.11 setzt C beim Mithören des RTS ohnehin den NAV und wartet. Das Exposed-Station-Problem bleibt also weitgehend bestehen.</div>
+
+  <details class="answer"><summary>Musterantwort (d)</summary>
+    <p><b>Hidden Station:</b> Zwei Sender liegen außerhalb ihrer gegenseitigen Reichweite, aber beide in Reichweite desselben Empfängers. Beide halten das Medium für frei, senden gleichzeitig, und beim Empfänger kollidieren die Signale – ohne dass die Sender das merken. Gegenmittel: RTS/CTS (das CTS des Empfängers erreicht auch die versteckte Station, die daraufhin ihren NAV setzt).</p>
+    <p><b>Exposed Station:</b> Eine Station hört eine laufende Übertragung und verzichtet aufs Senden, obwohl ihre Sendung den Empfänger dieser Übertragung gar nicht erreichen würde und ihr eigener Empfänger nicht gestört wäre. Ergebnis: unnötiges Warten, verschenkte Kapazität. RTS/CTS löst das in der Praxis kaum, u. a. wegen der ACKs.</p>
+  </details>
+</section>
+
+<!-- ============ e ============ -->
+<section id="e">
+  <div class="q"><div class="badge">e</div><div><h2>Wie effektiv ist Token Passing bei gleichmäßiger oder ungleichmäßiger Last?</h2><p class="sub">Nur wer den Token hält, darf senden</p></div></div>
+
+  <p>Ein spezieller Rahmen, der <b>Token</b>, kreist in fester Reihenfolge (logischer Ring). Wer ihn hält, darf bis zur <b>Token Holding Time</b> (hier: max. Rahmen pro Besitz) senden und gibt ihn dann weiter. Keine Kollisionen, garantierte maximale Wartezeit.</p>
+
+  <div class="lab">
+    <div class="lab-title">Simulation: Token Ring mit 6 Stationen</div>
+    <div class="controls">
+      <label class="inline">Lastverteilung
+        <select id="tkDist">
+          <option value="even">gleichmäßig</option>
+          <option value="skew">ungleichmäßig (S1 erzeugt 75 %)</option>
+          <option value="one">nur S1 sendet</option>
+        </select></label>
+      <label class="inline">Angebotene Last <input type="range" id="tkLoad" min="10" max="120" value="80"><span id="tkLoadV" class="mono">80 %</span></label>
+      <label class="inline">Rahmen pro Token <select id="tkTHT"><option>1</option><option selected>2</option><option>4</option><option>8</option></select></label>
+    </div>
+    <div class="controls">
+      <button id="tkPlay">▶ Start</button>
+      <button id="tkReset" class="ghost">Zurücksetzen</button>
+      <label class="inline">Tempo <input type="range" id="tkSpeed" min="1" max="40" value="8"></label>
+    </div>
+    <div class="tokenwrap">
+      <svg id="ring" viewBox="0 0 340 340" style="width:100%;background:#fff;border:1px solid var(--line);border-radius:12px"></svg>
+      <div>
+        <div class="metrics">
+          <div class="metric"><div class="v" id="mUtil">–</div><div class="l">Auslastung des Mediums (Nutzdaten)</div></div>
+          <div class="metric"><div class="v" id="mWait">–</div><div class="l">Ø Wartezeit eines Rahmens (Ticks)</div></div>
+          <div class="metric"><div class="v" id="mEmpty">–</div><div class="l">Token-Besuche ohne Daten</div></div>
+          <div class="metric"><div class="v" id="mDrop">–</div><div class="l">verworfene Rahmen (Puffer voll)</div></div>
+        </div>
+        <div class="small">Warteschlangen je Station</div>
+        <div class="qbars" id="qbars"></div>
+        <div class="barlabels" id="qlabels"></div>
+      </div>
+    </div>
+    <p class="small">Modell: Ein Datenrahmen dauert 3 Ticks, die Weitergabe des Tokens 1 Tick. Last 100 % = so viele Rahmen, wie das Medium ohne Token-Overhead übertragen könnte. Puffer: 40 Rahmen pro Station.</p>
+  </div>
+
+  <div class="lab">
+    <div class="lab-title">Schnellvergleich (je 30 000 Ticks, angebotene Last 80 %)</div>
+    <div class="controls"><button id="tkCompare">Vergleich berechnen</button></div>
+    <div id="tkCmp"></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card"><h4 style="margin-top:0">Gleichmäßige Last</h4>
+      <p>Hier ist Token Passing in seinem Element: Fast jeder Token-Besuch transportiert Daten, der Overhead der Weitergabe verteilt sich, die Auslastung kann bei hoher Last nahe an die Kapazität heran. Alle kommen fair und mit <b>vorhersagbarer</b> Maximalwartezeit dran. CSMA/CD bricht bei hoher Last dagegen durch Kollisionen ein.</p></div>
+    <div class="card"><h4 style="margin-top:0">Ungleichmäßige Last</h4>
+      <p>Der Token muss trotzdem bei <b>allen</b> Stationen vorbei – auch bei denen, die nichts zu senden haben. Die stark belastete Station darf pro Umlauf nur begrenzt senden und muss dann eine ganze Runde warten. Ihre Warteschlange wächst, während das Medium zwischendurch nur den Token transportiert. Effizienz sinkt. Bei <b>geringer</b> Last ist Token Passing generell im Nachteil: Man wartet auf den Token, obwohl das Medium frei wäre.</p></div>
+  </div>
+
+  <details class="answer"><summary>Musterantwort (e)</summary>
+    <p>Bei <b>gleichmäßiger und hoher Last</b> ist Token Passing sehr effektiv: keine Kollisionen, hohe Auslastung, Fairness und eine garantierte maximale Wartezeit (deterministisch, daher für Echtzeitanforderungen geeignet). Bei <b>ungleichmäßiger Last</b> sinkt die Effektivität: Der Token muss alle Stationen besuchen, auch die ohne Daten (Overhead), und eine stark belastete Station kann wegen der Token Holding Time nur einen Teil ihrer Daten pro Umlauf senden und wartet sonst. Bei <b>geringer Last</b> entsteht unnötige Wartezeit auf den Token; hier sind konkurrierende Verfahren wie CSMA/CD im Vorteil.</p>
+  </details>
+</section>
+
+<!-- ============ f ============ -->
+<section id="f">
+  <div class="q"><div class="badge">f</div><div><h2>Unter welchen Umständen kann man auf ein Medienzugriffsverfahren verzichten?</h2><p class="sub">Wenn niemand um dasselbe Medium konkurriert</p></div></div>
+
+  <p class="lead">Ein Zugriffsverfahren wird nur gebraucht, wenn <b>mehrere potenzielle Sender sich dasselbe Medium teilen</b>. Fällt diese Bedingung weg, gibt es nichts zu regeln.</p>
+
+  <div class="lab">
+    <div class="lab-title">Entscheide selbst: Ist hier ein Zugriffsverfahren nötig?</div>
+    <div class="score" id="scScore">0 / 0 richtig</div>
+    <div class="scen" id="scen" style="margin-top:10px"></div>
+  </div>
+
+  <details class="answer"><summary>Musterantwort (f)</summary>
+    <p>Auf ein Medienzugriffsverfahren kann verzichtet werden, wenn es keine Konkurrenz um das Medium gibt, z. B.:</p>
+    <ul>
+      <li><b>Punkt-zu-Punkt-Verbindung im Vollduplex</b>: je Richtung ein eigener Kanal (getrennte Adernpaare oder Fasern), etwa geswitchtes Ethernet. Jeder Switch-Port bildet eine eigene Kollisionsdomäne; CSMA/CD ist im Vollduplex abgeschaltet.</li>
+      <li><b>Nur ein Sender</b> (Simplex/Broadcast), z. B. Rundfunk: viele Empfänger, aber niemand sonst sendet.</li>
+      <li><b>Exklusive Kanäle</b> je Station, z. B. getrennte Frequenzen. (Streng genommen ist eine feste Zuteilung aber selbst schon ein statisches Zugriffsverfahren.)</li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============ quiz ============ -->
+<section id="quiz" class="quiz">
+  <div class="q"><div class="badge">✓</div><div><h2>Abschlussquiz</h2><p class="sub">Prüfe dein Verständnis</p></div></div>
+  <div class="score" id="quizScore"></div>
+  <div id="quizBox"></div>
+  <button class="ghost" id="quizReset" style="margin-top:8px">Quiz zurücksetzen</button>
+</section>
+
+</main>
+<footer>Interaktive Lerneinheit zu Medienzugriffsverfahren (CSMA/CD, CSMA/CA, RTS/CTS, Token Passing). Simulationen sind bewusst vereinfachte Modelle.</footer>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const COLORS = ["var(--A)","var(--B)","var(--C)","var(--D)","var(--E)"];
+const NAMES = ["A","B","C","D","E"];
+const rnd = n => Math.floor(Math.random()*n);
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+
+/* ================= a) CSMA/CD Backoff ================= */
+const cd = {stations:[], round:0, busy:false};
+function cdFlow(i){ $$("#cdflow div").forEach(d=>d.classList.toggle("active", +d.dataset.s===i)); }
+function cdLog(html){ const l=$("#cdLog"); if(l.querySelector(".small")) l.innerHTML=""; l.insertAdjacentHTML("beforeend", html+"<br>"); l.scrollTop=l.scrollHeight; }
+function cdInit(){
+  const n = +$("#cdN").value;
+  cd.stations = Array.from({length:n},(_,i)=>({name:NAMES[i], color:COLORS[i], n:0, k:null, done:false, pending:true, status:"wartet"}));
+  cd.round = 0; cd.busy=false;
+  $("#cdLog").innerHTML='<span class="small" style="color:#aab">Starte die Simulation …</span>';
+  $("#cdNext").disabled = true; $("#cdAuto").disabled = true; $("#cdStart").disabled=false;
+  cdFlow(-1); cdRender(); $("#cdSlots").innerHTML="";
+}
+function cdRender(cls={}){
+  $("#cdStations").innerHTML = cd.stations.map((s,i)=>{
+    const win = s.n===0 ? "–" : `0 … ${2**Math.min(s.n,10)-1}`;
+    return `<div class="st ${cls[i]||""} ${s.done?"done":""}" id="st${i}" style="color:${s.color}">
+      <h4><span>Station ${s.name}</span><span class="mono small">n=${s.n}</span></h4>
+      <div class="die">${s.k===null?"?":s.k}</div>
+      <div class="meta">Fenster: ${win}</div>
+      <div class="status" style="color:var(--ink)">${s.status}</div></div>`;
+  }).join("");
+}
+function cdSlots(contenders){
+  const max = Math.max(...contenders.map(s=>2**Math.min(s.n,10)));
+  const shown = Math.min(max, 32);
+  let h="";
+  for(let k=0;k<shown;k++){
+    const here = contenders.filter(s=>s.k===k);
+    h+=`<div class="slot" style="${here.length>1?"background:var(--warn-soft);border-color:var(--warn)":here.length?"background:var(--ok-soft)":""}">${k}<div class="chips">${here.map(s=>`<div class="chip" style="background:${s.color}">${s.name}</div>`).join("")}</div></div>`;
+  }
+  if(max>32) h+=`<div class="small" style="align-self:center">… bis ${max-1}</div>`;
+  $("#cdSlots").innerHTML=h;
+}
+async function cdRound(){
+  if(cd.busy) return; cd.busy=true;
+  $("#cdNext").disabled=true; $("#cdAuto").disabled=true; $("#cdStart").disabled=true;
+  const act = cd.stations.filter(s=>s.pending && !s.done);
+  cd.round++;
+  if(act.length===0){ cd.busy=false; return; }
+  // Phase 1: senden
+  cdFlow(0); await sleep(350); cdFlow(1);
+  act.forEach(s=>s.status="sendet …"); cdRender(); await sleep(450);
+  if(act.length===1){
+    const s=act[0]; s.done=true; s.pending=false; s.status="✔ erfolgreich gesendet";
+    cdLog(`<span class="s">Runde ${cd.round}: ${s.name} sendet allein → Erfolg.</span>`);
+    cdRender({[cd.stations.indexOf(s)]:"win"}); cdFlow(-1);
+  } else {
+    cdFlow(2);
+    const cls={}; act.forEach(s=>{ s.status="💥 Kollision!"; cls[cd.stations.indexOf(s)]="coll"; });
+    cdRender(cls);
+    cdLog(`<span class="c">Runde ${cd.round}: Kollision zwischen ${act.map(s=>s.name).join(", ")}.</span>`);
+    await sleep(500); cdFlow(3); await sleep(400);
+    // Phase 2: würfeln
+    cdFlow(4);
+    act.forEach(s=>{ s.n++; s.status="würfelt …"; });
+    if(act.some(s=>s.n>=16)){ cdLog(`<span class="c">16 Versuche erreicht – Rahmen verworfen.</span>`); }
+    cdRender(cls);
+    act.forEach(s=>document.getElementById("st"+cd.stations.indexOf(s)).classList.add("rolling"));
+    const t0=performance.now();
+    while(performance.now()-t0<700){
+      act.forEach(s=>{ const el=document.querySelector(`#st${cd.stations.indexOf(s)} .die`); el.textContent=rnd(2**Math.min(s.n,10)); });
+      await sleep(60);
+    }
+    act.forEach(s=>s.k=rnd(2**Math.min(s.n,10)));
+    const minK=Math.min(...act.map(s=>s.k));
+    const winners=act.filter(s=>s.k===minK);
+    const cls2={};
+    act.forEach(s=>{
+      const i=cd.stations.indexOf(s);
+      if(winners.length===1 && s===winners[0]){ s.status=`wartet ${s.k} Slot(s) → sendet zuerst ✔`; s.done=true; s.pending=false; cls2[i]="win"; }
+      else if(winners.length>1 && s.k===minK){ s.status=`Gleichstand bei ${s.k} → erneute Kollision`; cls2[i]="coll"; }
+      else { s.status=`wartet ${s.k} Slot(s) → hört Medium belegt`; }
+    });
+    cdRender(cls2); cdSlots(act);
+    cdLog(`<span class="d">🎲 Gewürfelt: ${act.map(s=>`${s.name}=${s.k} (aus 0…${2**Math.min(s.n,10)-1})`).join(", ")}</span>`);
+    if(winners.length===1) cdLog(`<span class="s">→ ${winners[0].name} hat die kleinste Zahl und sendet erfolgreich.</span>`);
+    else cdLog(`<span class="c">→ ${winners.map(s=>s.name).join(" und ")} haben beide ${minK} – sie kollidieren wieder.</span>`);
+    await sleep(300); cdFlow(5);
+  }
+  const left = cd.stations.filter(s=>!s.done);
+  if(left.length===0){ cdLog(`<span class="s">Alle Rahmen übertragen nach ${cd.round} Runden.</span>`); cdFlow(-1); }
+  else { $("#cdNext").disabled=false; $("#cdAuto").disabled=false; }
+  cd.busy=false;
+}
+$("#cdStart").onclick=()=>{ cdInit(); cdRound(); };
+$("#cdNext").onclick=()=>cdRound();
+$("#cdAuto").onclick=async()=>{ while(cd.stations.some(s=>!s.done)){ await cdRound(); await sleep(500);} };
+$("#cdReset").onclick=cdInit;
+$("#cdN").onchange=cdInit;
+cdInit();
+
+function pRecompute(){
+  const N=+$("#pN").value, runs=20000, ns=[1,2,3,4,5,6,7,8];
+  const vals=ns.map(n=>{
+    const W=2**n; let coll=0;
+    for(let r=0;r<runs;r++){ let min=Infinity,cnt=0; for(let i=0;i<N;i++){const k=rnd(W); if(k<min){min=k;cnt=1}else if(k===min)cnt++;} if(cnt>1)coll++; }
+    return coll/runs;
+  });
+  $("#pBars").innerHTML=vals.map(v=>`<div class="bar" style="height:${Math.max(2,v*100)}%"><span>${(v*100).toFixed(0)}%</span></div>`).join("");
+  $("#pLabels").innerHTML=ns.map(n=>`<div>n=${n}<br>0…${2**n-1}</div>`).join("");
+}
+$("#pN").onchange=pRecompute; pRecompute();
+
+/* ================= b) Signal ================= */
+function sigUpdate(){
+  const d=+$("#dist").value; $("#distV").textContent=d+" m";
+  const tx=20; // dBm
+  const own = tx-30; // Rückkopplung am eigenen Empfänger (Annahme ~30 dB Entkopplung)
+  const fspl = 20*Math.log10(d)+20*Math.log10(2400)-27.55; // dB, d in m, f in MHz
+  const other = tx - fspl;
+  const map = v => Math.max(2, Math.min(100, (v+100)/1.2));
+  $("#sigOwn").style.width=map(own)+"%"; $("#sigOther").style.width=map(other)+"%";
+  $("#sigOwnV").textContent=own.toFixed(0)+" dBm"; $("#sigOtherV").textContent=other.toFixed(0)+" dBm";
+  const diff=own-other;
+  $("#sigTxt").innerHTML=`Unterschied: <b>${diff.toFixed(0)} dB</b> – das eigene Signal ist rund <b>${Number((10**(diff/10)).toPrecision(2)).toLocaleString("de-DE")}-mal</b> stärker. Eine Kollision im fremden Signal ist so praktisch nicht erkennbar.`;
+}
+$("#dist").oninput=sigUpdate; sigUpdate();
+
+/* ================= b) CSMA/CA timeline ================= */
+let ca=null, caTimer=null;
+function caBuild(){
+  const n=+$("#caN").value;
+  const st=Array.from({length:n},(_,i)=>({name:NAMES[i], color:COLORS[i], cw:7, bo:rnd(8), has:true, cells:[]}));
+  const medium=[];
+  let phase="busy", left=4, txer=[], t=0;
+  const log=[];
+  function push(mCell, sCellFn){ medium.push(mCell); st.forEach(s=>s.cells.push(sCellFn(s))); t++; }
+  let guard=0;
+  while(st.some(s=>s.has) && guard++<200){
+    if(phase==="busy"){ push({c:"c-busy",t:""}, s=>s.has?{c:"c-frz",t:s.bo}:{c:"c-idle",t:""}); if(--left===0){phase="difs";left=2;} }
+    else if(phase==="difs"){ push({c:"c-difs",t:"D"}, s=>s.has?{c:"c-difs",t:"D"}:{c:"c-idle",t:""}); if(--left===0){phase="cont";} }
+    else if(phase==="cont"){
+      const zero=st.filter(s=>s.has && s.bo===0);
+      if(zero.length===0){
+        push({c:"c-idle",t:""}, s=>{ if(!s.has) return {c:"c-idle",t:""}; s.bo--; return {c:"c-bo",t:s.bo}; });
+      } else {
+        txer=zero; phase= zero.length===1?"tx":"col"; left=4;
+        log.push(zero.length===1?`t=${t}: ${zero[0].name} erreicht 0 und sendet.`:`t=${t}: ${zero.map(s=>s.name).join(" & ")} erreichen gleichzeitig 0 → Kollision.`);
+      }
+    }
+    else if(phase==="tx"||phase==="col"){
+      const coll=phase==="col";
+      push(coll?{c:"c-col",t:"✕"}:{c:"c-data",t:"",bg:txer[0].color},
+        s=> txer.includes(s) ? (coll?{c:"c-col",t:"✕"}:{c:"c-data",t:"DATA"[4-left]||"",bg:s.color}) : (s.has?{c:"c-frz",t:s.bo}:{c:"c-idle",t:""}));
+      if(--left===0){ phase= coll?"timeout":"sifs"; left= coll?2:1; }
+    }
+    else if(phase==="sifs"){ push({c:"c-sifs",t:"S"}, s=>txer.includes(s)?{c:"c-sifs",t:"S"}:(s.has?{c:"c-frz",t:s.bo}:{c:"c-idle",t:""})); phase="ack"; }
+    else if(phase==="ack"){
+      push({c:"c-ack",t:"A"}, s=>txer.includes(s)?{c:"c-ack",t:"ACK"}:(s.has?{c:"c-frz",t:s.bo}:{c:"c-idle",t:""}));
+      txer[0].has=false; log.push(`t=${t}: ACK erhalten – ${txer[0].name} fertig. Die anderen behalten ihre eingefrorenen Zähler.`);
+      phase="difs"; left=2;
+    }
+    else if(phase==="timeout"){
+      push({c:"c-idle",t:""}, s=>txer.includes(s)?{c:"c-col",t:"?"}:(s.has?{c:"c-frz",t:s.bo}:{c:"c-idle",t:""}));
+      if(--left===0){
+        txer.forEach(s=>{ s.cw=Math.min(s.cw*2+1,63); s.bo=rnd(s.cw+1); });
+        log.push(`kein ACK → ${txer.map(s=>`${s.name}: CW=${s.cw}, neu gewürfelt ${s.bo}`).join("; ")}.`);
+        phase="difs"; left=2;
+      }
+    }
+  }
+  const init=st.map(s=>s.cells.length?s.cells[0].t:"");
+  return {st, medium, log, init, shown:0};
+}
+function caRender(){
+  const rows=[`<tr><td class="name">Medium</td>${ca.medium.slice(0,ca.shown).map(c=>`<td class="${c.c}" style="${c.bg?`background:${c.bg}`:""}">${c.t}</td>`).join("")}</tr>`];
+  ca.st.forEach(s=>rows.push(`<tr><td class="name" style="color:${s.color}">${s.name}</td>${s.cells.slice(0,ca.shown).map(c=>`<td class="${c.c}" style="${c.bg?`background:${c.bg}`:""}">${c.t}</td>`).join("")}</tr>`));
+  $("#caTable").innerHTML=rows.join("");
+  const w=$("#caTable").parentElement; w.scrollLeft=w.scrollWidth;
+  $("#caInfo").innerHTML = `Start-Backoff-Zähler: ${ca.st.map((s,i)=>`${s.name}=${ca.init[i]}`).join(", ")}<br>`+ ca.log.join("<br>");
+}
+function caRun(){ clearInterval(caTimer); ca=caBuild(); ca.shown=0; caRender(); caTimer=setInterval(()=>{ ca.shown++; caRender(); if(ca.shown>=ca.medium.length) clearInterval(caTimer); },140); }
+$("#caRun").onclick=caRun;
+$("#caStep").onclick=()=>{ clearInterval(caTimer); if(!ca||ca.shown>=ca.medium.length){ ca=caBuild(); ca.shown=0;} ca.shown++; caRender(); };
+$("#caN").onchange=caRun;
+ca=caBuild(); ca.shown=ca.medium.length; caRender();
+
+/* ================= c) Sequence diagram ================= */
+const seqSteps=[
+  {t:"<b>Ausgangslage:</b> A will an B senden. C liegt in Reichweite von B, aber nicht von A (versteckt). Zuerst läuft normales CSMA/CA: Medium frei? DIFS abwarten, Backoff herunterzählen."},
+  {t:"<b>RTS (Request to Send):</b> A sendet einen kurzen RTS-Rahmen an B, mit Angabe, wie lange die gesamte Übertragung dauert. C hört das RTS nicht.", a:{from:0,to:1,y:110,l:"RTS (Dauer)",c:"var(--A)"}},
+  {t:"<b>CTS (Clear to Send):</b> Nach SIFS antwortet B mit CTS, ebenfalls mit Dauerangabe. Das CTS erreicht <i>alle</i> Stationen um B – auch C! C setzt seinen <b>NAV</b> und hält das Medium für belegt.", a:{from:1,to:0,y:160,l:"CTS (Dauer)",c:"var(--B)"}, b:{from:1,to:2,y:160,l:"CTS gehört",c:"var(--B)"}, nav:true},
+  {t:"<b>DATA:</b> A überträgt den eigentlichen Datenrahmen. C schweigt wegen NAV, obwohl C selbst kein Signal von A misst.", a:{from:0,to:1,y:220,l:"DATA",c:"var(--A)",thick:true}, nav:true},
+  {t:"<b>ACK:</b> B bestätigt den Empfang. Danach läuft der NAV ab, alle Stationen konkurrieren wieder nach CSMA/CA.", a:{from:1,to:0,y:280,l:"ACK",c:"var(--ok)"}, nav:true, navEnd:true},
+];
+let seqI=0;
+function seqDraw(){
+  const xs=[130,380,630], svg=$("#seq");
+  let h=`<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="context-stroke"/></marker></defs>`;
+  ["A (Sender)","B (Empfänger)","C (versteckt)"].forEach((n,i)=>{
+    h+=`<rect x="${xs[i]-60}" y="20" width="120" height="36" rx="8" fill="${["#dbe6fd","#fde4d4","#ece3fd"][i]}" stroke="${COLORS[i]}"/><text x="${xs[i]}" y="43" text-anchor="middle" font-size="14" font-weight="700" fill="${COLORS[i]}">${n}</text>`;
+    h+=`<line x1="${xs[i]}" y1="56" x2="${xs[i]}" y2="340" stroke="#bbb" stroke-dasharray="4 4"/>`;
+  });
+  // reach annotation
+  h+=`<text x="505" y="76" text-anchor="middle" font-size="11" fill="#888">B ↔ C in Reichweite</text><text x="380" y="350" text-anchor="middle" font-size="11" fill="#888">A und C hören sich nicht</text>`;
+  for(let i=1;i<=seqI;i++){
+    const s=seqSteps[i];
+    [s.a,s.b].filter(Boolean).forEach(a=>{
+      const x1=xs[a.from], x2=xs[a.to], dir=x2>x1?1:-1;
+      h+=`<line x1="${x1}" y1="${a.y-18}" x2="${x2-dir*4}" y2="${a.y+12}" stroke="${a.c}" stroke-width="${a.thick?5:2.5}" marker-end="url(#ar)" opacity="${i===seqI?1:.45}"/>`;
+      h+=`<text x="${(x1+x2)/2}" y="${a.y-10}" text-anchor="middle" font-size="13" font-weight="600" fill="${a.c}" opacity="${i===seqI?1:.55}">${a.l}</text>`;
+    });
+  }
+  if(seqI>=2){
+    const end= seqI>=4? 300 : 300;
+    h+=`<rect x="645" y="174" width="26" height="${end-174}" fill="var(--amber-soft)" stroke="var(--amber)" rx="4"/><text x="680" y="${(174+end)/2}" font-size="12" font-weight="700" fill="var(--amber)">NAV</text><text x="680" y="${(174+end)/2+15}" font-size="11" fill="var(--amber)">(virtuell</text><text x="680" y="${(174+end)/2+29}" font-size="11" fill="var(--amber)">belegt)</text>`;
+  }
+  svg.innerHTML=h;
+  $("#seqText").innerHTML=seqSteps[seqI].t;
+  $("#seqCount").textContent=`Schritt ${seqI+1} / ${seqSteps.length}`;
+  $("#seqPrev").disabled=seqI===0; $("#seqNext").disabled=seqI===seqSteps.length-1;
+}
+$("#seqNext").onclick=()=>{seqI=Math.min(seqI+1,seqSteps.length-1);seqDraw();};
+$("#seqPrev").onclick=()=>{seqI=Math.max(seqI-1,0);seqDraw();};
+seqDraw();
+
+/* ================= d) Topology ================= */
+const R=230;
+const SCEN={
+  hidden:{nodes:{A:[200,210],B:[380,210],C:[560,210]}, steps:[
+    {tx:[], txt:"<b>Hidden Station:</b> A und C erreichen beide B, hören sich gegenseitig aber nicht (A liegt außerhalb von C's Kreis und umgekehrt)."},
+    {tx:[["A","B","DATA"]], txt:"A hört das Medium ab: frei. <b>A sendet DATA an B.</b> Das Signal reicht bis B – C bekommt davon nichts mit."},
+    {tx:[["A","B","DATA"],["C","B","DATA"]], txt:"C will ebenfalls an B senden, misst ein <b>freies</b> Medium (A ist zu weit weg) und sendet. <b>Bei B überlagern sich beide Signale → Kollision.</b>"},
+    {tx:[], txt:"Weder A noch C haben die Kollision bemerkt. Erst das fehlende ACK zeigt den Verlust. Beide warten Backoff ab, versuchen es erneut – und das Spiel kann sich wiederholen. Carrier Sense allein hilft hier nicht."}]},
+  hiddenRTS:{nodes:{A:[200,210],B:[380,210],C:[560,210]}, steps:[
+    {tx:[], txt:"<b>Gleiche Aufstellung, jetzt mit RTS/CTS.</b>"},
+    {tx:[["A","B","RTS"]], txt:"A sendet ein kurzes <b>RTS</b> an B (mit Dauerangabe). C hört es nicht."},
+    {tx:[["B","A","CTS"]], nav:["C"], txt:"B antwortet mit <b>CTS</b>. Das CTS erreicht alle in B's Reichweite – auch <b>C</b>. C setzt den <b>NAV</b> und schweigt für die angekündigte Dauer."},
+    {tx:[["A","B","DATA"]], nav:["C"], txt:"A sendet DATA. C würde zwar ein freies Medium messen, hält sich aber an den NAV → <b>keine Kollision</b>."},
+    {tx:[["B","A","ACK"]], nav:["C"], txt:"B bestätigt per ACK. Danach läuft C's NAV ab. Falls RTS selbst kollidiert, ist nur ein kurzer Rahmen verloren – billig im Vergleich zu einem langen Datenrahmen."}]},
+  exposed:{nodes:{A:[110,210],B:[290,210],C:[470,210],D:[650,210]}, steps:[
+    {tx:[], txt:"<b>Exposed Station:</b> B will an A senden, C will an D senden. A hört C nicht, D hört B nicht."},
+    {tx:[["B","A","DATA"]], txt:"<b>B sendet an A.</b> Das Signal erreicht A – aber auch C."},
+    {tx:[["B","A","DATA"]], wait:["C"], txt:"C möchte an D senden, misst aber B's Signal → Medium „belegt“ → <b>C wartet</b>. Dabei hätte C's Sendung A gar nicht erreicht, und D hört B nicht: <b>beide Übertragungen hätten parallel klappen können.</b>"},
+    {tx:[["B","A","DATA"],["C","D","DATA"]], txt:"So <i>hätte</i> es aussehen können: A empfängt nur B, D empfängt nur C – keine Störung am jeweiligen Empfänger. Ohne Zusatzwissen kann C das aber nicht wissen. Ergebnis: verschenkte Kapazität."}]},
+  exposedRTS:{nodes:{A:[110,210],B:[290,210],C:[470,210],D:[650,210]}, steps:[
+    {tx:[], txt:"<b>Exposed Station mit RTS/CTS</b> – hilft das?"},
+    {tx:[["B","A","RTS"]], nav:["C"], txt:"B sendet RTS an A. C hört das RTS. In 802.11 setzt C damit bereits seinen <b>NAV</b>."},
+    {tx:[["A","B","CTS"]], nav:["C"], txt:"A antwortet mit CTS – das hört C <b>nicht</b>. Idee aus MACA: Wer RTS hört, aber kein CTS, ist nur „exposed“ und dürfte senden."},
+    {tx:[["B","A","DATA"],["C","D","DATA"]], txt:"Würde C jetzt senden, wäre A ungestört. Aber: C bräuchte selbst ein CTS von D, das C wegen B's Sendung schlecht empfangen kann …"},
+    {tx:[["A","B","ACK"],["C","D","DATA"]], txt:"… und spätestens das <b>ACK von A an B</b> kollidiert bei B mit C's Signal. Deshalb löst RTS/CTS das Exposed-Station-Problem in der Praxis <b>nicht</b>."}]},
+};
+let topo={sc:"hidden", i:0, nodes:{}};
+function topoLoad(sc){ topo.sc=sc; topo.i=0; topo.nodes=JSON.parse(JSON.stringify(SCEN[sc].nodes)); $$(".scen-btn").forEach(b=>b.classList.toggle("on",b.dataset.sc===sc)); topoDraw(); }
+const dist=(p,q)=>Math.hypot(p[0]-q[0],p[1]-q[1]);
+function topoDraw(){
+  const sc=SCEN[topo.sc], step=sc.steps[topo.i], N=topo.nodes, names=Object.keys(N);
+  const col=n=>COLORS[NAMES.indexOf(n)];
+  let h=`<defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="context-stroke"/></marker></defs>`;
+  const txers=step.tx.map(t=>t[0]);
+  names.forEach(n=>{
+    const [x,y]=N[n], active=txers.includes(n);
+    h+=`<circle cx="${x}" cy="${y}" r="${R}" fill="${col(n)}" fill-opacity="${active?.13:.03}" stroke="${col(n)}" stroke-opacity="${active?.8:.25}" stroke-dasharray="${active?"":"5 5"}" stroke-width="${active?2:1}"/>`;
+  });
+  // receive analysis
+  const recv={}; names.forEach(n=>recv[n]=[]);
+  step.tx.forEach(([f])=>names.forEach(n=>{ if(n!==f && dist(N[f],N[n])<=R) recv[n].push(f); }));
+  step.tx.forEach(([f,t,l])=>{
+    const [x1,y1]=N[f],[x2,y2]=N[t]; const d=dist(N[f],N[t]); const ux=(x2-x1)/d, uy=(y2-y1)/d;
+    const ok=d<=R, off=-16;
+    h+=`<line x1="${x1+ux*28}" y1="${y1+uy*28+off}" x2="${x2-ux*30}" y2="${y2-uy*30+off}" stroke="${col(f)}" stroke-width="3" marker-end="url(#ar2)" ${ok?"":'stroke-dasharray="6 5"'}/>`;
+    h+=`<text x="${(x1+x2)/2}" y="${(y1+y2)/2+off-8}" text-anchor="middle" font-size="13" font-weight="700" fill="${col(f)}">${l}</text>`;
+  });
+  names.forEach(n=>{
+    const [x,y]=N[n]; const coll=recv[n].length>1 && !txers.includes(n);
+    const nav=(step.nav||[]).includes(n), wait=(step.wait||[]).includes(n);
+    if(coll) h+=`<text x="${x}" y="${y-38}" text-anchor="middle" font-size="26">💥</text>`;
+    h+=`<g class="node" data-n="${n}"><circle cx="${x}" cy="${y}" r="24" fill="#fff" stroke="${col(n)}" stroke-width="3"/><text x="${x}" y="${y+6}" text-anchor="middle" font-size="18" font-weight="700" fill="${col(n)}" pointer-events="none">${n}</text></g>`;
+    if(nav) h+=`<rect x="${x-26}" y="${y+30}" width="52" height="20" rx="5" fill="var(--amber-soft)" stroke="var(--amber)"/><text x="${x}" y="${y+44}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--amber)">NAV</text>`;
+    if(wait) h+=`<rect x="${x-32}" y="${y+30}" width="64" height="20" rx="5" fill="#eef0f4" stroke="#888"/><text x="${x}" y="${y+44}" text-anchor="middle" font-size="12" font-weight="700" fill="#555">wartet ⏸</text>`;
+  });
+  $("#topo").innerHTML=h;
+  $("#topoText").innerHTML=`<span class="small mono">Schritt ${topo.i+1}/${sc.steps.length}</span><br>`+step.txt;
+  $("#topoPrev").disabled=topo.i===0; $("#topoNext").disabled=topo.i===sc.steps.length-1;
+  // live facts
+  const facts=[];
+  for(let i=0;i<names.length;i++)for(let j=i+1;j<names.length;j++){
+    const a=names[i],b=names[j], hear=dist(N[a],N[b])<=R;
+    facts.push(`<span class="fact ${hear?"good":""}">${a}↔${b}: ${hear?"hören sich":"hören sich nicht"}</span>`);
+  }
+  if(N.A&&N.B&&N.C&&!N.D){
+    const hidden = dist(N.A,N.B)<=R && dist(N.C,N.B)<=R && dist(N.A,N.C)>R;
+    facts.push(`<span class="fact ${hidden?"bad":"good"}">${hidden?"⚠ A und C sind füreinander versteckt (bzgl. B)":"kein Hidden-Station-Problem bzgl. B"}</span>`);
+  }
+  if(N.D){
+    const exposed = dist(N.B,N.C)<=R && dist(N.B,N.D)>R && dist(N.C,N.A)>R && dist(N.C,N.D)<=R && dist(N.A,N.B)<=R;
+    facts.push(`<span class="fact ${exposed?"bad":"good"}">${exposed?"⚠ C ist exposed: hört B, stört aber weder A noch braucht es Ruhe bei D":"keine Exposed-Station-Konstellation"}</span>`);
+  }
+  names.forEach(n=>{ if(recv[n].length>1 && !txers.includes(n)) facts.push(`<span class="fact bad">${n} empfängt ${recv[n].join(" + ")} gleichzeitig → Kollision</span>`); });
+  $("#topoFacts").innerHTML=facts.join("");
+}
+$("#topoNext").onclick=()=>{topo.i++;topoDraw();};
+$("#topoPrev").onclick=()=>{topo.i--;topoDraw();};
+$$(".scen-btn").forEach(b=>b.onclick=()=>topoLoad(b.dataset.sc));
+(function drag(){
+  const svg=$("#topo"); let cur=null;
+  const pt=e=>{ const r=svg.getBoundingClientRect(); return [(e.clientX-r.left)/r.width*760,(e.clientY-r.top)/r.height*400]; };
+  svg.addEventListener("pointerdown",e=>{ const g=e.target.closest(".node"); if(!g) return; cur=g.dataset.n; svg.setPointerCapture(e.pointerId); });
+  svg.addEventListener("pointermove",e=>{ if(!cur) return; const [x,y]=pt(e); topo.nodes[cur]=[Math.max(25,Math.min(735,x)),Math.max(25,Math.min(375,y))]; topoDraw(); });
+  const up=()=>cur=null; svg.addEventListener("pointerup",up); svg.addEventListener("pointercancel",up);
+})();
+topoLoad("hidden");
+
+/* ================= e) Token passing ================= */
+const TK={N:6, FRAME:3, PASS:1, BUF:40};
+let tk, tkTimer=null;
+function tkWeights(){
+  const d=$("#tkDist").value, N=TK.N;
+  if(d==="even") return Array(N).fill(1/N);
+  if(d==="skew") return [0.75,...Array(N-1).fill(0.25/(N-1))];
+  return [1,...Array(N-1).fill(0)];
+}
+function tkNew(){
+  return {t:0, q:Array.from({length:TK.N},()=>[]), pos:0, mode:"arrive", left:0, sent:0, sendTicks:0, waitSum:0, waitN:0, visits:0, emptyVisits:0, drop:0, sentBy:Array(TK.N).fill(0)};
+}
+function tkTick(s, load, w, tht){
+  const lam = load/TK.FRAME; // Rahmen pro Tick insgesamt
+  for(let i=0;i<TK.N;i++){ if(Math.random()<lam*w[i]){ if(s.q[i].length<TK.BUF) s.q[i].push(s.t); else s.drop++; } }
+  if(s.mode==="arrive"){ s.visits++; s.sent=0; s.mode = s.q[s.pos].length? "decide":"empty"; }
+  if(s.mode==="empty"){ s.emptyVisits++; s.mode="pass"; s.left=TK.PASS; }
+  if(s.mode==="decide"){
+    if(s.q[s.pos].length && s.sent<tht){ const a=s.q[s.pos].shift(); s.waitSum+=s.t-a; s.waitN++; s.mode="send"; s.left=TK.FRAME; s.sent++; s.sentBy[s.pos]++; }
+    else { s.mode="pass"; s.left=TK.PASS; }
+  }
+  if(s.mode==="send"){ s.sendTicks++; if(--s.left===0) s.mode="decide"; }
+  else if(s.mode==="pass"){ if(--s.left===0){ s.pos=(s.pos+1)%TK.N; s.mode="arrive"; } }
+  s.t++;
+}
+function tkRingDraw(){
+  const cx=170,cy=170,r=118; let h=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#ccc" stroke-width="10"/>`;
+  for(let i=0;i<TK.N;i++){
+    const a=-Math.PI/2+i*2*Math.PI/TK.N, x=cx+r*Math.cos(a), y=cy+r*Math.sin(a);
+    const holding = tk.pos===i, sending = holding && tk.mode==="send";
+    h+=`<circle cx="${x}" cy="${y}" r="26" fill="${sending?"var(--accent)":"#fff"}" stroke="${holding?"var(--accent)":"#888"}" stroke-width="${holding?4:2}"/>`;
+    h+=`<text x="${x}" y="${y+5}" text-anchor="middle" font-size="14" font-weight="700" fill="${sending?"#fff":"var(--ink)"}">S${i+1}</text>`;
+  }
+  // token
+  let ang=-Math.PI/2+tk.pos*2*Math.PI/TK.N;
+  if(tk.mode==="pass"){ ang += (1-tk.left/TK.PASS+0.5)*(2*Math.PI/TK.N)*0.6; }
+  const tr = tk.mode==="pass"? r : r-44;
+  h+=`<circle cx="${cx+tr*Math.cos(ang)}" cy="${cy+tr*Math.sin(ang)}" r="11" fill="var(--amber)" stroke="#fff" stroke-width="2"/><text x="${cx+tr*Math.cos(ang)}" y="${cy+tr*Math.sin(ang)+4}" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">T</text>`;
+  h+=`<text x="${cx}" y="${cy-6}" text-anchor="middle" font-size="13" fill="var(--muted)">${tk.mode==="send"?`S${tk.pos+1} sendet`:"Token wandert"}</text><text x="${cx}" y="${cy+14}" text-anchor="middle" font-size="12" class="mono" fill="var(--muted)">t = ${tk.t}</text>`;
+  $("#ring").innerHTML=h;
+}
+function tkMetrics(){
+  $("#mUtil").textContent = tk.t? Math.round(100*tk.sendTicks/tk.t)+" %":"–";
+  $("#mWait").textContent = tk.waitN? (tk.waitSum/tk.waitN).toFixed(1):"–";
+  $("#mEmpty").textContent = tk.visits? Math.round(100*tk.emptyVisits/tk.visits)+" %":"–";
+  $("#mDrop").textContent = tk.drop;
+  $("#qbars").innerHTML = tk.q.map((q,i)=>`<div class="qb" style="height:${Math.max(2,q.length/TK.BUF*100)}%;background:${q.length>=TK.BUF?"var(--warn)":"var(--accent)"}"><span>${q.length}</span></div>`).join("");
+  $("#qlabels").innerHTML = tk.q.map((_,i)=>`<div>S${i+1}</div>`).join("");
+}
+function tkReset(){ clearInterval(tkTimer); tkTimer=null; $("#tkPlay").textContent="▶ Start"; tk=tkNew(); tkRingDraw(); tkMetrics(); }
+function tkLoop(){
+  const load=+$("#tkLoad").value/100, w=tkWeights(), tht=+$("#tkTHT").value, sp=+$("#tkSpeed").value;
+  for(let k=0;k<Math.ceil(sp/4);k++) tkTick(tk,load,w,tht);
+  tkRingDraw(); tkMetrics();
+}
+$("#tkPlay").onclick=()=>{
+  if(tkTimer){ clearInterval(tkTimer); tkTimer=null; $("#tkPlay").textContent="▶ Weiter"; return; }
+  $("#tkPlay").textContent="⏸ Pause";
+  tkTimer=setInterval(tkLoop, 100);
+  restartTimer();
+};
+function restartTimer(){ if(!tkTimer) return; clearInterval(tkTimer); tkTimer=setInterval(tkLoop, Math.max(25, 320 - +$("#tkSpeed").value*8)); }
+$("#tkSpeed").oninput=restartTimer;
+$("#tkLoad").oninput=()=>{$("#tkLoadV").textContent=$("#tkLoad").value+" %";};
+["#tkDist","#tkTHT"].forEach(s=>$(s).onchange=()=>{ const running=!!tkTimer; tkReset(); if(running) $("#tkPlay").onclick(); });
+$("#tkReset").onclick=tkReset;
+tkReset();
+
+$("#tkCompare").onclick=()=>{
+  const rows=[]; const tht=+$("#tkTHT").value;
+  const dists=[["even","gleichmäßig"],["skew","ungleichmäßig (S1: 75 %)"],["one","nur S1 sendet"]];
+  const old=$("#tkDist").value;
+  dists.forEach(([d,label])=>{
+    $("#tkDist").value=d; const w=tkWeights(); const s=tkNew();
+    for(let i=0;i<30000;i++) tkTick(s,0.8,w,tht);
+    const offered = s.sentBy.reduce((a,b)=>a+b,0)+s.drop+s.q.reduce((a,q)=>a+q.length,0);
+    rows.push(`<tr><td>${label}</td><td class="mono">${Math.round(100*s.sendTicks/s.t)} %</td><td class="mono">${(s.waitSum/Math.max(1,s.waitN)).toFixed(1)}</td><td class="mono">${Math.round(100*s.emptyVisits/s.visits)} %</td><td class="mono">${Math.round(100*s.drop/Math.max(1,offered))} %</td></tr>`);
+  });
+  $("#tkDist").value=old;
+  $("#tkCmp").innerHTML=`<table><tr><th>Verteilung</th><th>Auslastung</th><th>Ø Wartezeit</th><th>leere Token-Besuche</th><th>verworfen</th></tr>${rows.join("")}</table>
+  <p class="small">Rahmen pro Token: ${tht}. Gleiche angebotene Gesamtlast – nur anders verteilt. Achte auf Wartezeit und verworfene Rahmen: Bei Schieflast staut sich alles bei S1, während der Token leere Runden dreht. Probiere auch „Rahmen pro Token“ = 8: S1 wird entlastet, dafür steigt die maximale Wartezeit der anderen.</p>`;
+};
+
+/* ================= f) Szenarien ================= */
+const SC=[
+  {t:"Zwei PCs direkt per Kabel verbunden, Vollduplex.", a:false, e:"Punkt-zu-Punkt mit getrennten Adern je Richtung – niemand konkurriert. Kein MAC nötig."},
+  {t:"Moderner Switch, jeder PC an eigenem Port, Vollduplex.", a:false, e:"Jeder Port ist eine eigene Kollisionsdomäne, Senden und Empfangen getrennt. CSMA/CD ist im Vollduplex abgeschaltet; der Switch puffert."},
+  {t:"Alter Hub, acht Rechner angeschlossen.", a:true, e:"Ein Hub verteilt jedes Signal an alle – eine gemeinsame Kollisionsdomäne. Hier braucht es CSMA/CD."},
+  {t:"UKW-Radiosender und tausende Radios.", a:false, e:"Nur ein Sender, alle anderen empfangen (Simplex/Broadcast). Es gibt nichts zu koordinieren."},
+  {t:"Café-WLAN mit 20 Smartphones an einem Access Point.", a:true, e:"Alle teilen sich denselben Funkkanal → CSMA/CA (ggf. mit RTS/CTS)."},
+  {t:"Zwei Walkie-Talkies auf demselben Kanal.", a:true, e:"Halbduplex, gemeinsamer Kanal: Es braucht eine Regel – hier eine sehr einfache menschliche („Sprechtaste“, „Over“)."},
+  {t:"Glasfaserstrecke zwischen zwei Routern (je Richtung eine Faser).", a:false, e:"Dedizierte Punkt-zu-Punkt-Verbindung mit getrennten Richtungen – keine Konkurrenz."},
+  {t:"Ein einzelner Sensor sendet per Funk an seine Basisstation, sonst niemand weit und breit.", a:false, e:"Nur ein Sender – keine Konkurrenz. (Kommt ein zweiter Sensor hinzu, ändert sich das.)"},
+];
+let scRes={};
+function scRender(){
+  $("#scen").innerHTML=SC.map((s,i)=>`<div class="sc ${scRes[i]===undefined?"":scRes[i]?"right":"wrong"}"><div class="t">${s.t}</div>
+    <div class="btns"><button class="ghost" data-i="${i}" data-v="1">MAC nötig</button><button class="ghost" data-i="${i}" data-v="0">verzichtbar</button></div>
+    <div class="fb">${scRes[i]?"✔ Richtig. ":"✘ Nicht ganz. "}${s.e}</div></div>`).join("");
+  const n=Object.keys(scRes).length, r=Object.values(scRes).filter(Boolean).length;
+  $("#scScore").textContent=`${r} / ${n} richtig (von ${SC.length})`;
+  $$("#scen button").forEach(b=>b.onclick=()=>{ scRes[b.dataset.i]= (b.dataset.v==="1")===SC[b.dataset.i].a; scRender(); });
+}
+scRender();
+
+/* ================= Quiz ================= */
+const QZ=[
+  {q:"Wann wählt eine Station bei CSMA/CD eine zufällige Wartezeit?",o:["Vor jedem Sendeversuch","Nach einer erkannten Kollision","Nur wenn das Medium belegt ist","Wenn ein Token ausbleibt"],c:1,e:"Der Binary Exponential Backoff setzt erst nach einer Kollision (und dem Jam-Signal) ein."},
+  {q:"Nach der 3. Kollision eines Rahmens: Aus welchem Bereich wird k gewürfelt?",o:["0 … 3","0 … 7","0 … 8","1 … 8"],c:1,e:"k ∈ {0, …, 2ⁿ−1} = 0 … 7 für n = 3."},
+  {q:"Was ist der Hauptgrund, warum WLAN keine Collision Detection nutzt?",o:["Funk ist zu langsam","Eine Funkstation kann beim Senden praktisch nicht mithören, und Kollisionen entstehen beim Empfänger","CSMA/CD ist patentiert","WLAN hat keine MAC-Adressen"],c:1,e:"Halbduplex-Funk + Kollisionsort beim Empfänger (z. B. Hidden Station) machen CD unzuverlässig."},
+  {q:"Was passiert mit dem Backoff-Zähler bei CSMA/CA, wenn das Medium während des Herunterzählens belegt wird?",o:["Er wird neu gewürfelt","Er wird auf 0 gesetzt","Er wird eingefroren und später fortgesetzt","Er wird verdoppelt"],c:2,e:"Eingefroren – so bekommen lange wartende Stationen eine faire Chance."},
+  {q:"Wozu dient der NAV?",o:["Er speichert die MAC-Adresse des Access Points","Er markiert das Medium als virtuell belegt, basierend auf Dauerangaben in RTS/CTS","Er verschlüsselt den Datenrahmen","Er zählt Kollisionen"],c:1,e:"Network Allocation Vector = virtuelles Carrier Sensing."},
+  {q:"Welches Problem entschärft RTS/CTS hauptsächlich?",o:["Exposed Station","Hidden Station","Broadcast-Stürme","Token-Verlust"],c:1,e:"Das CTS des Empfängers erreicht auch die versteckte Station."},
+  {q:"B sendet an A; C hört B und verzichtet deshalb aufs Senden an D, obwohl das niemanden gestört hätte. Wie heißt das?",o:["Hidden Station","Exposed Station","Capture-Effekt","Near-Far-Problem"],c:1,e:"C ist der Übertragung von B „ausgesetzt“ – unnötiges Warten."},
+  {q:"Wann ist Token Passing besonders effizient?",o:["Bei sehr geringer Last","Bei hoher, gleichmäßig verteilter Last","Wenn nur eine Station sendet","Wenn viele Kollisionen auftreten"],c:1,e:"Dann trägt fast jeder Token-Besuch Daten, und es gibt keine Kollisionen."},
+  {q:"In welchem Fall kann man auf ein Medienzugriffsverfahren verzichten?",o:["WLAN mit vielen Clients","Ethernet über einen Hub","Vollduplex-Punkt-zu-Punkt-Verbindung","Token Ring"],c:2,e:"Keine Konkurrenz ums Medium → nichts zu regeln."},
+];
+let qzAns={};
+function qzRender(){
+  $("#quizBox").innerHTML=QZ.map((x,i)=>`<div class="qq ${qzAns[i]!==undefined?"answered":""}"><p>${i+1}. ${x.q}</p>${x.o.map((o,j)=>{
+      let c=""; if(qzAns[i]!==undefined){ if(j===x.c)c="r"; else if(j===qzAns[i])c="w"; }
+      return `<button class="opt ${c}" data-i="${i}" data-j="${j}" ${qzAns[i]!==undefined?"disabled":""}>${o}</button>`;}).join("")}<div class="ex">${x.e}</div></div>`).join("");
+  const n=Object.keys(qzAns).length, r=Object.entries(qzAns).filter(([i,j])=>QZ[i].c===j).length;
+  $("#quizScore").textContent= n? `${r} von ${n} richtig${n===QZ.length?` – ${r===QZ.length?"perfekt! 🎉":"gut, schau dir die Abschnitte zu den falschen Antworten nochmal an."}`:""}` : `${QZ.length} Fragen`;
+  $$("#quizBox .opt").forEach(b=>b.onclick=()=>{ qzAns[b.dataset.i]=+b.dataset.j; qzRender(); });
+}
+$("#quizReset").onclick=()=>{qzAns={};qzRender();};
+qzRender();
+</script>
+</body>
+</html>
