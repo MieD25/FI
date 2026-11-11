@@ -97,6 +97,12 @@ code,.mono{font-family:var(--mono);font-size:.92em}
 .narr{background:#fff;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:14px 16px;font-size:16px;min-height:110px}
 .log div{padding:2px 0;border-bottom:1px solid #2c3446}
 .buslegend{margin:8px 0 0}
+.rfpanel{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-top:10px}
+.rfbox{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px;line-height:1.4}
+.rfbox.good{background:var(--ok-soft);border-color:var(--ok)}
+.rfbox.bad{background:var(--warn-soft);border-color:var(--warn)}
+.rfbox.busy{background:#eef0f4}
+.rfbox.tx{background:#fff7e6;border-color:var(--amber)}
 /* bars */
 .bars{display:flex;align-items:flex-end;gap:10px;height:150px;padding:10px 4px 0;border-bottom:1px solid var(--ink)}
 .bar{flex:1;background:var(--amber);border-radius:6px 6px 0 0;position:relative;min-height:2px;transition:height .4s}
@@ -293,7 +299,7 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
     <div class="card"><h4 style="margin-top:0">Grund 1: Senden und Hören gleichzeitig geht kaum</h4>
       <p>Eine Funkstation ist in der Regel <b>halbduplex</b>. Selbst mit zweiter Antenne würde das eigene Sendesignal das schwache Fremdsignal um viele Größenordnungen überdecken – die Station „hört sich nur selbst schreien“.</p></div>
     <div class="card"><h4 style="margin-top:0">Grund 2: Kollisionen passieren beim Empfänger</h4>
-      <p>Im Funk kann es beim <b>Empfänger</b> krachen, ohne dass der Sender etwas davon mitbekommt – z. B. wenn sich zwei Sender gegenseitig gar nicht hören (<a href="#d">Hidden Station</a>). Was der Sender am eigenen Ort misst, sagt wenig über den Empfänger aus.</p></div>
+      <p>Im Funk kann es beim <b>Empfänger</b> krachen, ohne dass der Sender etwas davon mitbekommt – z. B. wenn sich zwei Sender gegenseitig gar nicht hören (Hidden Station, siehe Simulation unten). Was der Sender am eigenen Ort misst, sagt wenig über den Empfänger aus.</p></div>
   </div>
 
   <div class="lab">
@@ -304,6 +310,30 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
     <p class="small" id="sigTxt"></p>
     <p class="small">Grobe Modellrechnung (Freiraumdämpfung bei 2,4 GHz, 20 dBm Sendeleistung, ca. 30 dB Entkopplung zwischen Sende- und Empfangspfad angenommen). Die Werte sind Größenordnungen zur Veranschaulichung, keine Messwerte.</p>
   </div>
+
+
+  <h3>Grund 2 zum Ansehen: Hidden Station und Exposed Station</h3>
+  <p>Im Funk reicht jedes Gerät nur so weit, wie sein Signal trägt. Deshalb hört <b>nicht jeder jeden</b>. Bei CSMA/CD am Kabel ist das anders: Dort kommt jedes Signal bei allen an. Die Simulation zeigt die <b>Positionen</b> der Geräte, ihre <b>Reichweite</b> (Kreis), die <b>übertragenen Daten</b> und darunter, was jedes Gerät an seinem Ort gerade empfängt.</p>
+
+  <div class="lab">
+    <div class="lab-title">Simulation: Reichweite, Position und übertragene Daten</div>
+    <div class="controls">
+      <button class="ghost rf-sc" data-sc="hidden">Hidden Station</button>
+      <button class="ghost rf-sc" data-sc="exposed">Exposed Station</button>
+      <span style="flex:1"></span>
+      <button id="rfPrev" class="ghost">◀ Zurück</button>
+      <button id="rfNext">Weiter ▶</button>
+      <button id="rfAuto" class="ghost">▶ Automatisch</button>
+    </div>
+    <svg id="rf" viewBox="0 0 760 360" style="width:100%;background:#fff;border:1px solid var(--line);border-radius:12px;touch-action:none;user-select:none"></svg>
+    <div class="rfpanel" id="rfPanel"></div>
+    <div class="phase" id="rfPhase" style="margin-top:12px"></div>
+    <div class="narr" id="rfNarr" style="min-height:90px"></div>
+    <p class="small">Die Geräte lassen sich mit Maus oder Finger verschieben. Die Kästen „empfängt am eigenen Ort“ werden dabei live berechnet. Die Erklärtexte beziehen sich auf die Ausgangsaufstellung. Schritt für Schritt mit RTS/CTS geht es in <a href="#d">Abschnitt d</a> weiter.</p>
+  </div>
+
+  <div class="key"><b>Folgerung für das Zugriffsverfahren</b>
+    Bei der Hidden Station passiert die Kollision <b>beim Empfänger B</b>. Die Sender A und C bekommen an ihrem eigenen Ort nichts davon mit. Collision Detection beim Sender wäre also wirkungslos. WLAN setzt deshalb auf <b>Vermeidung</b> (Warten + Zufall vor dem Senden) und auf eine <b>Bestätigung (ACK)</b> durch den Empfänger. Bleibt das ACK aus, gilt der Rahmen als verloren.</div>
 
   <h3>So läuft CSMA/CA (802.11 DCF) ab</h3>
   <ol>
@@ -771,6 +801,100 @@ function pRecompute(){
   $("#pLabels").innerHTML=ns.map(n=>`<div>n=${n}<br>0…${2**n-1}</div>`).join("");
 }
 $("#pN").onchange=pRecompute; pRecompute();
+
+/* ================= b) Funk: Reichweite, Position, Daten ================= */
+const RF_R=215;
+const RF_HEX={A:"#2563eb",B:"#c2410c",C:"#7c3aed",D:"#0f766e"};
+const RF_SC={
+  hidden:{title:"Hidden Station", nodes:{A:[175,175],B:[380,175],C:[585,175]}, steps:[
+    {ph:"Ausgangslage", tx:[], txt:`A und C möchten beide Daten an <b>B</b> senden. Die gestrichelten Kreise zeigen die <b>Reichweite</b> jedes Geräts. A und C liegen jeweils in Reichweite von B, aber <b>nicht in Reichweite voneinander</b>.`},
+    {ph:"Schritt 1 – A hört ab", tx:[], sense:["A"], txt:`A hört das Medium ab. An A's Ort ist kein Signal → <b>Medium frei</b>.`},
+    {ph:"Schritt 2 – A sendet", tx:[["A","B"]], txt:`A sendet Daten an B. Das Signal breitet sich in A's Reichweite aus und erreicht B, aber <b>nicht C</b>. B empfängt sauber.`},
+    {ph:"Schritt 3 – C hört ab", tx:[["A","B"]], sense:["C"], txt:`C möchte auch an B senden und hört ab. An C's Ort ist <b>nichts</b> zu hören, denn A ist zu weit weg. Für C ist das Medium frei. C ist für A eine <b>versteckte Station</b>.`},
+    {ph:"Schritt 4 – Kollision bei B", tx:[["A","B"],["C","B"]], txt:`C sendet ebenfalls. <b>Bei B überlagern sich beide Signale → Kollision</b>, B kann keinen der beiden Rahmen lesen. A und C hören jeweils nur ihr eigenes Signal und merken <b>nichts</b>.`},
+    {ph:"Schritt 5 – kein ACK", tx:[], txt:`Erst danach fällt es auf: B schickt <b>kein ACK</b>. A und C schließen daraus, dass ihr Rahmen verloren ist, und versuchen es nach einem zufälligen Backoff erneut. Eine Collision Detection beim Sender hätte hier nichts gebracht, deshalb verwendet WLAN CSMA/CA mit ACK.`},
+  ]},
+  exposed:{title:"Exposed Station", nodes:{A:[95,175],B:[285,175],C:[475,175],D:[665,175]}, steps:[
+    {ph:"Ausgangslage", tx:[], txt:`B möchte an <b>A</b> senden, C möchte an <b>D</b> senden. B und C hören sich gegenseitig. A hört C nicht, D hört B nicht.`},
+    {ph:"Schritt 1 – B sendet", tx:[["B","A"]], txt:`B sendet an A. Das Signal reicht bis A, <b>aber auch bis C</b>.`},
+    {ph:"Schritt 2 – C hört ab", tx:[["B","A"]], sense:["C"], wait:["C"], txt:`C möchte an D senden und hört ab. An C's Ort ist B's Signal zu hören → <b>Medium belegt → C wartet</b>. C ist B's Sendung „ausgesetzt“ (exposed).`},
+    {ph:"Schritt 3 – Was wäre, wenn …?", tx:[["B","A"],["C","D"]], txt:`Hätte C trotzdem gesendet: <b>A</b> empfängt nur B, <b>D</b> empfängt nur C. Beide Empfänger wären ungestört gewesen, also wäre <b>beides parallel möglich</b>. C kann das aber nicht wissen. Ergebnis: <b>verschenkte Kapazität</b>, aber keine Kollision.`},
+  ]},
+};
+const rf={sc:"hidden", i:0, nodes:{}, auto:null};
+const rfD=(p,q)=>Math.hypot(p[0]-q[0],p[1]-q[1]);
+function rfLoad(sc){ rf.sc=sc; rf.i=0; rf.nodes=JSON.parse(JSON.stringify(RF_SC[sc].nodes)); $$(".rf-sc").forEach(b=>b.classList.toggle("on",b.dataset.sc===sc)); rfText(); }
+function rfText(){
+  const sc=RF_SC[rf.sc], st=sc.steps[rf.i];
+  $("#rfPhase").textContent=`${sc.title} · ${st.ph} (${rf.i+1}/${sc.steps.length})`;
+  $("#rfNarr").innerHTML=st.txt;
+  $("#rfPrev").disabled=rf.i===0; $("#rfNext").disabled=rf.i===sc.steps.length-1;
+}
+function rfHeard(n){ // welche fremden Sender sind am Ort von n zu empfangen?
+  const st=RF_SC[rf.sc].steps[rf.i], N=rf.nodes;
+  return st.tx.map(t=>t[0]).filter(f=>f!==n && rfD(N[f],N[n])<=RF_R);
+}
+function rfDraw(ts){
+  const st=RF_SC[rf.sc].steps[rf.i], N=rf.nodes, names=Object.keys(N), txers=st.tx.map(t=>t[0]);
+  let h=`<defs>${names.map(n=>`<clipPath id="clip${n}"><circle cx="${N[n][0]}" cy="${N[n][1]}" r="${RF_R}"/></clipPath>`).join("")}</defs>`;
+  // Reichweiten
+  names.forEach(n=>{ const [x,y]=N[n], on=txers.includes(n);
+    h+=`<circle cx="${x}" cy="${y}" r="${RF_R}" fill="${RF_HEX[n]}" fill-opacity="${on?.10:.025}" stroke="${RF_HEX[n]}" stroke-opacity="${on?.7:.35}" stroke-dasharray="${on?"":"6 6"}" stroke-width="${on?2:1.2}"/>`;
+    h+=`<text x="${x}" y="${y-RF_R+16}" text-anchor="middle" font-size="11" fill="${RF_HEX[n]}" opacity=".8">Reichweite ${n}</text>`;
+  });
+  // Wellen
+  txers.forEach(n=>{ const [x,y]=N[n];
+    for(let k=0;k<4;k++){ const ph=((ts/1400)+k/4)%1, r=30+ph*(RF_R-30);
+      h+=`<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="${RF_HEX[n]}" stroke-width="3" opacity="${(1-ph)*.7}"/>`; }
+  });
+  // Datenpakete
+  st.tx.forEach(([f,t])=>{ const [x1,y1]=N[f],[x2,y2]=N[t], d=rfD(N[f],N[t]);
+    for(let k=0;k<2;k++){ const ph=((ts/1600)+k/2)%1, px=x1+(x2-x1)*ph, py=y1+(y2-y1)*ph;
+      if(ph*d>RF_R) continue;
+      h+=`<g opacity="${ph<.08?ph/.08:ph>.9?(1-ph)/.1:1}"><rect x="${px-21}" y="${py-34}" width="42" height="18" rx="4" fill="${RF_HEX[f]}"/><text x="${px}" y="${py-21}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">DATA</text></g>`; }
+    h+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${RF_HEX[f]}" stroke-width="1.5" stroke-dasharray="3 5" opacity=".6"/>`;
+  });
+  // Geräte
+  names.forEach(n=>{ const [x,y]=N[n], heard=rfHeard(n), coll=heard.length>1&&!txers.includes(n);
+    if(coll){ const s=1+.15*Math.sin(ts/120); h+=`<circle cx="${x}" cy="${y}" r="${38*s}" fill="#fecaca" stroke="#b42318" stroke-width="3"/><text x="${x}" y="${y-44}" text-anchor="middle" font-size="22">💥</text>`; }
+    h+=`<g class="rfnode" data-n="${n}" style="cursor:grab"><line x1="${x+14}" y1="${y-18}" x2="${x+20}" y2="${y-34}" stroke="${RF_HEX[n]}" stroke-width="3"/><circle cx="${x+20}" cy="${y-35}" r="3.5" fill="${RF_HEX[n]}"/>
+      <rect x="${x-24}" y="${y-20}" width="48" height="40" rx="8" fill="#fff" stroke="${RF_HEX[n]}" stroke-width="${txers.includes(n)?4:2.5}"/>
+      <text x="${x}" y="${y+7}" text-anchor="middle" font-size="20" font-weight="700" fill="${RF_HEX[n]}" pointer-events="none">${n}</text></g>`;
+    if((st.sense||[]).includes(n)) h+=`<text x="${x-34}" y="${y+6}" text-anchor="end" font-size="22">👂</text>`;
+    if((st.wait||[]).includes(n)) h+=`<rect x="${x-34}" y="${y+26}" width="68" height="20" rx="5" fill="#eef0f4" stroke="#888"/><text x="${x}" y="${y+40}" text-anchor="middle" font-size="12" font-weight="700" fill="#555">⏸ wartet</text>`;
+  });
+  $("#rf").innerHTML=h;
+  // Panel
+  $("#rfPanel").innerHTML=names.map(n=>{
+    const heard=rfHeard(n), me=st.tx.find(t=>t[0]===n), wantFrom=st.tx.filter(t=>t[1]===n).map(t=>t[0]);
+    let cls="", txt;
+    if(me){ txt=`sendet an ${me[1]} – hört dabei nur das eigene Signal`; if(heard.length) txt+=` (${heard.join(", ")} geht darin unter)`; cls="tx"; }
+    else if(heard.length>1){ txt=`💥 ${heard.join(" + ")} überlagert → Kollision`; cls="bad"; }
+    else if(heard.length===1){ const ok=wantFrom.includes(heard[0]); txt= ok?`✓ empfängt Daten von ${heard[0]}`:`hört ${heard[0]} → Medium belegt`; cls= ok?"good":"busy"; }
+    else { txt= wantFrom.length? `✗ erreicht nicht: ${wantFrom.join(", ")} ist außer Reichweite` : "Stille → Medium frei"; cls= wantFrom.length?"bad":""; }
+    return `<div class="rfbox ${cls}"><b style="color:${RF_HEX[n]}">${n}</b> empfängt am eigenen Ort:<br>${txt}</div>`;
+  }).join("");
+}
+function rfLoop(ts){ rfDraw(ts); requestAnimationFrame(rfLoop); }
+$("#rfNext").onclick=()=>{ rf.i=Math.min(rf.i+1,RF_SC[rf.sc].steps.length-1); rfText(); };
+$("#rfPrev").onclick=()=>{ rf.i=Math.max(rf.i-1,0); rfText(); };
+$$(".rf-sc").forEach(b=>b.onclick=()=>{ rfStopAuto(); rfLoad(b.dataset.sc); });
+function rfStopAuto(){ clearInterval(rf.auto); rf.auto=null; $("#rfAuto").textContent="▶ Automatisch"; }
+$("#rfAuto").onclick=()=>{
+  if(rf.auto){ rfStopAuto(); return; }
+  if(rf.i===RF_SC[rf.sc].steps.length-1){ rf.i=0; rfText(); }
+  $("#rfAuto").textContent="⏸ Anhalten";
+  rf.auto=setInterval(()=>{ if(rf.i>=RF_SC[rf.sc].steps.length-1){ rfStopAuto(); return; } rf.i++; rfText(); },5000);
+};
+(function(){
+  const svg=$("#rf"); let cur=null;
+  const pt=e=>{ const r=svg.getBoundingClientRect(); return [(e.clientX-r.left)/r.width*760,(e.clientY-r.top)/r.height*360]; };
+  svg.addEventListener("pointerdown",e=>{ const g=e.target.closest(".rfnode"); if(!g) return; cur=g.dataset.n; svg.setPointerCapture(e.pointerId); });
+  svg.addEventListener("pointermove",e=>{ if(!cur) return; const [x,y]=pt(e); rf.nodes[cur]=[Math.max(30,Math.min(730,x)),Math.max(45,Math.min(330,y))]; });
+  const up=()=>cur=null; svg.addEventListener("pointerup",up); svg.addEventListener("pointercancel",up);
+})();
+rfLoad("hidden");
+requestAnimationFrame(rfLoop);
 
 /* ================= b) Signal ================= */
 function sigUpdate(){
