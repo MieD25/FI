@@ -26,7 +26,7 @@ nav.toc a{display:block;padding:6px 12px;border-radius:999px;text-decoration:non
 nav.toc a:hover{border-color:var(--accent);color:var(--accent)}
 nav.toc a b{font-family:var(--mono);color:var(--accent);margin-right:4px}
 main{max-width:1280px;margin:0 auto;padding:0 24px 80px}
-section{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:28px clamp(18px,3vw,36px);margin:28px 0;scroll-margin-top:70px}
+section{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:28px clamp(18px,3vw,36px);margin:28px 0;scroll-margin-top:64px}
 section > .q{display:flex;gap:14px;align-items:flex-start}
 .q .badge{flex:0 0 auto;width:40px;height:40px;border-radius:12px;background:var(--accent);color:#fff;display:grid;place-items:center;font:700 20px var(--mono)}
 .q h2{margin:0;font-size:24px;line-height:1.25;letter-spacing:-.01em}
@@ -105,6 +105,54 @@ code,.mono{font-family:var(--mono);font-size:.92em}
 .rfbox.bad{background:var(--warn-soft);border-color:var(--warn)}
 .rfbox.busy{background:#eef0f4}
 .rfbox.tx{background:#fff7e6;border-color:var(--amber)}
+/* Lernlandkarte */
+.organizer{background:linear-gradient(180deg,#fffdf8,#fbf8f1)}
+.om-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.om-progress{display:flex;align-items:center;gap:10px}
+.om-bar{width:160px;height:8px;border-radius:4px;background:#e7e2d7;overflow:hidden}
+.om-bar div{height:100%;width:0;background:var(--ok);transition:width .4s}
+.om-root{max-width:760px;margin:0 auto;text-align:center;background:var(--ink);color:#fff;border-radius:16px;padding:18px 24px;position:relative}
+.om-root-t{font-size:20px}
+.om-root-s{font-size:14.5px;color:#cfd5e2;margin-top:6px;line-height:1.5}
+.om-branches{display:grid;grid-template-columns:2.15fr 1fr 1fr;gap:18px;margin-top:44px;position:relative}
+.om-branches::before{content:"";position:absolute;top:-24px;left:calc((100% - 36px)*2.15/4.15/2);right:calc((100% - 36px)/4.15/2);border-top:2px solid #b9b2a3}
+.om-root::after{content:"";position:absolute;left:50%;bottom:-22px;height:22px;border-left:2px solid #b9b2a3}
+.om-branch{border:1.5px solid var(--line);border-radius:16px;padding:14px;background:#fff;position:relative;display:flex;flex-direction:column;gap:10px}
+.om-branch::before{content:"";position:absolute;top:-25px;left:50%;height:24px;border-left:2px solid #b9b2a3}
+.om-bh{display:flex;gap:10px;align-items:flex-start;font-size:15px;line-height:1.35}
+.om-bn{flex:0 0 26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font:700 13px var(--mono)}
+.om-sub2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.om-col{display:flex;flex-direction:column;gap:8px;background:#faf8f3;border-radius:12px;padding:10px}
+.om-ctx{font:600 12px var(--mono);color:var(--muted);letter-spacing:.02em}
+.om-card{display:grid;grid-template-columns:34px 1fr;column-gap:10px;row-gap:2px;text-decoration:none;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;position:relative;transition:.18s}
+.om-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.07)}
+.om-badge{grid-row:span 3;width:34px;height:34px;border-radius:10px;background:var(--accent);color:#fff;display:grid;place-items:center;font:700 17px var(--mono)}
+.om-t{font-weight:700;font-size:16px;line-height:1.25}
+.om-q{font-size:13.5px;color:var(--muted);line-height:1.35}
+.om-chip{justify-self:start;font:600 11px var(--mono);padding:2px 7px;border-radius:6px;background:var(--accent-soft);color:var(--accent);margin-top:3px}
+.om-problem .om-badge{background:var(--warn)} .om-problem .om-chip{background:var(--warn-soft);color:var(--warn)}
+.om-solution .om-badge{background:var(--ok)} .om-solution .om-chip{background:var(--ok-soft);color:var(--ok)}
+.om-card.done::after{content:"✓";position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font:700 13px var(--mono)}
+.om-arrow{font-size:12.5px;color:var(--muted);text-align:center}
+.om-link{font-size:12.5px;color:var(--muted);text-align:center}
+.om-also{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;margin-top:auto}
+.om-foot{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-top:18px;flex-wrap:wrap}
+.om-quiz{min-width:280px}
+.om-quiz .om-badge{background:var(--ink)}
+@media(max-width:980px){.om-branches{grid-template-columns:1fr}.om-branches::before,.om-branch::before,.om-root::after{display:none}.om-branches{margin-top:18px}}
+@media(max-width:620px){.om-sub2{grid-template-columns:1fr}}
+nav.toc a.mapbtn{background:var(--ink);color:#fff;border-color:var(--ink)}
+nav.toc a.cur{border-color:var(--accent);background:var(--accent-soft)}
+nav.toc a.done::after{content:" ✓";color:var(--ok);font-weight:700}
+.crumb{display:flex;gap:10px;align-items:center;justify-content:space-between;font:12px var(--mono);color:var(--muted);margin:-6px 0 14px}
+.crumb a{text-decoration:none}
+/* Schritt-Modus */
+button.pulse{animation:pulse 1.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(15,118,110,.55)}70%{box-shadow:0 0 0 10px rgba(15,118,110,0)}100%{box-shadow:0 0 0 0 rgba(15,118,110,0)}}
+.narr p{margin:0 0 6px}.narr p:last-child{margin-bottom:0}
+.narr p.c{color:var(--warn)}.narr p.s{color:var(--ok)}
+.log .no{display:inline-block;min-width:22px;color:#8b93a7}
+.stepcount{font:600 12px var(--mono);color:var(--muted)}
 /* bars */
 .bars{display:flex;align-items:flex-end;gap:10px;height:150px;padding:10px 4px 0;border-bottom:1px solid var(--ink)}
 .bar{flex:1;background:var(--amber);border-radius:6px 6px 0 0;position:relative;min-height:2px;transition:height .4s}
@@ -192,35 +240,73 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
 <header class="hero">
   <div class="kicker">Rechnernetze · Sicherungsschicht · MAC</div>
   <h1>Medienzugriffsverfahren<br>zum Ausprobieren</h1>
-  <p>Wer darf wann senden, wenn sich mehrere Stationen ein Medium teilen? Sechs Leitfragen – jede mit einer kleinen Simulation, einer Erklärung und einer kompakten Musterantwort.</p>
+  <p>Wer darf wann senden, wenn sich mehrere Stationen ein Medium teilen? Die Lernlandkarte zeigt dir, wie die sechs Leitfragen zusammenhängen. Klicke auf eine Karte, um zum Abschnitt zu springen.</p>
 </header>
 
 <nav class="toc"><ul>
-  <li><a href="#intro"><b>0</b>Einordnung</a></li>
-  <li><a href="#a"><b>a</b>Würfeln bei CSMA/CD</a></li>
-  <li><a href="#b"><b>b</b>Warum CA statt CD?</a></li>
-  <li><a href="#c"><b>c</b>CSMA/CA &amp; RTS/CTS</a></li>
-  <li><a href="#d"><b>d</b>Hidden &amp; Exposed</a></li>
-  <li><a href="#e"><b>e</b>Token Passing</a></li>
-  <li><a href="#f"><b>f</b>Ohne MAC?</a></li>
-  <li><a href="#quiz"><b>✓</b>Quiz</a></li>
+  <li><a href="#karte" class="mapbtn">🗺 Lernlandkarte</a></li>
+  <li><a href="#a" data-sec="a"><b>a</b>CSMA/CD</a></li>
+  <li><a href="#b" data-sec="b"><b>b</b>CSMA/CA</a></li>
+  <li><a href="#c" data-sec="c"><b>c</b>RTS/CTS</a></li>
+  <li><a href="#d" data-sec="d"><b>d</b>Hidden/Exposed</a></li>
+  <li><a href="#e" data-sec="e"><b>e</b>Token Passing</a></li>
+  <li><a href="#f" data-sec="f"><b>f</b>Ohne MAC</a></li>
+  <li><a href="#quiz" data-sec="quiz"><b>✓</b>Quiz</a></li>
 </ul></nav>
 
 <main>
 
-<!-- ============ 0 ============ -->
-<section id="intro">
-  <div class="q"><div class="badge">0</div><div><h2>Worum geht es?</h2><p class="sub">Das Grundproblem: ein Medium, mehrere Sender</p></div></div>
-  <p class="lead">Teilen sich mehrere Stationen ein Übertragungsmedium (ein Kabel mit Hub, einen Funkkanal), überlagern sich Signale, wenn zwei gleichzeitig senden – es kommt zur <b>Kollision</b>, beide Rahmen sind verloren. Ein <b>Medienzugriffsverfahren</b> (MAC, Media Access Control) regelt, wer wann senden darf.</p>
-  <div class="tax">
-    <div class="card"><h4>Konkurrierend (zufällig)</h4>
-      <span class="small">Jeder darf es versuchen – Konflikte werden erkannt oder vermieden.</span>
-      <ul><li>ALOHA / Slotted ALOHA</li><li><b>CSMA/CD</b> – klassisches Ethernet (Bus, Hub)</li><li><b>CSMA/CA</b> – WLAN, optional mit <b>RTS/CTS</b></li></ul>
-      <p class="small">Stark bei geringer Last, schwächer bei hoher Last (Kollisionen).</p></div>
-    <div class="card"><h4>Kontrolliert (deterministisch)</h4>
-      <span class="small">Senderecht wird ausdrücklich vergeben – keine Kollisionen.</span>
-      <ul><li><b>Token Passing</b> (Token Ring, Token Bus, FDDI)</li><li>Polling (Master fragt Slaves ab)</li><li>Feste Zeitschlitze (TDMA)</li></ul>
-      <p class="small">Stark bei hoher, gleichmäßiger Last, Wartezeit auch bei leerem Medium.</p></div>
+<!-- ============ Lernlandkarte ============ -->
+<section id="karte" class="organizer">
+  <div class="om-head">
+    <div><div class="kicker" style="font:600 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)">Lernlandkarte</div>
+      <h2 style="margin:4px 0 0;font-size:26px">Wie hängt alles zusammen?</h2></div>
+    <div class="om-progress"><div class="om-bar"><div id="omBar"></div></div><span id="omProg" class="small mono"></span></div>
+  </div>
+
+  <div class="om-root">
+    <div class="om-root-t">Das Problem: <b>ein</b> Übertragungsmedium, <b>mehrere</b> Sender</div>
+    <div class="om-root-s">Senden zwei Stationen gleichzeitig, überlagern sich ihre Signale, es gibt eine <b>Kollision</b> und beide Rahmen sind verloren. Ein <b>Medienzugriffsverfahren</b> (MAC, Media Access Control) regelt, wer wann senden darf. Dafür gibt es drei grundsätzliche Wege:</div>
+  </div>
+
+  <div class="om-branches">
+    <div class="om-branch">
+      <div class="om-bh"><span class="om-bn">1</span><div><b>Konkurrierend</b> – jeder darf es versuchen<div class="small">Konflikte werden erkannt oder vermieden. Stark bei wenig Last.</div></div></div>
+      <div class="om-sub2">
+        <div class="om-col">
+          <div class="om-ctx">🔌 Am Kabel: alle hören alle</div>
+          <a class="om-card" href="#a" data-sec="a"><span class="om-badge">a</span><span class="om-t">CSMA/CD</span><span class="om-q">An welcher Stelle „würfeln“ die Teilnehmer, wer zuerst senden darf?</span><span class="om-chip">Ethernet (Bus/Hub)</span></a>
+          <div class="om-link">Kollisionen werden <b>erkannt</b></div>
+        </div>
+        <div class="om-col">
+          <div class="om-ctx">📶 Im Funk: nicht alle hören sich</div>
+          <a class="om-card" href="#b" data-sec="b"><span class="om-badge">b</span><span class="om-t">CSMA/CA</span><span class="om-q">Warum nutzt WLAN CSMA/CA statt CSMA/CD?</span><span class="om-chip">WLAN</span></a>
+          <div class="om-arrow">↓ weil im Funk diese Probleme auftreten</div>
+          <a class="om-card om-problem" href="#d" data-sec="d"><span class="om-badge">d</span><span class="om-t">Hidden &amp; Exposed Station</span><span class="om-q">Was hat es mit diesen beiden Problemen auf sich?</span><span class="om-chip">Problem</span></a>
+          <div class="om-arrow">↓ Abhilfe für Hidden Station</div>
+          <a class="om-card om-solution" href="#c" data-sec="c"><span class="om-badge">c</span><span class="om-t">RTS/CTS</span><span class="om-q">Warum steht WLAN für CSMA/CA <i>und</i> RTS/CTS?</span><span class="om-chip">Erweiterung</span></a>
+        </div>
+      </div>
+      <div class="om-also">auch: ALOHA, Slotted ALOHA</div>
+    </div>
+
+    <div class="om-branch">
+      <div class="om-bh"><span class="om-bn">2</span><div><b>Kontrolliert</b> – Senderecht wird vergeben<div class="small">Keine Kollisionen, garantierte Wartezeit. Stark bei hoher Last.</div></div></div>
+      <div class="om-ctx">🔁 Wer den Token hat, darf senden</div>
+      <a class="om-card" href="#e" data-sec="e"><span class="om-badge">e</span><span class="om-t">Token Passing</span><span class="om-q">Wie effektiv bei gleichmäßiger oder ungleichmäßiger Last?</span><span class="om-chip">Token Ring</span></a>
+      <div class="om-also">auch: Polling, feste Zeitschlitze (TDMA)</div>
+    </div>
+
+    <div class="om-branch">
+      <div class="om-bh"><span class="om-bn">3</span><div><b>Gar kein Verfahren</b><div class="small">Geht nur, wenn niemand ums Medium konkurriert.</div></div></div>
+      <div class="om-ctx">↔ z. B. Punkt-zu-Punkt</div>
+      <a class="om-card" href="#f" data-sec="f"><span class="om-badge">f</span><span class="om-t">Verzicht auf MAC</span><span class="om-q">Unter welchen Umständen kann man darauf verzichten?</span><span class="om-chip">Switch, Vollduplex</span></a>
+    </div>
+  </div>
+
+  <div class="om-foot">
+    <span class="small">Empfohlene Reihenfolge: a → b → d → c → e → f, danach das Quiz. Abschnitte, die du angeschaut hast, bekommen einen Haken.</span>
+    <a class="om-card om-quiz" href="#quiz" data-sec="quiz"><span class="om-badge">✓</span><span class="om-t">Abschlussquiz</span><span class="om-q">9 Fragen zu allen Abschnitten</span></a>
   </div>
 </section>
 
@@ -251,7 +337,8 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
     <div class="busgrid">
       <div>
     <div class="controls">
-        <button id="busPlay">▶ Start</button>
+        <button id="busStep">▶ Erster Schritt</button>
+        <button id="busAuto" class="ghost">⏵ Automatisch</button>
         <button id="busRestart" class="ghost">↺ Neu starten</button>
         <label class="inline">Tempo <input type="range" id="busSpeed" min="0.25" max="2" step="0.25" value="1"><span id="busSpeedV" class="mono">1×</span></label>
         <button id="busError" class="ghost">Fehlerfall zeigen</button>
@@ -265,7 +352,7 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
           <span><i style="background:repeating-linear-gradient(45deg,var(--warn),var(--warn) 3px,#fff 3px,#fff 6px)"></i>Kollision</span>
           <span><i style="background:#111"></i>JAM-Signal</span>
         </div>
-        <div class="phase" id="busPhase" style="margin-top:14px">Bereit</div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:14px"><div class="phase" id="busPhase">Bereit</div><span class="stepcount" id="busCount"></span></div>
         <div class="narr" id="busNarr">Drücke <b>Start</b>. Zuerst laufen zwei normale Übertragungen, danach wollen zwei Stationen fast gleichzeitig senden.</div>
         <div class="small" style="margin:12px 0 4px">Verlauf</div>
         <div class="log" id="busLog" style="max-height:200px"></div>
@@ -546,135 +633,140 @@ const sleep = ms => new Promise(r=>setTimeout(r,ms));
 
 /* ================= a) CSMA/CD am gemeinsamen Bus ================= */
 const BUS={X0:40, X1:720, Y:172, V:0.5};           // V = Ausbreitung in px pro Sim-ms
-const T={START:700, LISTEN:1400, IFS:900, DECIDE:800, TX:4500, JAM:900, SLOT:2000, ROLL:1200, END:2200};
+const T={LISTEN:700, IFS:900, TX:3500, JAM:900, SLOT:1600, ROLL:900, READ:2600};
 const ST=[
   {name:"A", x:120, color:"var(--A)", hex:"#2563eb"},
   {name:"B", x:290, color:"var(--B)", hex:"#c2410c"},
   {name:"C", x:460, color:"var(--C)", hex:"#7c3aed"},
   {name:"D", x:630, color:"var(--D)", hex:"#0f766e"},
 ];
-const byName=n=>ST.find(s=>s.name===n);
-const sim={t:0, rate:1, paused:true, waiters:[], signals:[], token:0, last:null, flowDirty:true, running:false};
+const sim={t:0, rate:1, paused:true, manual:true, waiters:[], signals:[], token:0, last:null, flowDirty:true, running:false, buf:[], stepNo:0};
 
-function resetStations(){ ST.forEach(s=>Object.assign(s,{node:null, edge:null, status:"", dice:null, tx:false, n:0})); }
+function resetStations(){ ST.forEach(s=>Object.assign(s,{node:null, edge:null, status:"", dice:null, tx:false, n:0, sawBusy:false})); }
 function until(cond){ const tok=sim.token; return new Promise(res=>sim.waiters.push({cond,res,tok})); }
 function wait(ms){ const end=sim.t+ms; return until(()=>sim.t>=end); }
 function setNode(s,node,edge){ s.node=node; if(edge!==undefined) s.edge=edge; sim.flowDirty=true; }
 function present(sig,p,t){ const d=Math.abs(p-sig.x)/BUS.V; return t>=sig.t0+d && (sig.t1==null || t<sig.t1+d); }
 function busyAt(s){ return sim.signals.some(g=>g.st!==s && present(g,s.x,sim.t)); }
-function say(phase, html, cls){
-  if(phase) $("#busPhase").textContent=phase;
-  $("#busNarr").innerHTML=html;
-  const l=$("#busLog"); l.insertAdjacentHTML("beforeend",`<div class="${cls||""}">${html.replace(/<[^>]+>/g,"")}</div>`); l.scrollTop=l.scrollHeight;
-}
 const tag=s=>`<b style="color:${s.color}">${s.name}</b>`;
+function setPhase(p){ sim.phase=p; $("#busPhase").textContent=p; }
+function say(html, cls){
+  sim.stepNo++;
+  sim.buf.push(`<p class="${cls||""}">${html}</p>`);
+  if(!sim.manual) sim.buf=sim.buf.slice(-2);
+  $("#busNarr").innerHTML=sim.buf.join("");
+  const l=$("#busLog"); l.insertAdjacentHTML("beforeend",`<div class="${cls||""}"><span class="no">${sim.stepNo}</span> ${html.replace(/<[^>]+>/g,"")}</div>`); l.scrollTop=l.scrollHeight;
+  $("#busCount").textContent=`Schritt ${sim.stepNo}`;
+}
+// Ein Lernschritt: Kasten im Schema setzen, erklären, anhalten (manuell) bzw. Lesezeit lassen (automatisch)
+async function step(s,node,edge,html,cls){
+  if(s && node!==undefined) setNode(s,node,edge);
+  say(html,cls);
+  if(sim.manual){ sim.paused=true; busButtons(); await until(()=>true); }
+  else await wait(T.READ);
+}
 
 async function transmit(s, target, opts={}){
-  const max=opts.max||16;
-  s.n=0; setNode(s,"start",null); s.status="möchte senden"; await wait(T.START);
-  setNode(s,"listen","e_start_listen");
+  const max=opts.max||16; s.n=0;
+  s.status="möchte senden";
+  await step(s,"start",null,`${tag(s)} möchte einen Rahmen an ${tag(target)} senden → <b>Start</b>.`);
+  let edge="e_start_listen", note="";
   while(true){
-    s.status="hört ab …"; await wait(T.LISTEN);
-    setNode(s,"ifs","e_listen_ifs");
-    s.status="Medium frei für IFS?";
-    const ifsEnd=sim.t+T.IFS;
+    s.status="hört ab …";
+    await step(s,"listen",edge,`${tag(s)}: <b>Medium abhören</b>.${note} ${s.name} achtet darauf, ob an seinem Anschluss ein Signal anliegt (Carrier Sense).`);
+    await wait(T.LISTEN);
+    s.status="frei für IFS?";
+    await step(s,"ifs","e_listen_ifs",`${tag(s)} prüft: <b>Ist das Medium für die Dauer eines IFS frei?</b> Es muss eine Mindestpause lang still sein, bevor gesendet werden darf.`);
+    const ifsEnd=sim.t+T.IFS+(opts.lag||0);
     await until(()=>busyAt(s)||sim.t>=ifsEnd);
-    if(!busyAt(s)) await wait(T.DECIDE);
     if(busyAt(s)){
-      s.status="Medium belegt – warten";
-      setNode(s,"ifs","e_ifs_no");
-      say(null,`${tag(s)}: Medium <b>belegt</b> → „Nein“ → weiter abhören, bis es frei ist.`);
-      setNode(s,"listen","e_ifs_no");
+      s.status="belegt – wartet"; s.sawBusy=true;
+      await step(s,"listen","e_ifs_no",`„<b>Nein</b>“: Am Anschluss von ${tag(s)} kommt ein fremdes Signal an. Also zurück zu <b>Medium abhören</b> und warten, bis es still ist.`);
       await until(()=>!busyAt(s));
-      continue;
+      edge="e_ifs_no"; note=" Das Medium ist jetzt wieder still."; continue;
     }
     // senden
-    setNode(s,"send","e_ifs_yes"); s.n++;
+    s.n++; target.status="";
     const sig={st:s, x:s.x, t0:sim.t, t1:null, kind:"data"}; sim.signals.push(sig);
-    s.tx=true; s.status=`sendet an ${target.name} …`; target.status="";
-    say(null,`${tag(s)}: Medium war für die Dauer eines IFS frei → „Ja“ → <b>sendet</b> an ${tag(target)} und hört dabei weiter mit.`);
+    s.tx=true; s.status=`sendet an ${target.name} …`;
+    await step(s,"send","e_ifs_yes",`„<b>Ja</b>“, das Medium war frei → ${tag(s)} beginnt zu <b>senden</b> (an ${tag(target)}) und <b>hört gleichzeitig weiter mit</b>, ob ein fremdes Signal dazukommt. Beobachte, wie sich das Signal auf dem Kabel ausbreitet.`);
     const txEnd=sim.t+T.TX;
-    await until(()=>busyAt(s)||sim.t>=txEnd);
+    await until(()=>busyAt(s) || (sim.t>=txEnd && !(opts.holdWhile&&opts.holdWhile())));
     const coll=busyAt(s);
     sig.t1=sim.t; s.tx=false;
-    setNode(s,"coll","e_send_coll");
     if(!coll){
-      s.status="fertig";
-      await wait(T.DECIDE);
-      setNode(s,"end","e_coll_no");
-      say(null,`${tag(s)}: keine Kollision → „Nein“ → <b>Ende</b>. Die Übertragung war erfolgreich.`,"s");
-      wait(Math.abs(target.x-s.x)/BUS.V).then(()=>{ target.status=`✓ Rahmen von ${s.name} empfangen`; });
-      await wait(T.END);
+      s.status="fertig gesendet";
+      await step(s,"coll","e_send_coll",`${tag(s)} ist fertig. <b>Kollision aufgetreten?</b> Während des Sendens kam kein fremdes Signal an → „<b>Nein</b>“.`);
+      wait(Math.abs(target.x-s.x)/BUS.V).then(()=>{ target.status=`✓ von ${s.name} empfangen`; });
+      s.status="✓ erfolgreich";
+      await step(s,"end","e_coll_no",`<b>Ende</b>: Die Übertragung von ${tag(s)} an ${tag(target)} war erfolgreich.`,"s");
       setNode(s,null,null); s.status=""; return true;
     }
-    s.status="💥 Kollision erkannt!";
-    say(null,`${tag(s)}: hört ein fremdes Signal, während es selbst sendet → <b>Kollision aufgetreten: „Ja“</b>. Senden wird abgebrochen.`,"c");
-    if(target.status==="" || target.status.startsWith("✓")) target.status="✗ nur Datensalat";
-    await wait(T.DECIDE);
-    setNode(s,"jam","e_coll_yes"); s.status="sendet JAM-Signal";
+    s.status="💥 Kollision!";
+    if(!target.status) target.status="✗ nur Datensalat";
+    await step(s,"coll","e_send_coll",`${tag(s)} hört <b>während des Sendens</b> ein fremdes Signal: Die Signale überlagern sich auf dem Kabel (rot gestreift). <b>Kollision aufgetreten? „Ja“</b>, das Senden wird abgebrochen.`,"c");
     const jam={st:s, x:s.x, t0:sim.t, t1:null, kind:"jam"}; sim.signals.push(jam); s.tx=true;
+    s.status="sendet JAM-Signal";
+    await step(s,"jam","e_coll_yes",`${tag(s)} sendet ein kurzes <b>JAM-Signal</b> (schwarz), damit wirklich alle Stationen die Kollision bemerken.`);
     await wait(T.JAM); jam.t1=sim.t; s.tx=false;
-    setNode(s,"max","e_jam_max"); s.status=`Versuch ${s.n} von ${max}`;
-    await wait(T.DECIDE);
+    s.status=`Versuch ${s.n} von ${max}`;
+    await step(s,"max","e_jam_max",`${tag(s)} prüft: <b>Maximale Anzahl Übertragungsversuche erreicht?</b> Das war Versuch ${s.n} von ${max}.`);
     if(s.n>=max){
-      setNode(s,"err","e_max_yes"); s.status="⚠ Fehlermeldung";
-      say(null,`${tag(s)}: maximale Anzahl Versuche (${max}) erreicht → „Ja“ → <b>Fehlermeldung an höhere Netzwerkschichten</b>. Der Rahmen wird verworfen.`,"c");
-      await wait(T.END); setNode(s,"end","e_err_end"); await wait(T.END); setNode(s,null,null); s.status=""; return false;
+      s.status="⚠ Fehlermeldung";
+      await step(s,"err","e_max_yes",`„<b>Ja</b>“ → <b>Fehlermeldung an höhere Netzwerkschichten</b>. ${tag(s)} gibt den Rahmen auf.`,"c");
+      await step(s,"end","e_err_end",`<b>Ende</b> für ${tag(s)}, diesmal ohne Erfolg.`,"c");
+      setNode(s,null,null); s.status=""; return false;
     }
-    // Backoff = Würfeln
-    setNode(s,"backoff","e_max_no");
     const W=2**Math.min(s.n,10);
     s.status=`würfelt 0 … ${W-1}`;
+    await step(s,"backoff","e_max_no",`„<b>Nein</b>“ → <b>Zufällige Backoff-Zeit abwarten</b>. Nach der ${s.n}. Kollision würfelt ${tag(s)} eine Zahl k aus <b>0 … ${W-1}</b> und wartet dann k Slotzeiten. <b>Das ist das „Würfeln“!</b>`,"d");
     const rollEnd=sim.t+T.ROLL;
-    while(sim.t<rollEnd){ s.dice=rnd(W); await wait(90); }
+    while(sim.t<rollEnd){ s.dice=rnd(W); await wait(80); }
     const k = opts.forceK ? opts.forceK(s.n) : rnd(W);
-    s.dice=k;
-    say(null,`${tag(s)}: Versuch ${s.n} von ${max} → „Nein“ → <b>🎲 würfelt k = ${k}</b> aus 0 … ${W-1} und wartet ${k} Slotzeit${k===1?"":"en"}.`,"d");
+    s.dice=k; s.status=`🎲 k = ${k}`;
+    await step(s,undefined,undefined,`🎲 ${tag(s)} hat <b>k = ${k}</b> gewürfelt → wartet ${k} Slotzeit${k===1?"":"en"}${k===0?", also gar nicht":""}.`,"d");
     const boEnd=sim.t+k*T.SLOT;
     while(sim.t<boEnd){ const rest=Math.ceil((boEnd-sim.t)/T.SLOT); s.status=`Backoff: noch ${rest} Slot${rest===1?"":"s"}`; await wait(100); }
-    s.status="Backoff abgelaufen";
-    setNode(s,"listen","e_backoff_listen");
-    s.dice=null;
+    s.dice=null; edge="e_backoff_listen"; note=" Die Backoff-Zeit ist abgelaufen.";
   }
 }
 
 async function mainScenario(){
   const [A,B,C,D]=ST;
-  say("Übertragung 1",`Jede Station ist über ein kurzes Kabel mit dem <b>gemeinsamen Medium</b> verbunden. Was eine Station sendet, breitet sich in beide Richtungen aus und kommt bei allen an. Zuerst möchte ${tag(A)} einen Rahmen an ${tag(C)} senden.`);
-  await wait(1500);
+  setPhase("Übertragung 1 von 3: ohne Störung");
+  await step(null,0,0,`Alle Stationen hängen über ein kurzes Kabel am <b>gemeinsamen Medium</b>. Was eine Station sendet, breitet sich in beide Richtungen aus und kommt bei allen an. Zuerst möchte ${tag(A)} einen Rahmen an ${tag(C)} senden.`);
   await transmit(A,C);
-  C.status=""; await wait(1200);
-
-  say("Übertragung 2",`Jetzt sendet ${tag(D)} an ${tag(B)}. Kurz danach möchte auch ${tag(C)} senden. Achte darauf, was C im Schema macht.`);
-  await wait(1200);
-  const p1=transmit(D,B);
-  await wait(2600);
+  await until(()=>sim.signals.length===0); C.status="";
+  setPhase("Übertragung 2 von 3: eine Station muss warten");
+  await step(null,0,0,`Jetzt sendet ${tag(D)} an ${tag(B)}. Während D sendet, möchte auch ${tag(C)} senden. Achte darauf, welchen Weg C im Schema nimmt.`);
+  const p1=transmit(D,B,{holdWhile:()=>!C.sawBusy});
+  await until(()=>D.node==="send");
   const p2=transmit(C,A);
-  await p1; B.status=""; await p2; A.status=""; await wait(1500);
-
-  say("Übertragung 3: Kollision",`Jetzt wollen ${tag(B)} und ${tag(D)} <b>fast gleichzeitig</b> senden. B beginnt einen Augenblick früher. Weil sich das Signal nicht unendlich schnell ausbreitet, hört D noch ein freies Medium …`);
-  await wait(1500);
+  await p1; B.status=""; await p2; A.status="";
+  await until(()=>sim.signals.length===0);
+  setPhase("Übertragung 3 von 3: Kollision");
+  await step(null,0,0,`Jetzt wollen ${tag(B)} und ${tag(D)} <b>fast gleichzeitig</b> senden. B ist einen Augenblick schneller. Weil sich ein Signal nicht unendlich schnell ausbreitet, hört D trotzdem noch ein freies Medium …`);
   const q1=transmit(B,A);
-  await wait(300);
-  const q2=transmit(D,C);
+  const q2=transmit(D,C,{lag:300});
   await Promise.all([q1,q2]);
   A.status=""; C.status="";
-  say("Fertig",`Alle Rahmen wurden übertragen. Die Kollision wurde durch das <b>Würfeln im Backoff</b> aufgelöst: Wer die kleinere Zahl hatte, war zuerst wieder beim Abhören, fand das Medium frei und sendete. Die andere Station musste warten. Drücke <b>Neu starten</b>, um es mit neuen Würfelzahlen zu sehen.`,"s");
-  sim.running=false; $("#busPlay").textContent="▶ Start"; sim.paused=true;
+  setPhase("Fertig");
+  say(`Alle Rahmen sind übertragen. Die Kollision wurde durch das <b>Würfeln im Backoff</b> aufgelöst: Die Station mit der kleineren Zahl war zuerst wieder beim Abhören, fand das Medium frei und sendete. Die andere musste warten. Mit <b>Neu starten</b> geht es mit neuen Würfelzahlen noch einmal los.`,"s");
+  busDone();
 }
 
 async function errorScenario(){
   const [A,B,C,D]=ST;
-  say("Demo: Fehlerfall",`Demo mit <b>maximal 3 Versuchen</b> (real: 16). ${tag(B)} und ${tag(C)} würfeln hier absichtlich immer dieselbe Zahl, damit man den Ablauf bis zur Fehlermeldung sieht.`);
-  await wait(1500);
+  setPhase("Demo: Fehlerfall");
+  await step(null,0,0,`Demo mit <b>maximal 3 Versuchen</b> (real: 16). ${tag(B)} und ${tag(C)} würfeln hier absichtlich immer dieselbe Zahl, damit man den Weg bis zur Fehlermeldung sieht.`);
   const f=n=>[0,1,2][n-1]||0;
   const q1=transmit(B,A,{max:3, forceK:f});
-  await wait(150);
-  const q2=transmit(C,D,{max:3, forceK:f});
+  const q2=transmit(C,D,{max:3, forceK:f, lag:150});
   await Promise.all([q1,q2]);
   A.status=""; D.status="";
-  say("Fertig",`Beide Stationen haben nach dem 3. Fehlversuch aufgegeben und eine <b>Fehlermeldung an höhere Netzwerkschichten</b> gegeben (z. B. an die Transportschicht, die ggf. selbst neu sendet).`,"c");
-  sim.running=false; $("#busPlay").textContent="▶ Start"; sim.paused=true;
+  setPhase("Fertig");
+  say(`Beide Stationen haben nach dem 3. Fehlversuch aufgegeben und eine <b>Fehlermeldung an höhere Netzwerkschichten</b> gegeben. Dort kann z. B. ein Protokoll der Transportschicht selbst neu senden.`,"c");
+  busDone();
 }
 
 /* ---------- Zeichnen: Bus ---------- */
@@ -703,7 +795,7 @@ function drawBus(){
     }
     if(s.status){
       const bad=/Kollision|Datensalat|Fehler/.test(s.status), good=/✓/.test(s.status);
-      h+=`<text x="${s.x}" y="26" text-anchor="middle" font-size="15" font-weight="600" fill="${bad?"#b42318":good?"#15803d":"#1d2433"}">${s.status}</text>`;
+      h+=`<text x="${s.x}" y="26" text-anchor="middle" font-size="14" font-weight="600" fill="${bad?"#b42318":good?"#15803d":"#1d2433"}">${s.status}</text>`;
     }
   });
   $("#bus").innerHTML=h;
@@ -769,26 +861,41 @@ function frame(ts){
     sim.t+=dt*sim.rate;
     sim.signals=sim.signals.filter(g=>g.t1==null || sim.t < g.t1 + (BUS.X1-BUS.X0)/BUS.V + 50);
     const ws=sim.waiters; sim.waiters=[];
-    ws.forEach(w=>{ if(w.tok!==sim.token) return; if(w.cond()) w.res(); else sim.waiters.push(w); });
+    ws.forEach(w=>{ if(w.tok!==sim.token) return; if(!sim.paused && w.cond()) w.res(); else sim.waiters.push(w); });
   }
   drawBus();
   if(sim.flowDirty){ drawFlow(); sim.flowDirty=false; }
   requestAnimationFrame(frame);
 }
-function busReset(){
-  sim.token++; sim.waiters=[]; sim.signals=[]; sim.t=0; sim.paused=true; sim.running=false;
-  resetStations(); sim.flowDirty=true;
-  $("#busLog").innerHTML=""; $("#busPhase").textContent="Bereit";
-  $("#busNarr").innerHTML="Drücke <b>Start</b>. Zuerst laufen zwei normale Übertragungen, danach wollen zwei Stationen fast gleichzeitig senden.";
-  $("#busPlay").textContent="▶ Start";
+function busButtons(){
+  const waiting = sim.running && sim.manual && sim.paused;
+  const autoOn = sim.running && !sim.manual && !sim.paused;
+  $("#busStep").textContent = !sim.running ? (sim.stepNo? "▶ Von vorn, Schritt für Schritt" : "▶ Erster Schritt") : "▶ Nächster Schritt";
+  $("#busStep").classList.toggle("pulse", waiting);
+  $("#busStep").disabled = sim.running && sim.manual && !sim.paused;
+  $("#busAuto").textContent = autoOn ? "⏸ Anhalten" : "⏵ Automatisch";
 }
-function busRun(fn){ busReset(); sim.running=true; sim.paused=false; $("#busPlay").textContent="⏸ Pause"; fn(); }
-$("#busPlay").onclick=()=>{
-  if(!sim.running){ busRun(mainScenario); return; }
-  sim.paused=!sim.paused; $("#busPlay").textContent=sim.paused?"▶ Weiter":"⏸ Pause";
+function busReset(){
+  sim.token++; sim.waiters=[]; sim.signals=[]; sim.t=0; sim.paused=true; sim.running=false; sim.buf=[]; sim.stepNo=0;
+  resetStations(); sim.flowDirty=true;
+  $("#busLog").innerHTML=""; setPhase("Bereit"); $("#busCount").textContent="";
+  $("#busNarr").innerHTML="<p>Klicke auf <b>Erster Schritt</b>. Mit jedem Klick geht es einen Kasten im Ablaufschema weiter. Zuerst kommen zwei normale Übertragungen, danach wollen zwei Stationen fast gleichzeitig senden.</p>";
+  busButtons();
+}
+function busDone(){ sim.running=false; sim.paused=true; busButtons(); }
+function busRun(fn, manual){ busReset(); sim.manual=manual; sim.running=true; sim.paused=false; busButtons(); fn(); }
+function busResume(){ sim.buf=[]; sim.paused=false; busButtons(); }
+$("#busStep").onclick=()=>{
+  if(!sim.running){ busRun(mainScenario,true); return; }
+  sim.manual=true; busResume();
 };
-$("#busRestart").onclick=()=>busRun(mainScenario);
-$("#busError").onclick=()=>busRun(errorScenario);
+$("#busAuto").onclick=()=>{
+  if(!sim.running){ busRun(mainScenario,false); return; }
+  if(sim.manual || sim.paused){ sim.manual=false; busResume(); }
+  else { sim.paused=true; busButtons(); }
+};
+$("#busRestart").onclick=()=>busRun(mainScenario,true);
+$("#busError").onclick=()=>busRun(errorScenario,true);
 $("#busSpeed").oninput=()=>{ sim.rate=+$("#busSpeed").value; $("#busSpeedV").textContent=sim.rate.toLocaleString("de-DE")+"×"; };
 busReset();
 requestAnimationFrame(frame);
@@ -1227,6 +1334,34 @@ function qzRender(){
 }
 $("#quizReset").onclick=()=>{qzAns={};qzRender();};
 qzRender();
+/* ================= Lernlandkarte: Fortschritt & Brotkrumen ================= */
+(function(){
+  const SECS=["a","b","c","d","e","f","quiz"];
+  const CRUMB={a:"Konkurrierend › Am Kabel",b:"Konkurrierend › Im Funk",c:"Konkurrierend › Im Funk › Abhilfe",d:"Konkurrierend › Im Funk › Problem",e:"Kontrolliert",f:"Gar kein Verfahren",quiz:"Abschluss"};
+  let seen={};
+  try{ seen=JSON.parse(localStorage.getItem("mzv-seen")||"{}"); }catch(e){}
+  SECS.forEach(id=>{
+    const sec=document.getElementById(id); if(!sec) return;
+    const q=sec.querySelector(".q");
+    q.insertAdjacentHTML("afterend",`<div class="crumb"><span>Lernlandkarte › ${CRUMB[id]}</span><a href="#karte">↑ zur Lernlandkarte</a></div>`);
+  });
+  function paint(){
+    $$("[data-sec]").forEach(el=>el.classList.toggle("done",!!seen[el.dataset.sec]));
+    const n=SECS.filter(s=>seen[s]).length;
+    $("#omBar").style.width=(100*n/SECS.length)+"%";
+    $("#omProg").textContent=`${n} von ${SECS.length} angeschaut`;
+  }
+  const timers={};
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    const id=e.target.id;
+    if(e.isIntersecting){
+      $$("nav.toc a[data-sec]").forEach(a=>a.classList.toggle("cur",a.dataset.sec===id));
+      if(!seen[id]) timers[id]=setTimeout(()=>{ seen[id]=1; try{localStorage.setItem("mzv-seen",JSON.stringify(seen));}catch(err){} paint(); },4000);
+    } else clearTimeout(timers[id]);
+  }),{rootMargin:"-35% 0px -55% 0px"});
+  SECS.forEach(id=>{ const s=document.getElementById(id); if(s) io.observe(s); });
+  paint();
+})();
 </script>
 </body>
 </html>
