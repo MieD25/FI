@@ -106,6 +106,14 @@ code,.mono{font-family:var(--mono);font-size:.92em}
 .rfbox.busy{background:#eef0f4}
 .rfbox.tx{background:#fff7e6;border-color:var(--amber)}
 /* Lernlandkarte */
+.om-fallback{display:none}
+.om-svgwrap svg{width:100%;height:auto;display:block}
+.mnode .chk{display:none}.mnode.done .chk{display:inline}
+.mnode .mcard{transition:stroke .15s}
+.mnode:hover .mcard{stroke:#0f766e;stroke-width:3}
+.mnode:focus{outline:none}.mnode:focus-visible .mcard{stroke:#0f766e;stroke-width:3}
+@media(max-width:760px){.om-svgwrap{display:none}.om-fallback{display:block}}
+
 .organizer{background:linear-gradient(180deg,#fffdf8,#fbf8f1)}
 .om-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
 .om-progress{display:flex;align-items:center;gap:10px}
@@ -264,6 +272,8 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
     <div class="om-progress"><div class="om-bar"><div id="omBar"></div></div><span id="omProg" class="small mono"></span></div>
   </div>
 
+  <div class="om-svgwrap"><svg id="omSvg" viewBox="0 0 1200 945" role="img" aria-label="Lernlandkarte Medienzugriffsverfahren"></svg></div>
+  <div class="om-fallback">
   <div class="om-root">
     <div class="om-root-t">Das Problem: <b>ein</b> Übertragungsmedium, <b>mehrere</b> Sender</div>
     <div class="om-root-s">Senden zwei Stationen gleichzeitig, überlagern sich ihre Signale, es gibt eine <b>Kollision</b> und beide Rahmen sind verloren. Ein <b>Medienzugriffsverfahren</b> (MAC, Media Access Control) regelt, wer wann senden darf. Dafür gibt es drei grundsätzliche Wege:</div>
@@ -307,6 +317,7 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
   <div class="om-foot">
     <span class="small">Empfohlene Reihenfolge: a → b → d → c → e → f, danach das Quiz. Abschnitte, die du angeschaut hast, bekommen einen Haken.</span>
     <a class="om-card om-quiz" href="#quiz" data-sec="quiz"><span class="om-badge">✓</span><span class="om-t">Abschlussquiz</span><span class="om-q">9 Fragen zu allen Abschnitten</span></a>
+  </div>
   </div>
 </section>
 
@@ -1334,6 +1345,146 @@ function qzRender(){
 }
 $("#quizReset").onclick=()=>{qzAns={};qzRender();};
 qzRender();
+/* ================= Lernlandkarte: illustrierte SVG-Karte ================= */
+(function(){
+  const NS="http://www.w3.org/2000/svg";
+  const C={A:"#2563eb",B:"#c2410c",C:"#7c3aed",D:"#0f766e",ink:"#1d2433",muted:"#5d6577",amber:"#b45309",red:"#b42318",ok:"#15803d"};
+  const dev=(x,y,col,lab,w=26,h=18)=>`<rect x="${x-w/2}" y="${y-h/2}" width="${w}" height="${h}" rx="4" fill="#fff" stroke="${col}" stroke-width="2.5"/><text x="${x}" y="${y+4}" text-anchor="middle" font-size="11" font-weight="700" fill="${col}">${lab}</text>`;
+  const ILL={
+    root:()=>{
+      let h=`<line x1="30" y1="62" x2="300" y2="62" stroke="#c9c3b6" stroke-width="7" stroke-linecap="round"/>`;
+      [[60,C.A,"A"],[130,C.B,"B"],[200,C.C,"C"],[270,C.D,"D"]].forEach(([x,c,l],i)=>{
+        h+=`<line x1="${x}" y1="38" x2="${x}" y2="62" stroke="${c}" stroke-width="2.5"/>`+dev(x,30,c,l);
+        h+=`<text x="${x+16}" y="22" font-size="13" font-weight="700" fill="${C.amber}"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="${i*0.6}s" repeatCount="indefinite"/>?</text>`;
+      });
+      return h+`<text x="165" y="90" text-anchor="middle" font-size="12" fill="${C.muted}">ein gemeinsames Medium</text>`;
+    },
+    a:()=>{
+      let h=`<line x1="20" y1="70" x2="210" y2="70" stroke="#c9c3b6" stroke-width="8" stroke-linecap="round"/>`;
+      h+=`<line x1="40" y1="70" x2="115" y2="70" stroke="${C.A}" stroke-width="8"><animate attributeName="x2" values="40;115;115" dur="3s" repeatCount="indefinite"/></line>`;
+      h+=`<line x1="190" y1="70" x2="115" y2="70" stroke="${C.B}" stroke-width="8"><animate attributeName="x2" values="190;115;115" dur="3s" repeatCount="indefinite"/></line>`;
+      h+=`<text x="115" y="58" text-anchor="middle" font-size="20" opacity="0">💥<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.45;.5;.9;1" dur="3s" repeatCount="indefinite"/></text>`;
+      [[40,C.A,"A"],[115,C.C,"C"],[190,C.B,"B"]].forEach(([x,c,l])=>h+=`<line x1="${x}" y1="36" x2="${x}" y2="66" stroke="${c}" stroke-width="2"/>`+dev(x,30,c,l));
+      h+=`<g transform="translate(150,78)"><rect width="26" height="26" rx="6" fill="#fdf0d9" stroke="${C.amber}" stroke-width="2"/><circle cx="8" cy="8" r="2.4" fill="${C.amber}"/><circle cx="18" cy="18" r="2.4" fill="${C.amber}"/><circle cx="13" cy="13" r="2.4" fill="${C.amber}"/><animateTransform attributeName="transform" type="rotate" additive="sum" values="0 13 13;0 13 13;20 13 13;-20 13 13;0 13 13" keyTimes="0;.55;.7;.85;1" dur="3s" repeatCount="indefinite"/></g>`;
+      return h;
+    },
+    b:()=>{
+      let h=`<rect x="100" y="50" width="30" height="20" rx="4" fill="#fff" stroke="${C.ink}" stroke-width="2.2"/><line x1="106" y1="50" x2="102" y2="34" stroke="${C.ink}" stroke-width="2"/><line x1="124" y1="50" x2="128" y2="34" stroke="${C.ink}" stroke-width="2"/><text x="115" y="64" text-anchor="middle" font-size="9" font-weight="700" fill="${C.ink}">AP</text>`;
+      [0,1,2].forEach(i=>{ const r=24+i*16;
+        h+=`<path d="M${115-r},${60-r*0.55} A${r},${r} 0 0,0 ${115-r},${60+r*0.55}" fill="none" stroke="${C.A}" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;.9;0" dur="1.8s" begin="${i*0.3}s" repeatCount="indefinite"/></path>`;
+        h+=`<path d="M${115+r},${60-r*0.55} A${r},${r} 0 0,1 ${115+r},${60+r*0.55}" fill="none" stroke="${C.A}" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;.9;0" dur="1.8s" begin="${i*0.3}s" repeatCount="indefinite"/></path>`; });
+      h+=dev(25,60,C.B,"📱",22,22)+dev(205,60,C.C,"💻",26,22);
+      h+=`<rect x="140" y="88" width="44" height="16" rx="4" fill="#dcf3e3" stroke="${C.ok}"/><text x="162" y="100" text-anchor="middle" font-size="10" font-weight="700" fill="${C.ok}">ACK ✓</text>`;
+      return h;
+    },
+    d:(id)=>{
+      let h=`<defs><clipPath id="cl${id}"><rect x="0" y="0" width="230" height="108"/></clipPath></defs><g clip-path="url(#cl${id})">`;
+      h+=`<circle cx="55" cy="58" r="66" fill="${C.A}" fill-opacity=".08" stroke="${C.A}" stroke-dasharray="4 4"/><circle cx="175" cy="58" r="66" fill="${C.C}" fill-opacity=".08" stroke="${C.C}" stroke-dasharray="4 4"/></g>`;
+      h+=`<line x1="70" y1="58" x2="100" y2="58" stroke="${C.A}" stroke-width="2.5" marker-end="url(#omArrA)"/><line x1="160" y1="58" x2="130" y2="58" stroke="${C.C}" stroke-width="2.5" marker-end="url(#omArrC)"/>`;
+      h+=dev(55,58,C.A,"A")+dev(175,58,C.C,"C");
+      h+=`<circle cx="115" cy="58" r="15" fill="#fecaca" stroke="${C.red}" stroke-width="2"><animate attributeName="r" values="13;17;13" dur="1s" repeatCount="indefinite"/></circle>`+dev(115,58,C.B,"B",24,18);
+      h+=`<text x="115" y="100" text-anchor="middle" font-size="11" fill="${C.red}" font-weight="700">A und C hören sich nicht</text>`;
+      return h;
+    },
+    c:()=>{
+      let h=dev(30,55,C.A,"A",28,22)+dev(200,55,C.B,"B",28,22);
+      const row=(y,dir,lab,col,w)=>{ const x1=dir>0?50:180, x2=dir>0?178:52;
+        return `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${col}" stroke-width="${w}" marker-end="url(#omArr${col===C.A?"A":col===C.B?"B":"G"})"/><text x="115" y="${y-4}" text-anchor="middle" font-size="10.5" font-weight="700" fill="${col}">${lab}</text>`; };
+      h+=row(24,1,"RTS",C.A,2)+row(50,-1,"CTS",C.B,2)+row(76,1,"DATA",C.A,4)+row(100,-1,"ACK",C.ok,2);
+      return h;
+    },
+    e:()=>{
+      let h=`<circle cx="115" cy="58" r="40" fill="none" stroke="#c9c3b6" stroke-width="6"/>`;
+      const cols=[C.A,C.B,C.C,C.D,C.A,C.B];
+      for(let i=0;i<6;i++){ const a=-Math.PI/2+i*Math.PI/3; h+=`<circle cx="${115+40*Math.cos(a)}" cy="${58+40*Math.sin(a)}" r="9" fill="#fff" stroke="${cols[i]}" stroke-width="2.5"/>`; }
+      h+=`<g><circle r="8" fill="#f59e0b" stroke="#fff" stroke-width="2"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">T</text><animateMotion dur="5s" repeatCount="indefinite" path="M115,18 A40,40 0 1,1 114.9,18"/></g>`;
+      return h;
+    },
+    f:()=>{
+      let h=dev(35,58,C.A,"PC",30,22)+dev(195,58,C.D,"SW",30,22);
+      h+=`<line x1="54" y1="50" x2="173" y2="50" stroke="${C.A}" stroke-width="2.5" marker-end="url(#omArrA)"/><line x1="176" y1="66" x2="57" y2="66" stroke="${C.D}" stroke-width="2.5" marker-end="url(#omArrD)"/>`;
+      h+=`<circle r="4" fill="${C.A}"><animateMotion dur="1.6s" repeatCount="indefinite" path="M56,50 H170"/></circle><circle r="4" fill="${C.D}"><animateMotion dur="1.6s" begin="-.8s" repeatCount="indefinite" path="M174,66 H58"/></circle>`;
+      h+=`<text x="115" y="94" text-anchor="middle" font-size="11" fill="${C.ok}" font-weight="700">je Richtung eigener Kanal</text>`;
+      return h;
+    },
+    quiz:()=>{
+      let h=`<line x1="90" y1="20" x2="90" y2="100" stroke="${C.ink}" stroke-width="3"/>`;
+      for(let r=0;r<3;r++)for(let c=0;c<5;c++) h+=`<rect x="${92+c*10}" y="${22+r*10}" width="10" height="10" fill="${(r+c)%2?"#fff":C.ink}"/>`;
+      h+=`<rect x="92" y="22" width="50" height="30" fill="none" stroke="${C.ink}"/>`;
+      return h;
+    },
+  };
+  const NODES=[
+    {id:"a",x:40, y:300,w:250,h:186,badge:"a",t:"CSMA/CD",q:["An welcher Stelle „würfeln“ die","Teilnehmer, wer zuerst sendet?"],chip:"Ethernet",col:"#0f766e"},
+    {id:"b",x:350,y:278,w:330,h:186,badge:"b",t:"CSMA/CA",q:["Warum nutzt WLAN CSMA/CA","statt CSMA/CD?"],chip:"WLAN",col:"#0f766e"},
+    {id:"d",x:350,y:504,w:330,h:186,badge:"d",t:"Hidden & Exposed Station",q:["Was hat es mit diesen beiden","Problemen auf sich?"],chip:"",col:C.red},
+    {id:"c",x:350,y:730,w:330,h:186,badge:"c",t:"RTS/CTS",q:["Warum steht WLAN für CSMA/CA","und für RTS/CTS?"],chip:"Erweiterung",col:C.ok},
+    {id:"e",x:732,y:300,w:210,h:218,badge:"e",t:"Token Passing",q:["Wie effektiv bei gleich-","mäßiger / ungleichmäßiger","Last?"],chip:"",col:"#0f766e"},
+    {id:"f",x:972,y:300,w:210,h:218,badge:"f",t:"Verzicht auf MAC",q:["Unter welchen Umständen","kann man verzichten?"],chip:"",col:"#0f766e"},
+    {id:"quiz",x:732,y:640,w:450,h:150,badge:"✓",t:"Ziel: Abschlussquiz",q:["9 Fragen zu allen Abschnitten –","teste, ob alles sitzt."],chip:"",col:C.ink,ill:"quiz"},
+  ];
+  function card(n){
+    const ill=ILL[n.ill||n.id](n.id), iw=230, ix=n.w/2-iw/2;
+    const isQuiz=n.id==="quiz";
+    let h=`<a href="#${n.id}" class="mnode" data-sec="${n.id}"><g transform="translate(${n.x},${n.y})">`;
+    h+=`<rect class="mcard" filter="url(#omShadow)" width="${n.w}" height="${n.h}" rx="16" fill="#fff" stroke="#ddd7cb" stroke-width="1.5"/>`;
+    if(isQuiz){
+      h+=`<g transform="translate(250,10) scale(.95)">${ill}</g>`;
+      h+=`<g transform="translate(22,34)"><rect width="34" height="34" rx="10" fill="${n.col}"/><text x="17" y="23" text-anchor="middle" font-size="17" font-weight="700" fill="#fff" font-family="ui-monospace,monospace">${n.badge}</text></g>`;
+      h+=`<text x="68" y="57" font-size="18" font-weight="700" fill="${C.ink}">${n.t}</text>`;
+      n.q.forEach((l,i)=>h+=`<text x="22" y="${95+i*17}" font-size="13" fill="${C.muted}">${l}</text>`);
+    } else {
+      h+=`<rect x="8" y="8" width="${n.w-16}" height="104" rx="11" fill="#faf8f3"/>`;
+      h+=`<g transform="translate(${n.w/2-103.5},12) scale(.9)">${ill}</g>`;
+      const ty=136;
+      h+=`<g transform="translate(14,${ty-22})"><rect width="30" height="30" rx="9" fill="${n.col}"/><text x="15" y="21" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="ui-monospace,monospace">${n.badge}</text></g>`;
+      h+=`<text x="52" y="${ty}" font-size="16.5" font-weight="700" fill="${C.ink}">${n.t}</text>`;
+      n.q.forEach((l,i)=>h+=`<text x="14" y="${ty+22+i*16}" font-size="12.5" fill="${C.muted}">${l}</text>`);
+      if(n.chip){ const cw=n.chip.length*6.6+14; h+=`<rect x="${n.w-14-cw}" y="${ty-13}" width="${cw}" height="18" rx="9" fill="${n.col}" fill-opacity=".1"/><text x="${n.w-14-cw/2}" y="${ty}" text-anchor="middle" font-size="10.5" font-weight="700" fill="${n.col}" font-family="ui-monospace,monospace">${n.chip}</text>`; }
+    }
+    h+=`<g class="chk" transform="translate(${n.w-6},6)"><circle r="13" fill="${C.ok}" stroke="#fff" stroke-width="3"/><text y="5" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">✓</text></g>`;
+    return h+`</g></a>`;
+  }
+  const region=(x,y,w,h,fill,stroke,icon,title,sub)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="26" fill="${fill}" stroke="${stroke}" stroke-width="1.5" stroke-dasharray="7 6"/>
+    <text x="${x+24}" y="${y+40}" font-size="24">${icon}</text><text x="${x+60}" y="${y+36}" font-size="19" font-weight="700" fill="${C.ink}">${title}</text>
+    ${sub.map((s,i)=>`<text x="${x+60}" y="${y+56+i*15}" font-size="12.5" fill="${C.muted}">${s}</text>`).join("")}`;
+  const edgeLabel=(x,y,t,col)=>`<g transform="translate(${x},${y})"><rect x="${-t.length*3.4-8}" y="-11" width="${t.length*6.8+16}" height="20" rx="10" fill="#fff" stroke="${col}" stroke-width="1.3"/><text y="3.5" text-anchor="middle" font-size="11" font-weight="700" fill="${col}">${t}</text></g>`;
+
+  let s=`<defs>
+    ${[["A",C.A],["B",C.B],["C",C.C],["D",C.D],["G",C.ok],["M","#9a937f"],["R",C.red]].map(([k,c])=>`<marker id="omArr${k}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="${c}"/></marker>`).join("")}
+    <filter id="omShadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#1d2433" flood-opacity=".10"/></filter>
+  </defs>`;
+  // Regionen
+  s+=region(16,178,690,757,"#fdf5e6","#e5c88f","🎲","Konkurrierend",["Jeder darf es versuchen, Konflikte werden","erkannt oder vermieden. Stark bei wenig Last."]);
+  s+=region(718,178,236,382,"#e3f3ef","#94cdbf","🔁","Kontrolliert",["Senderecht wird vergeben.","Keine Kollisionen."]);
+  s+=region(964,178,230,382,"#eeebf8","#bfb4e6","↔","Kein Verfahren",["Niemand konkurriert","ums Medium."]);
+  // Spuren in Region 1
+  s+=`<line x1="318" y1="262" x2="318" y2="915" stroke="#e5c88f" stroke-dasharray="4 6"/>`;
+  s+=`<text x="40" y="282" font-size="12.5" font-weight="700" fill="${C.amber}" font-family="ui-monospace,monospace">🔌 AM KABEL: ALLE HÖREN ALLE</text>`;
+  s+=`<text x="350" y="266" font-size="12.5" font-weight="700" fill="${C.amber}" font-family="ui-monospace,monospace">📶 IM FUNK: NICHT ALLE HÖREN SICH</text>`;
+  s+=`<text x="40" y="910" font-size="12" fill="${C.muted}">auch: ALOHA, Slotted ALOHA</text>`;
+  s+=`<text x="742" y="545" font-size="12" fill="${C.muted}">auch: Polling, TDMA</text>`;
+  // Wurzel
+  s+=`<g filter="url(#omShadow)"><rect x="390" y="10" width="420" height="138" rx="20" fill="${C.ink}"/></g>`;
+  s+=`<text x="600" y="38" text-anchor="middle" font-size="18" fill="#fff">Das Problem: <tspan font-weight="700">ein</tspan> Medium, <tspan font-weight="700">viele</tspan> Sender</text>`;
+  s+=`<g transform="translate(435,42)"><rect x="12" y="2" width="306" height="96" rx="12" fill="#2a3245"/>${ILL.root().replaceAll('fill="#fff"','fill="#1d2433"').replace(`fill="${C.muted}"`,'fill="#cfd5e2"')}</g>`;
+  // Verbindungen von der Wurzel
+  const edge=(d,col,mk,dash)=>`<path d="${d}" fill="none" stroke="${col}" stroke-width="3" ${dash?`stroke-dasharray="${dash}"`:""} marker-end="url(#omArr${mk})"/>`;
+  s+=edge("M470,148 C470,165 360,160 360,176","#9a937f","M");
+  s+=edge("M680,148 C700,165 836,160 836,176","#9a937f","M");
+  s+=edge("M760,148 C800,160 1079,150 1079,176","#9a937f","M");
+  // Beziehungen zwischen Themen
+  s+=edge("M515,464 V502",C.red,"R"); s+=edgeLabel(515,484,"im Funk treten Probleme auf",C.red);
+  s+=edge("M515,690 V728",C.ok,"G"); s+=edgeLabel(515,710,"Abhilfe für Hidden Station",C.ok);
+  s+=edge("M290,400 C320,400 320,367 348,367","#9a937f","M","5 5");
+  s+=edge("M836,560 V636","#9a937f","M","5 5"); s+=edge("M1079,560 V636","#9a937f","M","5 5");
+  // Karten
+  NODES.forEach(n=>s+=card(n));
+  // Lernpfad-Legende
+  s+=`<text x="732" y="830" font-size="13" fill="${C.muted}"><tspan font-weight="700" fill="${C.ink}">Empfohlener Lernpfad:</tspan> a → b → d → c → e → f → Quiz</text>`;
+  s+=`<text x="732" y="850" font-size="12" fill="${C.muted}">Klicke auf eine Karte. Angeschaute Abschnitte bekommen einen grünen Haken.</text>`;
+  $("#omSvg").innerHTML=s;
+})();
 /* ================= Lernlandkarte: Fortschritt & Brotkrumen ================= */
 (function(){
   const SECS=["a","b","c","d","e","f","quiz"];
