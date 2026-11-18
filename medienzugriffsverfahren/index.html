@@ -41,12 +41,12 @@ p{margin:.6em 0}
 .lab-title{font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px}
 .lab-title::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent)}
 .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:8px 0 14px}
-button{font:inherit;font-size:14px;padding:8px 14px;border-radius:10px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
+button{font-family:inherit;font-size:14px;padding:8px 14px;border-radius:10px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
 button.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
 button.ghost:hover{border-color:var(--ink)}
 button:disabled{opacity:.4;cursor:not-allowed}
 button.on{background:var(--accent);border-color:var(--accent)}
-select,input[type=range]{font:inherit;font-size:14px}
+select,input[type=range]{font-family:inherit;font-size:14px}
 select{padding:7px 10px;border-radius:10px;border:1px solid var(--line);background:#fff}
 label.inline{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
 .note{border-left:4px solid var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:0 10px 10px 0;margin:14px 0}
@@ -152,7 +152,7 @@ code,.mono{font-family:var(--mono);font-size:.92em}
 nav.toc a.mapbtn{background:var(--ink);color:#fff;border-color:var(--ink)}
 nav.toc a.cur{border-color:var(--accent);background:var(--accent-soft)}
 nav.toc a.done::after{content:" ✓";color:var(--ok);font-weight:700}
-.crumb{display:flex;gap:10px;align-items:center;justify-content:space-between;font:12px var(--mono);color:var(--muted);margin:-6px 0 14px}
+.crumb{display:flex;gap:10px;align-items:center;justify-content:space-between;font:12px var(--mono);color:var(--muted);margin:10px 0 10px;flex-wrap:wrap}
 .crumb a{text-decoration:none}
 /* Schritt-Modus */
 button.pulse{animation:pulse 1.4s infinite}
@@ -161,6 +161,46 @@ button.pulse{animation:pulse 1.4s infinite}
 .narr p.c{color:var(--warn)}.narr p.s{color:var(--ok)}
 .log .no{display:inline-block;min-width:22px;color:#8b93a7}
 .stepcount{font:600 12px var(--mono);color:var(--muted)}
+/* Auf-/Zuklappen */
+.lab-head{cursor:pointer;margin-bottom:0;flex-wrap:wrap;row-gap:4px;user-select:none}
+.lab-head::before{display:none}
+.lab-head:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:6px}
+.lab-tog{display:inline-block;transition:transform .2s;font-size:11px}
+.lab:not(.collapsed) .lab-tog{transform:rotate(90deg)}
+.lab-name{letter-spacing:.1em}
+.lab-open-hint{font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);font-family:system-ui,sans-serif;font-size:13px}
+.lab-hint{margin-left:auto;font-weight:600;text-transform:none;letter-spacing:0;font-size:11px;padding:2px 8px;border-radius:999px;background:var(--amber-soft);color:var(--amber)}
+.lab:not(.collapsed) .lab-body{margin-top:12px}
+.lab.collapsed .lab-body{display:none}
+.lab.collapsed{padding-top:14px;padding-bottom:14px}
+details.expl{border:1px solid var(--line);border-radius:12px;padding:10px 16px;margin:14px 0;background:#fff}
+details.expl summary{cursor:pointer;font-weight:600;color:var(--ink)}
+details.expl[open] summary{margin-bottom:6px}
+.sec-tools{display:flex;gap:6px;margin:-4px 0 12px}
+button.mini{font-size:12.5px;padding:4px 10px;border-radius:8px}
+.controls.oneline{flex-wrap:nowrap}
+.grid-steps{grid-template-columns:1.05fr 1fr;align-items:start}
+@media(max-width:820px){.grid-steps{grid-template-columns:1fr}}
+@media(max-width:640px){nav.toc ul{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}nav.toc li{flex:0 0 auto}.controls.oneline{flex-wrap:wrap}main table:not(#caTable){display:block;overflow-x:auto}label.inline{flex-wrap:wrap}select{max-width:100%}}
+.controls.oneline label.inline{white-space:nowrap}
+p.small,.small{overflow-wrap:break-word}
+/* Quiz */
+.qz-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 4px}
+.qz-part{margin-top:24px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+.qz-q{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0;background:#fff}
+.qz-q > p{font-weight:600;margin:0 0 10px}
+.qz-n{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--ink);color:#fff;font-family:var(--mono);font-size:12px;margin-right:8px;vertical-align:1px}
+.qz-opts{display:grid;gap:6px}
+.qz-opt{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;background:#fff;color:var(--ink);border:1px solid var(--line)}
+.qz-opt b{flex:0 0 22px;height:22px;border-radius:6px;background:#eef0f4;display:grid;place-items:center;font-family:var(--mono);font-size:12px}
+.qz-opt:hover:not(:disabled){border-color:var(--ink)}
+.qz-opt:disabled{opacity:1;cursor:default}
+.qz-opt.r{background:var(--ok-soft);border-color:var(--ok)} .qz-opt.r b{background:var(--ok);color:#fff}
+.qz-opt.w{background:var(--warn-soft);border-color:var(--warn)} .qz-opt.w b{background:var(--warn);color:#fff}
+.qz-fb{margin-top:10px;padding:10px 12px;border-radius:10px;font-size:14.5px;line-height:1.5}
+.qz-fb.ok{background:var(--ok-soft)}
+.qz-fb.bad{background:var(--warn-soft)}
+.qz-err{display:inline}
 /* bars */
 .bars{display:flex;align-items:flex-end;gap:10px;height:150px;padding:10px 4px 0;border-bottom:1px solid var(--ink)}
 .bar{flex:1;background:var(--amber);border-radius:6px 6px 0 0;position:relative;min-height:2px;transition:height .4s}
@@ -248,7 +288,7 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
 <header class="hero">
   <div class="kicker">Rechnernetze · Sicherungsschicht · MAC</div>
   <h1>Medienzugriffsverfahren<br>zum Ausprobieren</h1>
-  <p>Wer darf wann senden, wenn sich mehrere Stationen ein Medium teilen? Die Lernlandkarte zeigt dir, wie die sechs Leitfragen zusammenhängen. Klicke auf eine Karte, um zum Abschnitt zu springen.</p>
+  <p>Wer darf wann senden, wenn sich mehrere Stationen ein Medium teilen? Die Lernlandkarte zeigt dir, wie die sechs Leitfragen zusammenhängen. Am Ende wartet ein Abschlussquiz mit 20 Fragen. Klicke auf eine Karte, um zum Abschnitt zu springen.</p>
 </header>
 
 <nav class="toc"><ul>
@@ -316,7 +356,7 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
 
   <div class="om-foot">
     <span class="small">Empfohlene Reihenfolge: a → b → d → c → e → f, danach das Quiz. Abschnitte, die du angeschaut hast, bekommen einen Haken.</span>
-    <a class="om-card om-quiz" href="#quiz" data-sec="quiz"><span class="om-badge">✓</span><span class="om-t">Abschlussquiz</span><span class="om-q">9 Fragen zu allen Abschnitten</span></a>
+    <a class="om-card om-quiz" href="#quiz" data-sec="quiz"><span class="om-badge">✓</span><span class="om-t">Abschlussquiz</span><span class="om-q">20 Fragen in zwei Teilen (Grundlagen und Vertiefung)</span></a>
   </div>
   </div>
 </section>
@@ -325,9 +365,13 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
 <section id="a">
   <div class="q"><div class="badge">a</div><div><h2>An welcher Stelle von CSMA/CD „würfeln“ die Teilnehmer, wer zuerst senden darf?</h2><p class="sub">Binary Exponential Backoff</p></div></div>
 
+  <div class="key"><b>Kernsatz</b>
+    Gewürfelt wird im Kasten <b>„Zufällige Backoff-Zeit abwarten“</b>: Nach einer Kollision wählt jede beteiligte Station zufällig eine Zahl <code>k</code> aus <code>0 … 2<sup>n</sup>−1</code> und wartet <code>k</code> Slotzeiten. Wer die kleinste Zahl hat, sendet zuerst.</div>
+
+  <details class="expl"><summary>Erklärung</summary>
   <p>CSMA/CD heißt <i>Carrier Sense Multiple Access with Collision Detection</i>. Alle Stationen hängen an <b>einem gemeinsamen Kabel</b> (Bus bzw. Hub). Jede Station durchläuft vor und während des Sendens das folgende Schema:</p>
 
-  <div class="grid2" style="grid-template-columns:1.05fr 1fr;align-items:start">
+  <div class="grid2 grid-steps">
     <ol class="steps-book">
       <li><b>Medium abhören</b> (Carrier Sense)</li>
       <li><b>Medium für die Zeit eines IFS frei?</b> – Nein: weiter abhören. Ja: senden. <span class="small">(IFS = Interframe Space, bei Ethernet die Mindestpause von 96 Bitzeiten zwischen zwei Rahmen)</span></li>
@@ -338,22 +382,25 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
       <li><b>Zufällige Backoff-Zeit abwarten</b> 🎲 – dann zurück zu 1.</li>
     </ol>
     <div class="key" style="margin:0"><b>Hier wird gewürfelt</b>
-      Im Kasten <b>„Zufällige Backoff-Zeit abwarten“</b>. Nach einer Kollision wählt jede beteiligte Station zufällig eine Zahl <code>k</code> aus <code>0 … 2<sup>n</sup>−1</code> (n = Anzahl der bisherigen Kollisionen dieses Rahmens, höchstens 10) und wartet <code>k</code> Slotzeiten (bei 10 Mbit/s: 51,2 µs).<br><br>
+      n ist die Anzahl der bisherigen Kollisionen dieses Rahmens (höchstens 10). Eine Slotzeit dauert bei 10 Mbit/s 512 Bitzeiten = 51,2 µs.<br><br>
       Wer die <b>kleinere Zahl</b> würfelt, ist zuerst wieder bei „Medium abhören“, findet es frei und sendet. Die andere Station hört dann das belegte Medium und wartet. Bei <b>gleicher Zahl</b> kollidieren beide erneut, und der Würfelbereich verdoppelt sich.</div>
   </div>
 
-  <div class="lab">
+  <div class="note"><b>Warum kollidiert es trotz Abhören?</b> Weil sich ein Signal nicht unendlich schnell ausbreitet. In der Simulation beginnt B zu senden, aber das Signal hat D noch nicht erreicht. D hört deshalb ein freies Medium und sendet ebenfalls. Erst wenn sich die Signale treffen, bemerken es beide.</div>
+  </details>
+
+  <div class="lab" data-hint="vereinfachtes Modell">
     <div class="lab-title">Simulation: vier Stationen an einem gemeinsamen Kabel</div>
 
     <div class="busgrid">
       <div>
-    <div class="controls">
-        <button id="busStep">▶ Erster Schritt</button>
-        <button id="busAuto" class="ghost">⏵ Automatisch</button>
-        <button id="busRestart" class="ghost">↺ Neu starten</button>
-        <label class="inline">Tempo <input type="range" id="busSpeed" min="0.25" max="2" step="0.25" value="1"><span id="busSpeedV" class="mono">1×</span></label>
-        <button id="busError" class="ghost">Fehlerfall zeigen</button>
-      </div>
+        <div class="controls oneline">
+          <button id="busStep">▶ Erster Schritt</button>
+          <button id="busAuto" class="ghost">⏵ Automatisch</button>
+          <label class="inline">Tempo <input type="range" id="busSpeed" min="0.25" max="2" step="0.25" value="1" style="width:90px"><span id="busSpeedV" class="mono">1×</span></label>
+          <button id="busRestart" class="ghost">↺ Neu starten</button>
+        </div>
+        <div class="controls" style="margin-top:-6px"><span class="small">Sonderfall:</span><button id="busError" class="ghost mini">Fehlerfall zeigen</button></div>
         <svg id="bus" viewBox="0 0 760 220" style="width:100%;background:#fff;border:1px solid var(--line);border-radius:12px"></svg>
         <div class="buslegend legend">
           <span><i style="background:var(--A)"></i>Signal von A</span>
@@ -364,7 +411,7 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
           <span><i style="background:#111"></i>JAM-Signal</span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:14px"><div class="phase" id="busPhase">Bereit</div><span class="stepcount" id="busCount"></span></div>
-        <div class="narr" id="busNarr">Drücke <b>Start</b>. Zuerst laufen zwei normale Übertragungen, danach wollen zwei Stationen fast gleichzeitig senden.</div>
+        <div class="narr" id="busNarr"></div>
         <div class="small" style="margin:12px 0 4px">Verlauf</div>
         <div class="log" id="busLog" style="max-height:200px"></div>
       </div>
@@ -376,9 +423,7 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
     <p class="small">Modell zur Veranschaulichung: Die Signale breiten sich sichtbar langsam aus, damit man die Laufzeit auf dem Kabel sieht. Im Fehlerfall-Demo ist die maximale Versuchszahl auf 3 gesetzt statt 16, und die Stationen würfeln absichtlich immer gleich.</p>
   </div>
 
-  <div class="note"><b>Warum kollidiert es trotz Abhören?</b> Weil sich ein Signal nicht unendlich schnell ausbreitet. In der Simulation beginnt B zu senden, aber das Signal hat D noch nicht erreicht. D hört deshalb ein freies Medium und sendet ebenfalls. Erst wenn sich die Signale treffen, bemerken es beide.</div>
-
-  <div class="lab">
+  <div class="lab" data-hint="Monte-Carlo-Simulation">
     <div class="lab-title">Warum wird der Würfelbereich verdoppelt?</div>
     <p style="margin-top:0">Wahrscheinlichkeit, dass nach der <i>n</i>-ten Kollision <b>wieder</b> eine Kollision entsteht (die kleinste gewürfelte Zahl ist nicht eindeutig). Berechnet per Monte-Carlo mit 20 000 Durchläufen:</p>
     <div class="controls"><label class="inline">Stationen im Konflikt <select id="pN"><option selected>2</option><option>3</option><option>5</option><option>10</option></select></label></div>
@@ -396,14 +441,37 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
 <section id="b">
   <div class="q"><div class="badge">b</div><div><h2>Warum nutzt WLAN CSMA/CA statt CSMA/CD?</h2><p class="sub">Kollisionen lassen sich im Funk nicht zuverlässig erkennen – also vermeidet man sie</p></div></div>
 
+  <div class="key"><b>Kernsatz</b>
+    Im Funk kann der Sender Kollisionen nicht erkennen: Beim Senden hört er nur sich selbst, und Kollisionen entstehen <b>beim Empfänger</b>. WLAN <b>vermeidet</b> Kollisionen deshalb (Warten und Zufall schon vor dem Senden) und lässt jeden Rahmen per <b>ACK</b> bestätigen.</div>
+
+  <details class="expl"><summary>Erklärung</summary>
   <div class="grid2">
     <div class="card"><h4 style="margin-top:0">Grund 1: Senden und Hören gleichzeitig geht kaum</h4>
       <p>Eine Funkstation ist in der Regel <b>halbduplex</b>. Selbst mit zweiter Antenne würde das eigene Sendesignal das schwache Fremdsignal um viele Größenordnungen überdecken – die Station „hört sich nur selbst schreien“.</p></div>
     <div class="card"><h4 style="margin-top:0">Grund 2: Kollisionen passieren beim Empfänger</h4>
-      <p>Im Funk kann es beim <b>Empfänger</b> krachen, ohne dass der Sender etwas davon mitbekommt – z. B. wenn sich zwei Sender gegenseitig gar nicht hören (Hidden Station, siehe Simulation unten). Was der Sender am eigenen Ort misst, sagt wenig über den Empfänger aus.</p></div>
+      <p>Im Funk kann es beim <b>Empfänger</b> krachen, ohne dass der Sender etwas davon mitbekommt – z. B. wenn sich zwei Sender gegenseitig gar nicht hören (Hidden Station). Was der Sender am eigenen Ort misst, sagt wenig über den Empfänger aus. Im Funk reicht jedes Gerät nur so weit, wie sein Signal trägt; am Kabel dagegen kommt jedes Signal bei allen an.</p></div>
   </div>
 
-  <div class="lab">
+  <h3>So läuft CSMA/CA (802.11 DCF) ab</h3>
+  <ol>
+    <li>Medium abhören. Ist es für die Dauer eines <b>DIFS</b> frei, beginnt der Wettbewerb.</li>
+    <li>Jede Station zieht einen <b>zufälligen Backoff-Zähler</b> aus dem Contention Window <code>[0, CW]</code> und zählt pro freiem Slot herunter.</li>
+    <li>Wird das Medium belegt, wird der Zähler <b>eingefroren</b> (nicht neu gewürfelt) – wer schon lange wartet, kommt beim nächsten Mal früher dran.</li>
+    <li>Bei 0 wird gesendet. Der Empfänger bestätigt nach einem kurzen <b>SIFS</b> mit einem <b>ACK</b>.</li>
+    <li>Kein ACK? Dann galt der Rahmen als kollidiert/verloren → CW verdoppeln, neu würfeln.</li>
+  </ol>
+  <p class="small">Typische Werte (OFDM, z. B. 802.11a/n/ac im 5-GHz-Band): Slot 9 µs, SIFS 16 µs, DIFS = SIFS + 2 · Slot = 34 µs, CW<sub>min</sub> 15, CW<sub>max</sub> 1023.</p>
+
+  <table>
+    <tr><th></th><th>CSMA/CD (Ethernet)</th><th>CSMA/CA (WLAN)</th></tr>
+    <tr><td><b>Idee</b></td><td>Kollision <i>erkennen</i> und abbrechen</td><td>Kollision <i>vermeiden</i></td></tr>
+    <tr><td><b>Zufall</b></td><td>Erst <i>nach</i> einer Kollision (Backoff)</td><td>Schon <i>vor</i> jedem Senden nach belegtem Medium</td></tr>
+    <tr><td><b>Erfolgsnachweis</b></td><td>Keine Kollision während des Sendens</td><td>Positives ACK vom Empfänger</td></tr>
+    <tr><td><b>Voraussetzung</b></td><td>Alle hören alle, Senden + Mithören möglich</td><td>Funktioniert auch, wenn nicht alle sich hören</td></tr>
+  </table>
+  </details>
+
+  <div class="lab" data-hint="grobe Modellrechnung">
     <div class="lab-title">Mini-Experiment: eigenes vs. fremdes Signal</div>
     <div class="controls"><label class="inline">Abstand zur anderen Station <input type="range" id="dist" min="2" max="100" value="20"> <span id="distV" class="mono">20 m</span></label></div>
     <div class="sig"><span>Eigenes Signal (an der eigenen Antenne)</span><div class="track"><div class="fill" id="sigOwn" style="background:var(--B)"></div></div><span class="mono" id="sigOwnV"></span></div>
@@ -412,12 +480,8 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
     <p class="small">Grobe Modellrechnung (Freiraumdämpfung bei 2,4 GHz, 20 dBm Sendeleistung, ca. 30 dB Entkopplung zwischen Sende- und Empfangspfad angenommen). Die Werte sind Größenordnungen zur Veranschaulichung, keine Messwerte.</p>
   </div>
 
-
-  <h3>Grund 2 zum Ansehen: Hidden Station und Exposed Station</h3>
-  <p>Im Funk reicht jedes Gerät nur so weit, wie sein Signal trägt. Deshalb hört <b>nicht jeder jeden</b>. Bei CSMA/CD am Kabel ist das anders: Dort kommt jedes Signal bei allen an. Die Simulation zeigt die <b>Positionen</b> der Geräte, ihre <b>Reichweite</b> (Kreis), die <b>übertragenen Daten</b> und darunter, was jedes Gerät an seinem Ort gerade empfängt.</p>
-
-  <div class="lab">
-    <div class="lab-title">Simulation: Reichweite, Position und übertragene Daten</div>
+  <div class="lab" data-hint="vereinfachtes Modell">
+    <div class="lab-title">Simulation: Hidden &amp; Exposed Station – Reichweite, Position und Daten</div>
     <div class="controls">
       <button class="ghost rf-sc" data-sc="hidden">Hidden Station</button>
       <button class="ghost rf-sc" data-sc="exposed">Exposed Station</button>
@@ -433,20 +497,7 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
     <p class="small">Die Geräte lassen sich mit Maus oder Finger verschieben. Die Kästen „empfängt am eigenen Ort“ werden dabei live berechnet. Die Erklärtexte beziehen sich auf die Ausgangsaufstellung. Schritt für Schritt mit RTS/CTS geht es in <a href="#d">Abschnitt d</a> weiter.</p>
   </div>
 
-  <div class="key"><b>Folgerung für das Zugriffsverfahren</b>
-    Bei der Hidden Station passiert die Kollision <b>beim Empfänger B</b>. Die Sender A und C bekommen an ihrem eigenen Ort nichts davon mit. Collision Detection beim Sender wäre also wirkungslos. WLAN setzt deshalb auf <b>Vermeidung</b> (Warten + Zufall vor dem Senden) und auf eine <b>Bestätigung (ACK)</b> durch den Empfänger. Bleibt das ACK aus, gilt der Rahmen als verloren.</div>
-
-  <h3>So läuft CSMA/CA (802.11 DCF) ab</h3>
-  <ol>
-    <li>Medium abhören. Ist es für die Dauer eines <b>DIFS</b> frei, beginnt der Wettbewerb.</li>
-    <li>Jede Station zieht einen <b>zufälligen Backoff-Zähler</b> aus dem Contention Window <code>[0, CW]</code> und zählt pro freiem Slot herunter.</li>
-    <li>Wird das Medium belegt, wird der Zähler <b>eingefroren</b> (nicht neu gewürfelt) – wer schon lange wartet, kommt beim nächsten Mal früher dran.</li>
-    <li>Bei 0 wird gesendet. Der Empfänger bestätigt nach einem kurzen <b>SIFS</b> mit einem <b>ACK</b>.</li>
-    <li>Kein ACK? Dann galt der Rahmen als kollidiert/verloren → CW verdoppeln, neu würfeln.</li>
-  </ol>
-  <p class="small">Typische Werte (OFDM, z. B. 802.11a/n/ac im 5-GHz-Band): Slot 9 µs, SIFS 16 µs, DIFS 34 µs, CW<sub>min</sub> 15, CW<sub>max</sub> 1023. In der Simulation sind die Werte zur besseren Übersicht kleiner (CW<sub>min</sub> = 7).</p>
-
-  <div class="lab">
+  <div class="lab" data-hint="verkleinerte Werte">
     <div class="lab-title">Simulation: CSMA/CA-Zeitachse</div>
     <div class="controls">
       <label class="inline">Stationen <select id="caN"><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
@@ -465,15 +516,8 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
       <span><i class="c-col"></i>Kollision</span>
     </div>
     <p class="small" id="caInfo"></p>
+    <p class="small">Zur besseren Übersicht mit kleinerem Contention Window (CW<sub>min</sub> = 7 statt 15).</p>
   </div>
-
-  <table>
-    <tr><th></th><th>CSMA/CD (Ethernet)</th><th>CSMA/CA (WLAN)</th></tr>
-    <tr><td><b>Idee</b></td><td>Kollision <i>erkennen</i> und abbrechen</td><td>Kollision <i>vermeiden</i></td></tr>
-    <tr><td><b>Zufall</b></td><td>Erst <i>nach</i> einer Kollision (Backoff)</td><td>Schon <i>vor</i> jedem Senden nach belegtem Medium</td></tr>
-    <tr><td><b>Erfolgsnachweis</b></td><td>Keine Kollision während des Sendens</td><td>Positives ACK vom Empfänger</td></tr>
-    <tr><td><b>Voraussetzung</b></td><td>Alle hören alle, Senden + Mithören möglich</td><td>Funktioniert auch, wenn nicht alle sich hören</td></tr>
-  </table>
 
   <details class="answer"><summary>Musterantwort (b)</summary>
     <p>Im Funk kann eine Station während des Sendens praktisch nicht gleichzeitig zuhören (halbduplex, das eigene Signal überdeckt fremde Signale um Größenordnungen). Außerdem entstehen Kollisionen am Ort des <b>Empfängers</b>, den der Sender nicht „sieht“ (z. B. Hidden Station). Collision Detection ist daher nicht zuverlässig möglich. WLAN versucht Kollisionen stattdessen zu <b>vermeiden</b> (Collision Avoidance): Warten (DIFS), zufälliger Backoff schon vor dem Senden, Einfrieren des Zählers bei belegtem Medium und Bestätigung jedes Rahmens per ACK.</p>
@@ -484,14 +528,19 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
 <section id="c">
   <div class="q"><div class="badge">c</div><div><h2>Warum wird WLAN sowohl als Beispiel für CSMA/CA als auch für RTS/CTS genannt?</h2><p class="sub">Grundverfahren und optionale Erweiterung im selben Standard</p></div></div>
 
-  <p class="lead">Weil beides in IEEE 802.11 steckt – auf zwei Ebenen: <b>CSMA/CA ist das Grundverfahren</b> (Distributed Coordination Function, DCF), <b>RTS/CTS ist eine optionale Erweiterung</b>, die auf CSMA/CA aufsetzt. Auch RTS und CTS selbst werden per CSMA/CA gesendet.</p>
+  <div class="key"><b>Kernsatz</b>
+    Beides steckt in IEEE 802.11: <b>CSMA/CA ist das Grundverfahren</b> (DCF), <b>RTS/CTS eine optionale Erweiterung</b>, die darauf aufsetzt und vor allem das Hidden-Station-Problem entschärft.</div>
 
+  <details class="expl"><summary>Erklärung</summary>
+  <p>Auch RTS und CTS selbst werden per CSMA/CA gesendet – RTS/CTS ersetzt CSMA/CA also nicht, sondern ergänzt es.</p>
   <div class="grid2">
     <div class="card"><h4 style="margin-top:0">CSMA/CA = physisches Carrier Sensing</h4>
       <p>Die Station misst, ob auf dem Kanal Energie bzw. ein Signal ist. Problem: Sie hört nur, was in <i>ihrer</i> Reichweite passiert.</p></div>
     <div class="card"><h4 style="margin-top:0">RTS/CTS = virtuelles Carrier Sensing</h4>
       <p>Kurze Steuerrahmen enthalten eine <b>Dauerangabe</b>. Wer RTS oder CTS mithört, setzt seinen <b>NAV</b> (Network Allocation Vector) und betrachtet das Medium so lange als belegt – auch wenn er selbst nichts misst.</p></div>
   </div>
+  <div class="note"><b>Wann wird RTS/CTS eingesetzt?</b> Es kostet zusätzliche Rahmen und Zeit. Deshalb ist es in 802.11 typischerweise über eine <b>RTS-Schwelle</b> gesteuert: nur Rahmen ab einer bestimmten Größe werden mit RTS/CTS angekündigt (bei kurzen Rahmen ist eine Kollision billiger als der Overhead). Häufig ist die Schwelle so hoch eingestellt, dass RTS/CTS praktisch aus ist. Zusätzlich wird CTS-to-self als Schutzmechanismus genutzt, wenn ältere und neuere WLAN-Geräte gemischt im Netz sind.</div>
+  </details>
 
   <div class="lab">
     <div class="lab-title">Ablauf mit RTS/CTS – Schritt für Schritt</div>
@@ -499,8 +548,6 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
     <svg class="seq" id="seq" viewBox="0 0 760 360"></svg>
     <div class="steptext" id="seqText"></div>
   </div>
-
-  <div class="note"><b>Wann wird RTS/CTS eingesetzt?</b> Es kostet zusätzliche Rahmen und Zeit. Deshalb ist es in 802.11 typischerweise über eine <b>RTS-Schwelle</b> gesteuert: nur Rahmen ab einer bestimmten Größe werden mit RTS/CTS angekündigt (bei kurzen Rahmen ist eine Kollision billiger als der Overhead). Häufig ist die Schwelle so hoch eingestellt, dass RTS/CTS praktisch aus ist. Zusätzlich wird CTS-to-self als Schutzmechanismus genutzt, wenn ältere und neuere WLAN-Geräte gemischt im Netz sind.</div>
 
   <details class="answer"><summary>Musterantwort (c)</summary>
     <p>WLAN (IEEE 802.11) verwendet als Basis CSMA/CA (DCF). RTS/CTS ist keine Alternative dazu, sondern eine <b>optionale Ergänzung</b> innerhalb desselben Standards: Vor dem eigentlichen Datenrahmen reserviert der Sender das Medium per RTS, der Empfänger bestätigt per CTS. Beide Rahmen enthalten die Belegungsdauer; alle Mithörer setzen ihren NAV (virtuelles Carrier Sensing). Damit wird vor allem das Hidden-Station-Problem entschärft, das reines CSMA/CA nicht lösen kann. Deshalb ist WLAN Beispiel für beides.</p>
@@ -511,15 +558,21 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
 <section id="d">
   <div class="q"><div class="badge">d</div><div><h2>Was hat es mit Hidden Station und Exposed Station auf sich?</h2><p class="sub">Zwei Folgen davon, dass im Funk nicht jeder jeden hört</p></div></div>
 
+  <div class="key"><b>Kernsatz</b>
+    <b>Hidden Station:</b> Zwei Sender hören sich nicht und kollidieren unbemerkt beim gemeinsamen Empfänger. <b>Exposed Station:</b> Eine Station wartet unnötig, weil sie eine Übertragung hört, die sie gar nicht stören würde.</div>
+
+  <details class="expl"><summary>Erklärung</summary>
   <div class="grid2">
     <div class="card"><h4 style="margin-top:0">Hidden Station (versteckte Station)</h4>
       <p>A und C hören sich <b>nicht</b>, erreichen aber beide B. A sendet an B. C misst ein freies Medium und sendet ebenfalls → <b>Kollision bei B</b>. Carrier Sense versagt, weil der Sender den Konflikt nicht wahrnimmt.<br><b>Folge:</b> mehr Kollisionen, weniger Durchsatz.</p></div>
     <div class="card"><h4 style="margin-top:0">Exposed Station (ausgelieferte Station)</h4>
       <p>B sendet an A. C hört B und hält das Medium für belegt – will aber an D senden, der B gar nicht hört. Die Sendung hätte A nicht gestört. C <b>wartet unnötig</b>.<br><b>Folge:</b> verschenkte Kapazität, keine Kollision.</p></div>
   </div>
+  <div class="note warn"><b>Löst RTS/CTS das Exposed-Station-Problem?</b> Nur in der Theorie (Idee aus MACA): Wer ein RTS hört, aber kein CTS, ist nur „exposed“ und könnte senden. Praktisch klappt das nicht: C würde mit ihrer Sendung das ACK stören, das B von A empfangen muss, und das CTS von D könnte C wegen B's Sendung nicht sauber empfangen. In 802.11 setzt C beim Mithören des RTS ohnehin den NAV und wartet. Das Exposed-Station-Problem bleibt also weitgehend bestehen.</div>
+  </details>
 
-  <div class="lab">
-    <div class="lab-title">Simulation: Funkreichweiten – Stationen sind verschiebbar</div>
+  <div class="lab" data-hint="vereinfachtes Modell">
+    <div class="lab-title">Simulation: Funkreichweiten mit und ohne RTS/CTS – Stationen sind verschiebbar</div>
     <div class="controls">
       <button class="ghost scen-btn" data-sc="hidden">Hidden Station</button>
       <button class="ghost scen-btn" data-sc="hiddenRTS">Hidden + RTS/CTS</button>
@@ -534,8 +587,6 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
     <p class="small">Ziehe die Stationen mit der Maus/dem Finger. Die Kreise zeigen die Funkreichweite. Die Erklärtexte beziehen sich auf die Ausgangsaufstellung; die grauen Kästchen darunter werden live berechnet.</p>
   </div>
 
-  <div class="note warn"><b>Löst RTS/CTS das Exposed-Station-Problem?</b> Nur in der Theorie (Idee aus MACA): Wer ein RTS hört, aber kein CTS, ist nur „exposed“ und könnte senden. Praktisch klappt das nicht: C würde mit ihrer Sendung das ACK stören, das B von A empfangen muss, und das CTS von D könnte C wegen B's Sendung nicht sauber empfangen. In 802.11 setzt C beim Mithören des RTS ohnehin den NAV und wartet. Das Exposed-Station-Problem bleibt also weitgehend bestehen.</div>
-
   <details class="answer"><summary>Musterantwort (d)</summary>
     <p><b>Hidden Station:</b> Zwei Sender liegen außerhalb ihrer gegenseitigen Reichweite, aber beide in Reichweite desselben Empfängers. Beide halten das Medium für frei, senden gleichzeitig, und beim Empfänger kollidieren die Signale – ohne dass die Sender das merken. Gegenmittel: RTS/CTS (das CTS des Empfängers erreicht auch die versteckte Station, die daraufhin ihren NAV setzt).</p>
     <p><b>Exposed Station:</b> Eine Station hört eine laufende Übertragung und verzichtet aufs Senden, obwohl ihre Sendung den Empfänger dieser Übertragung gar nicht erreichen würde und ihr eigener Empfänger nicht gestört wäre. Ergebnis: unnötiges Warten, verschenkte Kapazität. RTS/CTS löst das in der Praxis kaum, u. a. wegen der ACKs.</p>
@@ -546,9 +597,20 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
 <section id="e">
   <div class="q"><div class="badge">e</div><div><h2>Wie effektiv ist Token Passing bei gleichmäßiger oder ungleichmäßiger Last?</h2><p class="sub">Nur wer den Token hält, darf senden</p></div></div>
 
-  <p>Ein spezieller Rahmen, der <b>Token</b>, kreist in fester Reihenfolge (logischer Ring). Wer ihn hält, darf bis zur <b>Token Holding Time</b> (hier: max. Rahmen pro Besitz) senden und gibt ihn dann weiter. Keine Kollisionen, garantierte maximale Wartezeit.</p>
+  <div class="key"><b>Kernsatz</b>
+    Bei <b>gleichmäßiger, hoher Last</b> sehr effektiv: keine Kollisionen, fair, garantierte maximale Wartezeit. Bei <b>ungleichmäßiger oder geringer Last</b> sinkt die Effektivität, weil der Token auch an Stationen ohne Daten vorbei muss.</div>
 
-  <div class="lab">
+  <details class="expl"><summary>Erklärung</summary>
+  <p>Ein spezieller Rahmen, der <b>Token</b>, kreist in fester Reihenfolge (logischer Ring). Wer ihn hält, darf bis zur <b>Token Holding Time</b> (hier: max. Rahmen pro Besitz) senden und gibt ihn dann weiter.</p>
+  <div class="grid2">
+    <div class="card"><h4 style="margin-top:0">Gleichmäßige Last</h4>
+      <p>Hier ist Token Passing in seinem Element: Fast jeder Token-Besuch transportiert Daten, der Overhead der Weitergabe verteilt sich, die Auslastung kann bei hoher Last nahe an die Kapazität heran. Alle kommen fair und mit <b>vorhersagbarer</b> Maximalwartezeit dran. CSMA/CD bricht bei hoher Last dagegen durch Kollisionen ein.</p></div>
+    <div class="card"><h4 style="margin-top:0">Ungleichmäßige Last</h4>
+      <p>Der Token muss trotzdem bei <b>allen</b> Stationen vorbei – auch bei denen, die nichts zu senden haben. Die stark belastete Station darf pro Umlauf nur begrenzt senden und muss dann eine ganze Runde warten. Ihre Warteschlange wächst, während das Medium zwischendurch nur den Token transportiert. Effizienz sinkt. Bei <b>geringer</b> Last ist Token Passing generell im Nachteil: Man wartet auf den Token, obwohl das Medium frei wäre.</p></div>
+  </div>
+  </details>
+
+  <div class="lab" data-hint="vereinfachtes Modell">
     <div class="lab-title">Simulation: Token Ring mit 6 Stationen</div>
     <div class="controls">
       <label class="inline">Lastverteilung
@@ -582,17 +644,10 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
     <p class="small">Modell: Ein Datenrahmen dauert 3 Ticks, die Weitergabe des Tokens 1 Tick. Last 100 % = so viele Rahmen, wie das Medium ohne Token-Overhead übertragen könnte. Puffer: 40 Rahmen pro Station.</p>
   </div>
 
-  <div class="lab">
-    <div class="lab-title">Schnellvergleich (je 30 000 Ticks, angebotene Last 80 %)</div>
+  <div class="lab" data-hint="je 30 000 Ticks">
+    <div class="lab-title">Schnellvergleich: gleiche Last, anders verteilt</div>
     <div class="controls"><button id="tkCompare">Vergleich berechnen</button></div>
     <div id="tkCmp"></div>
-  </div>
-
-  <div class="grid2">
-    <div class="card"><h4 style="margin-top:0">Gleichmäßige Last</h4>
-      <p>Hier ist Token Passing in seinem Element: Fast jeder Token-Besuch transportiert Daten, der Overhead der Weitergabe verteilt sich, die Auslastung kann bei hoher Last nahe an die Kapazität heran. Alle kommen fair und mit <b>vorhersagbarer</b> Maximalwartezeit dran. CSMA/CD bricht bei hoher Last dagegen durch Kollisionen ein.</p></div>
-    <div class="card"><h4 style="margin-top:0">Ungleichmäßige Last</h4>
-      <p>Der Token muss trotzdem bei <b>allen</b> Stationen vorbei – auch bei denen, die nichts zu senden haben. Die stark belastete Station darf pro Umlauf nur begrenzt senden und muss dann eine ganze Runde warten. Ihre Warteschlange wächst, während das Medium zwischendurch nur den Token transportiert. Effizienz sinkt. Bei <b>geringer</b> Last ist Token Passing generell im Nachteil: Man wartet auf den Token, obwohl das Medium frei wäre.</p></div>
   </div>
 
   <details class="answer"><summary>Musterantwort (e)</summary>
@@ -604,9 +659,10 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
 <section id="f">
   <div class="q"><div class="badge">f</div><div><h2>Unter welchen Umständen kann man auf ein Medienzugriffsverfahren verzichten?</h2><p class="sub">Wenn niemand um dasselbe Medium konkurriert</p></div></div>
 
-  <p class="lead">Ein Zugriffsverfahren wird nur gebraucht, wenn <b>mehrere potenzielle Sender sich dasselbe Medium teilen</b>. Fällt diese Bedingung weg, gibt es nichts zu regeln.</p>
+  <div class="key"><b>Kernsatz</b>
+    Ein Zugriffsverfahren wird nur gebraucht, wenn <b>mehrere potenzielle Sender sich dasselbe Medium teilen</b>. Fällt diese Bedingung weg – etwa bei einer Vollduplex-Punkt-zu-Punkt-Verbindung –, gibt es nichts zu regeln.</div>
 
-  <div class="lab">
+  <div class="lab" data-hint="Selbsttest">
     <div class="lab-title">Entscheide selbst: Ist hier ein Zugriffsverfahren nötig?</div>
     <div class="score" id="scScore">0 / 0 richtig</div>
     <div class="scen" id="scen" style="margin-top:10px"></div>
@@ -624,11 +680,16 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--muted);fon
 
 <!-- ============ quiz ============ -->
 <section id="quiz" class="quiz">
-  <div class="q"><div class="badge">✓</div><div><h2>Abschlussquiz</h2><p class="sub">Prüfe dein Verständnis</p></div></div>
-  <div class="score" id="quizScore"></div>
-  <div id="quizBox"></div>
-  <button class="ghost" id="quizReset" style="margin-top:8px">Quiz zurücksetzen</button>
+  <div class="q"><div class="badge">✓</div><div><h2>Abschlussquiz</h2><p class="sub">20 Fragen in zwei Teilen – mit Rechenweg und Erklärung nach jeder Antwort</p></div></div>
+  <div class="qz-bar"><span class="score" id="quizScore"></span><button class="ghost" id="quizNew">🎲 Neues Quiz (neue Zahlen, neu gemischt)</button></div>
+  <p class="small">Aufgaben mit Zahlen werden bei jedem neuen Quiz neu gewürfelt, die Antworten neu gemischt. Ein angefangenes Quiz bleibt beim Neuladen erhalten.</p>
+  <h3 class="qz-part">Teil 1: Grundlagen</h3>
+  <div id="quizP1"></div>
+  <h3 class="qz-part">Teil 2: Vertiefung – etwas anspruchsvoller</h3>
+  <div id="quizP2"></div>
+  <div id="quizResult"></div>
 </section>
+
 
 </main>
 <footer>Interaktive Lerneinheit zu Medienzugriffsverfahren (CSMA/CD, CSMA/CA, RTS/CTS, Token Passing). Simulationen sind bewusst vereinfachte Modelle.</footer>
@@ -918,7 +979,7 @@ function pRecompute(){
     for(let r=0;r<runs;r++){ let min=Infinity,cnt=0; for(let i=0;i<N;i++){const k=rnd(W); if(k<min){min=k;cnt=1}else if(k===min)cnt++;} if(cnt>1)coll++; }
     return coll/runs;
   });
-  $("#pBars").innerHTML=vals.map(v=>`<div class="bar" style="height:${Math.max(2,v*100)}%"><span>${(v*100).toFixed(0)}%</span></div>`).join("");
+  $("#pBars").innerHTML=vals.map(v=>`<div class="bar" style="height:${Math.max(2,v*100)}%"><span>${fmtNum(v*100,0)} %</span></div>`).join("");
   $("#pLabels").innerHTML=ns.map(n=>`<div>n=${n}<br>0…${2**n-1}</div>`).join("");
 }
 $("#pN").onchange=pRecompute; pRecompute();
@@ -1026,9 +1087,9 @@ function sigUpdate(){
   const other = tx - fspl;
   const map = v => Math.max(2, Math.min(100, (v+100)/1.2));
   $("#sigOwn").style.width=map(own)+"%"; $("#sigOther").style.width=map(other)+"%";
-  $("#sigOwnV").textContent=own.toFixed(0)+" dBm"; $("#sigOtherV").textContent=other.toFixed(0)+" dBm";
+  $("#sigOwnV").textContent=fmtNum(own,0)+" dBm"; $("#sigOtherV").textContent=fmtNum(other,0)+" dBm";
   const diff=own-other;
-  $("#sigTxt").innerHTML=`Unterschied: <b>${diff.toFixed(0)} dB</b> – das eigene Signal ist rund <b>${Number((10**(diff/10)).toPrecision(2)).toLocaleString("de-DE")}-mal</b> stärker. Eine Kollision im fremden Signal ist so praktisch nicht erkennbar.`;
+  $("#sigTxt").innerHTML=`Unterschied: <b>${fmtNum(diff,0)} dB</b> – das eigene Signal ist rund <b>${fmtNum(Number((10**(diff/10)).toPrecision(2)),0)}-mal</b> stärker. Eine Kollision im fremden Signal ist so praktisch nicht erkennbar.`;
 }
 $("#dist").oninput=sigUpdate; sigUpdate();
 
@@ -1260,7 +1321,7 @@ function tkRingDraw(){
 }
 function tkMetrics(){
   $("#mUtil").textContent = tk.t? Math.round(100*tk.sendTicks/tk.t)+" %":"–";
-  $("#mWait").textContent = tk.waitN? (tk.waitSum/tk.waitN).toFixed(1):"–";
+  $("#mWait").textContent = tk.waitN? fmtNum(tk.waitSum/tk.waitN,1):"–";
   $("#mEmpty").textContent = tk.visits? Math.round(100*tk.emptyVisits/tk.visits)+" %":"–";
   $("#mDrop").textContent = tk.drop;
   $("#qbars").innerHTML = tk.q.map((q,i)=>`<div class="qb" style="height:${Math.max(2,q.length/TK.BUF*100)}%;background:${q.length>=TK.BUF?"var(--warn)":"var(--accent)"}"><span>${q.length}</span></div>`).join("");
@@ -1293,7 +1354,7 @@ $("#tkCompare").onclick=()=>{
     $("#tkDist").value=d; const w=tkWeights(); const s=tkNew();
     for(let i=0;i<30000;i++) tkTick(s,0.8,w,tht);
     const offered = s.sentBy.reduce((a,b)=>a+b,0)+s.drop+s.q.reduce((a,q)=>a+q.length,0);
-    rows.push(`<tr><td>${label}</td><td class="mono">${Math.round(100*s.sendTicks/s.t)} %</td><td class="mono">${(s.waitSum/Math.max(1,s.waitN)).toFixed(1)}</td><td class="mono">${Math.round(100*s.emptyVisits/s.visits)} %</td><td class="mono">${Math.round(100*s.drop/Math.max(1,offered))} %</td></tr>`);
+    rows.push(`<tr><td>${label}</td><td class="mono">${Math.round(100*s.sendTicks/s.t)} %</td><td class="mono">${fmtNum(s.waitSum/Math.max(1,s.waitN),1)}</td><td class="mono">${Math.round(100*s.emptyVisits/s.visits)} %</td><td class="mono">${Math.round(100*s.drop/Math.max(1,offered))} %</td></tr>`);
   });
   $("#tkDist").value=old;
   $("#tkCmp").innerHTML=`<table><tr><th>Verteilung</th><th>Auslastung</th><th>Ø Wartezeit</th><th>leere Token-Besuche</th><th>verworfen</th></tr>${rows.join("")}</table>
@@ -1322,29 +1383,221 @@ function scRender(){
 }
 scRender();
 
-/* ================= Quiz ================= */
-const QZ=[
-  {q:"Wann wählt eine Station bei CSMA/CD eine zufällige Wartezeit?",o:["Vor jedem Sendeversuch","Nach einer erkannten Kollision","Nur wenn das Medium belegt ist","Wenn ein Token ausbleibt"],c:1,e:"Der Binary Exponential Backoff setzt erst nach einer Kollision (und dem Jam-Signal) ein."},
-  {q:"Nach der 3. Kollision eines Rahmens: Aus welchem Bereich wird k gewürfelt?",o:["0 … 3","0 … 7","0 … 8","1 … 8"],c:1,e:"k ∈ {0, …, 2ⁿ−1} = 0 … 7 für n = 3."},
-  {q:"Was ist der Hauptgrund, warum WLAN keine Collision Detection nutzt?",o:["Funk ist zu langsam","Eine Funkstation kann beim Senden praktisch nicht mithören, und Kollisionen entstehen beim Empfänger","CSMA/CD ist patentiert","WLAN hat keine MAC-Adressen"],c:1,e:"Halbduplex-Funk + Kollisionsort beim Empfänger (z. B. Hidden Station) machen CD unzuverlässig."},
-  {q:"Was passiert mit dem Backoff-Zähler bei CSMA/CA, wenn das Medium während des Herunterzählens belegt wird?",o:["Er wird neu gewürfelt","Er wird auf 0 gesetzt","Er wird eingefroren und später fortgesetzt","Er wird verdoppelt"],c:2,e:"Eingefroren – so bekommen lange wartende Stationen eine faire Chance."},
-  {q:"Wozu dient der NAV?",o:["Er speichert die MAC-Adresse des Access Points","Er markiert das Medium als virtuell belegt, basierend auf Dauerangaben in RTS/CTS","Er verschlüsselt den Datenrahmen","Er zählt Kollisionen"],c:1,e:"Network Allocation Vector = virtuelles Carrier Sensing."},
-  {q:"Welches Problem entschärft RTS/CTS hauptsächlich?",o:["Exposed Station","Hidden Station","Broadcast-Stürme","Token-Verlust"],c:1,e:"Das CTS des Empfängers erreicht auch die versteckte Station."},
-  {q:"B sendet an A; C hört B und verzichtet deshalb aufs Senden an D, obwohl das niemanden gestört hätte. Wie heißt das?",o:["Hidden Station","Exposed Station","Capture-Effekt","Near-Far-Problem"],c:1,e:"C ist der Übertragung von B „ausgesetzt“ – unnötiges Warten."},
-  {q:"Wann ist Token Passing besonders effizient?",o:["Bei sehr geringer Last","Bei hoher, gleichmäßig verteilter Last","Wenn nur eine Station sendet","Wenn viele Kollisionen auftreten"],c:1,e:"Dann trägt fast jeder Token-Besuch Daten, und es gibt keine Kollisionen."},
-  {q:"In welchem Fall kann man auf ein Medienzugriffsverfahren verzichten?",o:["WLAN mit vielen Clients","Ethernet über einen Hub","Vollduplex-Punkt-zu-Punkt-Verbindung","Token Ring"],c:2,e:"Keine Konkurrenz ums Medium → nichts zu regeln."},
-];
-let qzAns={};
-function qzRender(){
-  $("#quizBox").innerHTML=QZ.map((x,i)=>`<div class="qq ${qzAns[i]!==undefined?"answered":""}"><p>${i+1}. ${x.q}</p>${x.o.map((o,j)=>{
-      let c=""; if(qzAns[i]!==undefined){ if(j===x.c)c="r"; else if(j===qzAns[i])c="w"; }
-      return `<button class="opt ${c}" data-i="${i}" data-j="${j}" ${qzAns[i]!==undefined?"disabled":""}>${o}</button>`;}).join("")}<div class="ex">${x.e}</div></div>`).join("");
-  const n=Object.keys(qzAns).length, r=Object.entries(qzAns).filter(([i,j])=>QZ[i].c===j).length;
-  $("#quizScore").textContent= n? `${r} von ${n} richtig${n===QZ.length?` – ${r===QZ.length?"perfekt! 🎉":"gut, schau dir die Abschnitte zu den falschen Antworten nochmal an."}`:""}` : `${QZ.length} Fragen`;
-  $$("#quizBox .opt").forEach(b=>b.onclick=()=>{ qzAns[b.dataset.i]=+b.dataset.j; qzRender(); });
+/* ================= Abschlussquiz ================= */
+/*QUIZGEN-START*/
+function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+const ri=(r,a,b)=>a+Math.floor(r()*(b-a+1));
+const pick=(r,arr)=>arr[Math.floor(r()*arr.length)];
+// Zahlformat: Dezimalkomma, echtes Minus, Gruppierung erst ab 10 000
+function fmtNum(x,dec=2){
+  let v=Number(x.toFixed(dec));
+  if(Object.is(v,-0)) v=0;
+  const neg=v<0; v=Math.abs(v);
+  let [i,f]=String(v).split(".");
+  if(i.length>=5) i=i.replace(/\B(?=(\d{3})+(?!\d))/g," ");
+  return (neg?"−":"")+i+(f?","+f:"");
 }
-$("#quizReset").onclick=()=>{qzAns={};qzRender();};
-qzRender();
+const pct=(p,dec=1)=>fmtNum(p*100,dec)+" %";
+
+const QGEN=[
+/* ---------- Teil 1: Grundlagen ---------- */
+{part:1, gen:r=>{ const n=ri(r,2,6), W=2**n; return {
+  q:`Ein Rahmen ist bei CSMA/CD gerade zum <b>${n}. Mal</b> kollidiert. Aus welchem Bereich wählt die Station die Zufallszahl k für den Backoff?`,
+  c:`0 … ${W-1}`,
+  w:[{t:`0 … ${W}`, e:`Das wären ${W+1} Werte. Nach der ${n}. Kollision gibt es 2<sup>${n}</sup> = ${W} mögliche Werte – und weil bei 0 begonnen wird, ist der größte ${W}−1 = ${W-1}.`},
+     {t:`0 … ${2**(n-1)-1}`, e:`Das ist der Bereich nach der ${n-1}. Kollision. Mit jeder Kollision verdoppelt sich der Bereich, nach der ${n}. Kollision gilt 2<sup>${n}</sup>.`},
+     {t:`1 … ${W}`, e:`k = 0 ist erlaubt – dann wird sofort wieder abgehört. Der Bereich beginnt bei 0, nicht bei 1.`}],
+  x:`Nach der n-ten Kollision gilt k ∈ {0, …, 2<sup>n</sup>−1}. Mit n = ${n}: 2<sup>${n}</sup> = ${W} mögliche Werte, also 0 … ${W-1}.`};}},
+{part:1, gen:r=>({
+  q:`An welcher Stelle des CSMA/CD-Ablaufs wird „gewürfelt“?`,
+  c:`Nach einer erkannten Kollision und dem JAM-Signal, bevor ein neuer Versuch startet`,
+  w:[{t:`Vor jedem Sendeversuch, damit Kollisionen gar nicht erst entstehen`, e:`Das ist die Idee von CSMA/CA (WLAN). CSMA/CD würfelt erst, wenn schon eine Kollision passiert ist.`},
+     {t:`Beim Abhören, solange das Medium belegt ist`, e:`Bei belegtem Medium wartet die Station einfach, bis es frei ist („Nein“-Zweig) – ohne Zufall.`},
+     {t:`Nach 16 Fehlversuchen, bevor die Fehlermeldung kommt`, e:`Nach 16 Versuchen wird aufgegeben. Gewürfelt wird vorher – nach jeder einzelnen Kollision.`}],
+  x:`Ablauf: Kollision erkannt → JAM-Signal → maximale Versuchszahl erreicht? Nein → <b>zufällige Backoff-Zeit abwarten</b> (hier wird gewürfelt) → wieder abhören.`})},
+{part:1, gen:r=>{ const k=ri(r,1,15); return {
+  q:`Bei 10-Mbit/s-Ethernet beträgt die Slotzeit 512 Bitzeiten. Eine Station hat beim Backoff <b>k = ${k}</b> gewürfelt. Wie lange wartet sie?`,
+  c:`${fmtNum(k*51.2,1)} µs`,
+  w:[{t:`${fmtNum(k*512,0)} µs`, e:`512 ist die Slotzeit in <i>Bitzeiten</i>, nicht in µs. Eine Bitzeit dauert bei 10 Mbit/s 0,1 µs, also 512 · 0,1 µs = 51,2 µs pro Slot.`},
+     {t:`${fmtNum((k+1)*51.2,1)} µs`, e:`k zählt die Slots direkt: k = 0 heißt gar nicht warten. Es kommt kein zusätzlicher Slot dazu.`},
+     {t:`${fmtNum(k*5.12,2)} µs`, e:`5,12 µs wäre die Slotzeit bei 100 Mbit/s. Gefragt ist 10 Mbit/s: 512 Bit ÷ 10 Mbit/s = 51,2 µs.`}],
+  x:`Slotzeit = 512 Bit ÷ 10 Mbit/s = 51,2 µs. Wartezeit = k · Slotzeit = ${k} · 51,2 µs = ${fmtNum(k*51.2,1)} µs.`};}},
+{part:1, gen:r=>({
+  q:`Warum verwendet WLAN CSMA/CA statt CSMA/CD?`,
+  c:`Eine Funkstation kann beim Senden praktisch nicht mithören, und Kollisionen entstehen beim Empfänger`,
+  w:[{t:`Funk ist langsamer als Kabel, deshalb wären Kollisionen zu teuer`, e:`Nicht die Geschwindigkeit ist das Problem, sondern dass der Sender die Kollision gar nicht wahrnehmen kann.`},
+     {t:`Im WLAN gibt es keine Kollisionen, also braucht es keine Erkennung`, e:`Kollisionen gibt es sehr wohl – sie werden nur nicht vom Sender erkannt, sondern indirekt über das fehlende ACK.`},
+     {t:`CSMA/CD funktioniert nur mit Koaxialkabel`, e:`CSMA/CD lief auch über Twisted Pair mit Hub. Entscheidend ist, ob alle alle hören und ob Senden und Mithören gleichzeitig möglich ist.`}],
+  x:`Funk ist halbduplex: Das eigene Signal überdeckt fremde Signale um Größenordnungen. Und Kollisionen passieren am Ort des Empfängers (z. B. Hidden Station). Deshalb: vermeiden statt erkennen, Erfolg per ACK.`})},
+{part:1, gen:r=>({
+  q:`CSMA/CA: Eine Station zählt ihren Backoff-Zähler herunter, da wird das Medium belegt. Was passiert mit dem Zähler?`,
+  c:`Er wird angehalten und später mit dem Restwert fortgesetzt`,
+  w:[{t:`Er wird neu gewürfelt`, e:`Neu gewürfelt wird nur nach einem Fehlschlag (kein ACK). Beim Einfrieren bleibt der Restwert erhalten.`},
+     {t:`Er wird verdoppelt`, e:`Verdoppelt wird das Contention Window nach einem Fehlschlag – nicht der laufende Zähler.`},
+     {t:`Er läuft weiter, und bei 0 wird trotzdem gesendet`, e:`Dann würde die Station in eine laufende Übertragung hineinsenden. Gezählt wird nur in freien Slots.`}],
+  x:`Der Zähler wird <b>eingefroren</b>. So kommt eine Station, die schon lange wartet, beim nächsten Mal früher dran – das sorgt für Fairness.`})},
+{part:1, gen:r=>({
+  q:`Wozu dient der NAV (Network Allocation Vector) im WLAN?`,
+  c:`Er markiert das Medium als virtuell belegt – für die in RTS/CTS angekündigte Dauer`,
+  w:[{t:`Er misst die Signalstärke auf dem Kanal`, e:`Das ist physisches Carrier Sensing. Der NAV ist ein Zeitwert, der aus Dauerangaben in mitgehörten Rahmen gesetzt wird.`},
+     {t:`Er speichert die Adresse des Access Points`, e:`Mit Adressen hat der NAV nichts zu tun – er ist ein Zeitwert (virtuelles Carrier Sensing).`},
+     {t:`Er zählt die Kollisionen eines Rahmens`, e:`Kollisionen bzw. Versuche zählt der Backoff. Der NAV gibt an, wie lange das Medium als belegt gilt.`}],
+  x:`RTS und CTS enthalten die Dauer der geplanten Übertragung. Wer sie mithört, setzt seinen NAV und schweigt so lange – auch wenn er selbst kein Signal misst.`})},
+{part:1, gen:r=>{ const [s1,s2]=pick(r,[["Laptop L","Tablet T"],["Drucker D","Laptop L"],["Smartphone S","Tablet T"]]); return {
+  q:`${s1} und ${s2} senden beide an denselben Access Point. Die beiden hören sich gegenseitig nicht. Wie heißt das Problem, und wo entsteht die Kollision?`,
+  c:`Hidden Station – die Kollision entsteht beim Access Point`,
+  w:[{t:`Exposed Station – eines der Geräte wartet unnötig`, e:`Exposed heißt: jemand wartet, obwohl er niemanden stören würde. Hier stören sich die beiden tatsächlich – beim gemeinsamen Empfänger.`},
+     {t:`Hidden Station – beide bemerken die Kollision sofort beim Senden`, e:`Gerade nicht: Sie hören sich nicht, also merken sie am eigenen Ort nichts. Erst das fehlende ACK zeigt den Verlust.`},
+     {t:`Kein Problem – CSMA/CA verhindert das durch Abhören`, e:`Abhören hilft hier nicht: Keines der beiden Geräte hört das andere – beide finden das Medium frei.`}],
+  x:`Klassische Hidden-Station-Situation: Beide Sender liegen in Reichweite des Access Points, aber nicht in Reichweite voneinander. Ihre Signale überlagern sich beim Access Point.`};}},
+{part:1, gen:r=>({
+  q:`B sendet an A. C hört B und möchte an D senden. A hört C nicht, D hört B nicht. Was passiert ohne RTS/CTS?`,
+  c:`C verzichtet unnötig aufs Senden – verschenkte Kapazität, aber keine Kollision`,
+  w:[{t:`Bei A überlagern sich die Signale von B und C`, e:`C erreicht A gar nicht (A hört C nicht). Bei A kommt nur B an.`},
+     {t:`C sendet trotzdem, und bei D gibt es eine Kollision`, e:`D hört B nicht – bei D käme nur C an. Außerdem sendet C gar nicht, weil es B hört.`},
+     {t:`Das ist das Hidden-Station-Problem`, e:`Hidden: Sender hören sich nicht und kollidieren beim Empfänger. Hier hört C den Sender B – und wartet deshalb zu Unrecht.`}],
+  x:`Exposed Station: C ist B's Übertragung „ausgesetzt“, hält das Medium für belegt und wartet – obwohl beide Übertragungen parallel möglich gewesen wären.`})},
+{part:1, gen:r=>({
+  q:`Bei welcher Lastsituation ist Token Passing besonders effizient?`,
+  c:`Bei hoher, gleichmäßig verteilter Last`,
+  w:[{t:`Bei sehr geringer Last`, e:`Dann wartet jede Station auf den Token, obwohl das Medium frei ist – konkurrierende Verfahren wären schneller.`},
+     {t:`Wenn fast nur eine Station sendet`, e:`Der Token muss trotzdem an allen anderen vorbei, und die eine Station darf pro Umlauf nur begrenzt senden.`},
+     {t:`Wenn häufig Kollisionen auftreten`, e:`Beim Token Passing gibt es gar keine Kollisionen – nur der Tokenhalter sendet.`}],
+  x:`Bei hoher, gleichmäßiger Last transportiert fast jeder Tokenbesuch Daten. Der Overhead der Weitergabe verteilt sich, alle kommen fair dran.`})},
+{part:1, gen:r=>({
+  q:`In welchem Fall kann man auf ein Medienzugriffsverfahren verzichten?`,
+  c:`Bei einer Vollduplex-Punkt-zu-Punkt-Verbindung, z. B. PC am Switch-Port`,
+  w:[{t:`Bei einem Hub mit nur wenigen Rechnern`, e:`Auch wenige Rechner am Hub teilen sich eine Kollisionsdomäne – es braucht CSMA/CD.`},
+     {t:`Im WLAN, wenn nur zwei Geräte verbunden sind`, e:`Zwei Geräte teilen sich trotzdem denselben Funkkanal und könnten gleichzeitig senden.`},
+     {t:`Beim Token Ring, weil es dort keine Kollisionen gibt`, e:`Token Passing <i>ist</i> ein Zugriffsverfahren – es verhindert Kollisionen, indem es den Zugriff regelt.`}],
+  x:`Ein Zugriffsverfahren braucht es nur, wenn mehrere Sender um dasselbe Medium konkurrieren. Bei Vollduplex hat jede Richtung ihren eigenen Kanal, und am Port hängt nur eine Station.`})},
+
+/* ---------- Teil 2: Vertiefung ---------- */
+{part:2, gen:r=>{ const n=ri(r,2,5), W=2**n; const fr=d=>`1/${d} (≈ ${pct(1/d)})`; return {
+  q:`Zwei Stationen sind gerade zum <b>${n}. Mal</b> miteinander kollidiert und würfeln ihren Backoff. Wie groß ist die Wahrscheinlichkeit, dass sie <b>dieselbe</b> Zahl würfeln und erneut kollidieren?`,
+  c:fr(W),
+  w:[{t:fr(W-1), e:`Es gibt nicht ${W-1}, sondern 2<sup>${n}</sup> = ${W} mögliche Zahlen (0 … ${W-1}).`},
+     {t:fr(W/2), e:`Hier wurden die Chancen beider Stationen addiert (2/${W}). Egal, was die erste würfelt – die zweite muss genau diese eine Zahl treffen: 1/${W}.`},
+     {t:fr(W*W), e:`1/${W*W} wäre die Chance, dass beide eine <i>vorher festgelegte</i> Zahl treffen (z. B. beide die 0). Für „dieselbe Zahl, egal welche“ gibt es ${W} günstige Fälle: ${W}/${W*W} = 1/${W}.`}],
+  x:`Station 1 würfelt irgendeine der ${W} Zahlen. Station 2 muss genau diese treffen: 1 von ${W} Möglichkeiten → 1/${W} ≈ ${pct(1/W)}. Deshalb sinkt die Kollisionsgefahr mit jeder Verdopplung des Bereichs.`};}},
+{part:2, gen:r=>{ const m=ri(r,1,4), cw=2**(4+m)-1; const seq=[15]; for(let i=1;i<=m;i++) seq.push(2**(4+i)-1); return {
+  q:`Im WLAN gilt CW<sub>min</sub> = 15. Nach jedem Fehlschlag (kein ACK) wird das Contention Window verdoppelt (15 → 31 → …). Ein Rahmen ist <b>${m}-mal</b> ohne ACK geblieben. Wie groß ist CW jetzt?`,
+  c:`CW = ${cw}`,
+  w:[{t:`CW = ${15*2**m}`, e:`Verdoppelt wird die Anzahl der Werte (CW + 1), nicht CW selbst: (15 + 1) · 2 − 1 = 31, nicht 30.`},
+     {t:`CW = ${2**(5+m)-1}`, e:`Eine Verdopplung zu viel: Nach dem 1. Fehlschlag gilt 31, nach dem 2. gilt 63 – zähle nur die Fehlschläge.`},
+     {t:`CW = ${2**(3+m)-1}`, e:`Eine Verdopplung zu wenig: Schon der erste Fehlschlag verdoppelt von 15 auf 31.`}],
+  x:`CW + 1 verdoppelt sich je Fehlschlag: ${seq.join(" → ")}. Nach ${m} ${m>1?"Fehlschlägen":"Fehlschlag"}: CW = 2<sup>${4+m}</sup> − 1 = ${cw}.`};}},
+{part:2, gen:r=>{ const s=pick(r,[10,16]), sl=pick(r,[9,20]); return {
+  q:`Für einen WLAN-Standard gelten SIFS = ${s} µs und Slotzeit = ${sl} µs. Wie lang ist das DIFS?`,
+  c:`${s+2*sl} µs`,
+  w:[{t:`${s+sl} µs`, e:`SIFS + 1 Slot ist das PIFS (Vorrang für den Access Point). Das DIFS hat zwei Slots.`},
+     {t:`${2*(s+sl)} µs`, e:`Nur die Slotzeit wird verdoppelt, nicht das SIFS: DIFS = SIFS + 2 · Slotzeit.`},
+     {t:`${2*sl} µs`, e:`Hier fehlt das SIFS: DIFS = SIFS + 2 · Slotzeit.`}],
+  x:`DIFS = SIFS + 2 · Slotzeit = ${s} µs + 2 · ${sl} µs = ${s+2*sl} µs.`};}},
+{part:2, gen:r=>{ const L=pick(r,[500,1000,1500,2000,2500]), v=2e8, R=1e7; const tau=L/v, bits=2*tau*R; return {
+  q:`Ein Bus-Kabel ist <b>${fmtNum(L,0)} m</b> lang, das Signal breitet sich mit 2 · 10<sup>8</sup> m/s aus, die Datenrate ist 10 Mbit/s. Wie viele Bit muss ein Rahmen <b>mindestens</b> lang sein, damit der Sender eine Kollision sicher noch während des Sendens bemerkt?`,
+  c:`${fmtNum(bits,2)} Bit`,
+  w:[{t:`${fmtNum(bits/2,2)} Bit`, e:`Die einfache Laufzeit reicht nicht: Im ungünstigsten Fall beginnt die Kollision am anderen Ende, und das Störsignal muss noch zurücklaufen → doppelte Laufzeit.`},
+     {t:`${fmtNum(bits/8,2)} Bit`, e:`Laufzeit · Bit/s ergibt bereits Bit. Durch 8 zu teilen rechnet in Byte um – gefragt ist Bit.`},
+     {t:`${fmtNum(2*L/3e8*R,2)} Bit`, e:`3 · 10<sup>8</sup> m/s ist die Lichtgeschwindigkeit im Vakuum. Im Kabel ist das Signal langsamer, hier 2 · 10<sup>8</sup> m/s.`}],
+  x:`Laufzeit τ = ${fmtNum(L,0)} m ÷ (2 · 10<sup>8</sup> m/s) = ${fmtNum(tau*1e6,2)} µs. Hin und zurück: 2τ = ${fmtNum(2*tau*1e6,2)} µs. Mindestlänge = 2τ · 10 Mbit/s = ${fmtNum(bits,2)} Bit. (Ethernet legt real 512 Bit = 64 Byte fest, weil Repeater und Sicherheitsreserven dazukommen.)`};}},
+{part:2, gen:r=>{ const N=ri(r,4,10), h=ri(r,2,4), t=pick(r,[0.5,1,1.5,2]); const ms=x=>`${fmtNum(x,2)} ms`; return {
+  q:`Token Ring mit <b>${N} Stationen</b>. Jede darf pro Tokenbesitz höchstens <b>${h} Rahmen</b> zu je <b>${fmtNum(t,1)} ms</b> senden; die Tokenweitergabe wird vernachlässigt. S<sub>1</sub> hat den Token gerade weitergegeben und bekommt sofort einen neuen Rahmen. Wie lange wartet S<sub>1</sub> im <b>ungünstigsten</b> Fall, bis sie wieder senden darf?`,
+  c:ms((N-1)*h*t),
+  w:[{t:ms(N*h*t), e:`S<sub>1</sub> selbst sendet in dieser Wartezeit nicht – nur die ${N-1} anderen Stationen.`},
+     {t:ms((N-1)*t), e:`Jede Station darf bis zu ${h} Rahmen senden, nicht nur einen (Token Holding Time).`},
+     {t:ms((N-1)*h*t/2), e:`Gefragt ist der ungünstigste Fall (Maximum), nicht der Durchschnitt.`}],
+  x:`Im schlimmsten Fall senden alle ${N-1} anderen Stationen ihr Maximum: (${N} − 1) · ${h} · ${fmtNum(t,1)} ms = ${ms((N-1)*h*t)}. Diese garantierte Obergrenze macht Token Passing echtzeitfähig.`};}},
+{part:2, gen:r=>{ const N=ri(r,4,8), h=ri(r,1,3), t=pick(r,[2,3,4]), p=pick(r,[0.5,1]); const D=h*t, O=N*p; return {
+  q:`Token Ring mit <b>${N} Stationen</b>, Tokenweitergabe je Station <b>${fmtNum(p,1)} ms</b>. <b>Nur eine</b> Station hat Daten und sendet bei jedem Tokenbesitz ${h} Rahmen zu je ${t} ms. Welcher Anteil der Zeit wird für Nutzdaten verwendet?`,
+  c:pct(D/(D+O)),
+  w:[{t:pct(D/(D+p)), e:`Das gälte, wenn alle Stationen gleich viel senden (dann kommt auf jede Weitergabe ein Sendevorgang). Hier muss der Token für ${D} ms Daten an allen ${N} Stationen vorbei.`},
+     {t:pct(O/(D+O)), e:`Das ist der Anteil des Token-Overheads – gefragt ist der Nutzanteil.`},
+     {t:pct(1/N), e:`Der Nutzanteil hängt von Sende- und Weitergabezeiten ab, nicht nur von der Zahl der Stationen.`}],
+  x:`Ein Umlauf: ${h} · ${t} ms = ${D} ms Daten + ${N} · ${fmtNum(p,1)} ms = ${fmtNum(O,1)} ms Weitergabe = ${fmtNum(D+O,1)} ms. Nutzanteil = ${D} ÷ ${fmtNum(D+O,1)} ≈ ${pct(D/(D+O))}. Bei Schieflast frisst der Token-Umlauf also Kapazität.`};}},
+{part:2, gen:r=>({
+  q:`Hidden-Station-Situation: A sendet an B. C hört A nicht, aber B. Welcher Rahmen sorgt mit RTS/CTS dafür, dass C während der Übertragung schweigt?`,
+  c:`Das CTS von B – C hört es und setzt seinen NAV`,
+  w:[{t:`Das RTS von A`, e:`C liegt außerhalb von A's Reichweite – das RTS kommt bei C gar nicht an.`},
+     {t:`Das ACK von B`, e:`Das ACK kommt erst am Ende – dann ist die Übertragung schon vorbei.`},
+     {t:`Der Datenrahmen von A`, e:`Den hört C ebenfalls nicht. Genau deshalb braucht es das CTS des Empfängers, das in dessen ganzer Reichweite ankommt.`}],
+  x:`Das CTS sendet der <b>Empfänger</b>. Es erreicht damit alle, die beim Empfänger stören könnten – auch die vor A versteckte Station C.`})},
+{part:2, gen:r=>({
+  q:`Bei CSMA/CD hören B und D vor dem Senden ab und finden das Medium frei. Trotzdem kollidieren ihre Rahmen. Wie ist das möglich?`,
+  c:`D hat begonnen, bevor das Signal von B bei D angekommen war (Signallaufzeit)`,
+  w:[{t:`Das IFS ist zu kurz, deshalb überhören sich die Stationen`, e:`Das IFS ist eine Mindestpause zwischen Rahmen. Ursache ist die endliche Ausbreitungsgeschwindigkeit des Signals.`},
+     {t:`Eine Station hat das JAM-Signal falsch gedeutet`, e:`Das JAM-Signal kommt erst nach der Kollision ins Spiel – es kann sie nicht verursachen.`},
+     {t:`Carrier Sense funktioniert am Kabel grundsätzlich nicht`, e:`Carrier Sense funktioniert am Kabel – nur nicht sofort: Ein Signal braucht Zeit bis zur anderen Station.`}],
+  x:`Ein Signal breitet sich mit endlicher Geschwindigkeit aus. Startet D innerhalb dieser Laufzeit, misst D noch ein freies Medium. Deshalb muss ein Rahmen mindestens so lang sein wie die doppelte Laufzeit.`})},
+{part:2, gen:r=>({
+  q:`Exposed Station mit RTS/CTS: C hört das RTS von B (an A), aber nicht das CTS von A. Warum wäre es trotzdem problematisch, wenn C jetzt an D sendet?`,
+  c:`C würde bei B das ACK stören, das A an B zurückschickt`,
+  w:[{t:`C würde bei A eine Kollision verursachen`, e:`A liegt außerhalb von C's Reichweite – bei A käme C's Signal nicht an.`},
+     {t:`D könnte C wegen B's Signal nicht hören`, e:`D hört B nicht – bei D käme C's Signal ungestört an. Das Problem liegt bei B.`},
+     {t:`RTS/CTS verbietet parallele Übertragungen im ganzen Netz`, e:`Der NAV gilt nur für Stationen, die RTS oder CTS mithören – nicht netzweit.`}],
+  x:`Am Ende schickt A ein ACK an B. Weil B in C's Reichweite liegt, würde C's Sendung dieses ACK bei B überlagern. Deshalb löst RTS/CTS das Exposed-Station-Problem in der Praxis nicht.`})},
+{part:2, gen:r=>({
+  q:`Warum gibt es an einem Switch-Port im Vollduplex-Betrieb keine Kollisionen?`,
+  c:`Jede Richtung hat einen eigenen Kanal, und am Port hängt nur eine Station`,
+  w:[{t:`Der Switch erkennt Kollisionen schneller als ein Hub`, e:`Es gibt dort gar keine Kollisionen, die erkannt werden müssten – CSMA/CD ist im Vollduplex abgeschaltet.`},
+     {t:`Der Switch verteilt einen Token an die Ports`, e:`Switches arbeiten nicht mit Token Passing; sie puffern Rahmen und leiten sie gezielt weiter.`},
+     {t:`Switches verwenden CSMA/CA statt CSMA/CD`, e:`CSMA/CA ist das WLAN-Verfahren. Am Vollduplex-Port braucht es gar kein Zugriffsverfahren.`}],
+  x:`Jeder Switch-Port ist eine eigene Kollisionsdomäne mit genau einer Station. Getrennte Adernpaare je Richtung → niemand konkurriert ums Medium.`})},
+];
+
+function buildQuiz(seed){
+  const r=mulberry32(seed);
+  const pos=[]; for(let i=0;i<QGEN.length;i++) pos.push(i%4);
+  for(let i=pos.length-1;i>0;i--){ const j=Math.floor(r()*(i+1)); [pos[i],pos[j]]=[pos[j],pos[i]]; }
+  return QGEN.map((g,i)=>{
+    let it, tries=0;
+    do{ it=g.gen(r); tries++; } while(tries<50 && new Set([it.c,...it.w.map(w=>w.t)]).size!==4);
+    const wr=it.w.slice(); for(let k=wr.length-1;k>0;k--){ const j=Math.floor(r()*(k+1)); [wr[k],wr[j]]=[wr[j],wr[k]]; }
+    const opts=wr.map(w=>({t:w.t,e:w.e,ok:false}));
+    opts.splice(pos[i],0,{t:it.c,ok:true});
+    return {part:g.part, q:it.q, x:it.x, opts};
+  });
+}
+/*QUIZGEN-END*/
+
+(function(){
+  const KEY="mzv-quiz-v2";
+  let st=null;
+  try{ st=JSON.parse(localStorage.getItem(KEY)||"null"); }catch(e){}
+  if(!st || !st.ans || !Object.keys(st.ans).length) st={seed:(Math.random()*4294967296)>>>0, ans:{}};
+  let Q=buildQuiz(st.seed);
+  const save=()=>{ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} };
+  const L="ABCD";
+  function card(it,i){
+    const a=st.ans[i], done=a!==undefined;
+    const opts=it.opts.map((o,j)=>{
+      let c=""; if(done){ if(o.ok) c="r"; else if(j===a) c="w"; }
+      return `<button class="qz-opt ${c}" data-i="${i}" data-j="${j}" ${done?"disabled":""}><b>${L[j]}</b><span>${o.t}</span></button>`;
+    }).join("");
+    let fb="";
+    if(done){
+      const ch=it.opts[a];
+      fb = ch.ok ? `<div class="qz-fb ok"><b>✓ Richtig.</b> ${it.x}</div>`
+        : `<div class="qz-fb bad"><b>✗ Leider falsch.</b> <span class="qz-err"><b>Denkfehler:</b> ${ch.e}</span><br><b>So geht's:</b> ${it.x}</div>`;
+    }
+    return `<div class="qz-q ${done?"answered":""}"><p><span class="qz-n">${i+1}</span>${it.q}</p><div class="qz-opts">${opts}</div>${fb}</div>`;
+  }
+  function render(){
+    $("#quizP1").innerHTML=Q.map((it,i)=>it.part===1?card(it,i):"").join("");
+    $("#quizP2").innerHTML=Q.map((it,i)=>it.part===2?card(it,i):"").join("");
+    const idx=Object.keys(st.ans).map(Number), n=idx.length, right=idx.filter(i=>Q[i].opts[st.ans[i]].ok).length;
+    $("#quizScore").textContent=`${n} von ${Q.length} beantwortet · ${right} richtig`;
+    if(n===Q.length){
+      const p=right/Q.length;
+      const part=k=>{ const ids=Q.map((q,i)=>i).filter(i=>Q[i].part===k); return `${ids.filter(i=>Q[i].opts[st.ans[i]].ok).length} von ${ids.length}`; };
+      const msg = p>=0.8 ? "Stark! Du hast das Thema sicher im Griff." : p>=0.5 ? "Solide Grundlage – schau dir die Erklärungen zu den falschen Antworten und die passenden Abschnitte noch einmal an." : "Da ist noch Luft nach oben. Geh die Abschnitte über die Lernlandkarte noch einmal durch und starte dann ein neues Quiz.";
+      $("#quizResult").innerHTML=`<div class="key"><b>Ergebnis</b>${right} von ${Q.length} richtig (${fmtNum(p*100,0)} %) · Teil 1: ${part(1)} · Teil 2: ${part(2)}<br>${msg}</div>`;
+    } else $("#quizResult").innerHTML="";
+    $$("#quiz .qz-opt").forEach(b=>b.onclick=()=>{ st.ans[b.dataset.i]=+b.dataset.j; save(); render(); });
+  }
+  $("#quizNew").onclick=()=>{ st={seed:(Math.random()*4294967296)>>>0, ans:{}}; save(); Q=buildQuiz(st.seed); render(); };
+  render();
+})();
 /* ================= Lernlandkarte: illustrierte SVG-Karte ================= */
 (function(){
   const NS="http://www.w3.org/2000/svg";
@@ -1421,7 +1674,7 @@ qzRender();
     {id:"c",x:350,y:730,w:330,h:186,badge:"c",t:"RTS/CTS",q:["Warum steht WLAN für CSMA/CA","und für RTS/CTS?"],chip:"Erweiterung",col:C.ok},
     {id:"e",x:732,y:300,w:210,h:218,badge:"e",t:"Token Passing",q:["Wie effektiv bei gleich-","mäßiger / ungleichmäßiger","Last?"],chip:"",col:"#0f766e"},
     {id:"f",x:972,y:300,w:210,h:218,badge:"f",t:"Verzicht auf MAC",q:["Unter welchen Umständen","kann man verzichten?"],chip:"",col:"#0f766e"},
-    {id:"quiz",x:732,y:640,w:450,h:150,badge:"✓",t:"Ziel: Abschlussquiz",q:["9 Fragen zu allen Abschnitten –","teste, ob alles sitzt."],chip:"",col:C.ink,ill:"quiz"},
+    {id:"quiz",x:732,y:640,w:450,h:150,badge:"✓",t:"Ziel: Abschlussquiz",q:["20 Fragen in zwei Teilen: Grundlagen","und Vertiefung – mit Rechenwegen."],chip:"",col:C.ink,ill:"quiz"},
   ];
   function card(n){
     const ill=ILL[n.ill||n.id](n.id), iw=230, ix=n.w/2-iw/2;
@@ -1512,6 +1765,39 @@ qzRender();
   }),{rootMargin:"-35% 0px -55% 0px"});
   SECS.forEach(id=>{ const s=document.getElementById(id); if(s) io.observe(s); });
   paint();
+})();
+/* ================= Auf- und Zuklappen ================= */
+(function(){
+  function setLab(lab,open){
+    lab.classList.toggle("collapsed",!open);
+    const t=lab.querySelector(".lab-head"); t.setAttribute("aria-expanded",open?"true":"false");
+    t.querySelector(".lab-open-hint").textContent= open? "– zum Schließen klicken" : "– zum Öffnen klicken";
+  }
+  $$(".lab").forEach(lab=>{
+    const t=lab.querySelector(".lab-title");
+    const body=document.createElement("div"); body.className="lab-body";
+    while(t.nextSibling) body.appendChild(t.nextSibling);
+    lab.appendChild(body);
+    const hint=lab.dataset.hint;
+    t.classList.add("lab-head");
+    t.setAttribute("role","button"); t.tabIndex=0;
+    t.innerHTML=`<span class="lab-tog" aria-hidden="true">▶</span><span class="lab-name">${t.innerHTML}</span><span class="lab-open-hint"></span>${hint?`<span class="lab-hint">${hint}</span>`:""}`;
+    const toggle=()=>setLab(lab, lab.classList.contains("collapsed"));
+    t.addEventListener("click",toggle);
+    t.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggle(); } });
+    setLab(lab,false);
+  });
+  // „Alles auf-/zuklappen“ je Abschnitt
+  ["a","b","c","d","e","f"].forEach(id=>{
+    const sec=document.getElementById(id); if(!sec) return;
+    const crumb=sec.querySelector(".crumb")||sec.querySelector(".q");
+    crumb.insertAdjacentHTML("afterend",`<div class="sec-tools"><button class="ghost mini" data-open="1">Alles aufklappen</button><button class="ghost mini" data-open="0">Alles zuklappen</button></div>`);
+    sec.querySelectorAll(".sec-tools button").forEach(b=>b.onclick=()=>{
+      const open=b.dataset.open==="1";
+      sec.querySelectorAll(".lab").forEach(l=>setLab(l,open));
+      sec.querySelectorAll("details.expl, details.answer").forEach(d=>d.open=open);
+    });
+  });
 })();
 </script>
 </body>

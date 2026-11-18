@@ -7,7 +7,7 @@ Interaktive Lerneinheiten für Fachinformatiker, veröffentlicht über GitHub Pa
 
 | Thema | Ordner |
 |---|---|
-| Medienzugriffsverfahren (CSMA/CD, CSMA/CA, RTS/CTS, Hidden/Exposed Station, Token Passing) | [`medienzugriffsverfahren/`](medienzugriffsverfahren/) |
+| Medienzugriffsverfahren (CSMA/CD, CSMA/CA, RTS/CTS, Hidden/Exposed Station, Token Passing) – Simulationen, Lernlandkarte, Abschlussquiz mit 20 Fragen (zufällige Zahlen, gemischt) | [`medienzugriffsverfahren/`](medienzugriffsverfahren/) |
 
 ## Aufbau
 
