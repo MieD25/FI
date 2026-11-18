@@ -1,7 +1,7 @@
 # FI – Veranschaulichungen für den Unterricht
 
 Interaktive Lerneinheiten für Fachinformatiker, veröffentlicht über GitHub Pages:
-**https://mied25.github.io/fi/**
+**https://mied25.github.io/FI/**
 
 ## Inhalte
 
